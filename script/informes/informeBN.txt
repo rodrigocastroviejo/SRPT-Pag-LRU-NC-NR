@@ -1,0 +1,214 @@
+#################################################
+#                                               #
+#  Algoritmo de procesos  :  FCFS/SJF           #
+#  Tipo de algoritmo      :  PAGINACIÓN         #
+#  Algoritmo de memoria   :  RELOJ              #
+#  Memoria continua       :  SI                 #
+#  Memoria reublicable    :  NO                 #
+#                                               #
+#  Autor: Castroviejo Ausucua, Rodrigo          #
+#                                               #
+#  Autores anteriores:                          #
+#  RR-Pag-NRU-C-FI: Diego García Muñoz          #
+#                                               #
+#  Asignatura: Sistemas Operativos              #
+#  Profesor: Jose Manuel Saiz Diez              #
+#                                               #
+#  Este script se creó usando la versión        #
+#  5.1.16(1) de Bash si no se ejecuta con esta  #
+#  versión pueden surgir problemas.             #
+#                                               #
+#################################################
+#                                               #
+#  © Creative Commons                           #
+#  BY - Atribución (BY)                         #
+#  NC - No uso Comercial (NC)                   #
+#  SA - Compartir Igual (SA)                    #
+#                                               #
+#################################################
+
+#################################################
+#                                               #
+#                     AVISO                     #
+#                                               #
+# Para visualizar correctamenta la información  #
+# es necesario poner la ventana de terminal en  #
+# pantalla completa. Si no, hay elementos que   #
+# no se van a ver correctamente.                #
+#                                               #
+# También es recomendable tener la terminal     #
+# con un tema oscuro.                           #
+#                                               #
+#################################################
+
+Los informes por defecto son informeBN.txt y informeCOLOR.txt.
+¿Quieres cambiarlos?
+    [1] <- Sí
+--->[2] <- No
+
+Los informes se guardarán en la carpeta: /home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/informes
+Archivo de informe en texto plano: informeBN.txt
+Archivo de informe en color: informeCOLOR.txt
+
+¿Qué quieres hacer?
+--->[1] <- Ejecutar el programa
+    [2] <- Ver la ayuda
+
+¿Qué algoritmo quieres usar?
+--->[1] <- FCFS
+    [2] <- SJF
+
+¿Cómo quieres introducir los datos?
+    [1] <- Por teclado
+    [2] <- Fichero de Datos de ultima ejecucion (datos.txt)
+    [3] <- Por otro fichero de datos
+--->[4] <- A traves de RANGOS - manual
+    [5] <- Fichero de RANGOS aleatorios de ultima ejecucion (datosrangos.txt)
+    [6] <- Por otro fichero de RANGOS
+
+¿En que fichero quieres guardar los rangos?
+--->[1] <- En el fichero de rangos por defecto (datosrangos.txt)
+    [2] <- En otro fichero
+
+Carpeta de procesos: /home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/procesos
+Archivo de procesos: 
+
+¿En que fichero quieres guardar los procesos?
+--->[1] <- En el fichero de datos por defecto (datos.txt)
+    [2] <- En otro fichero
+
+Carpeta de procesos: /home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/procesos
+Archivo de procesos: datos.txt
+
+██████████████████████████████████████████████████████████████████
+█                                                                █
+█                  Número marcos : [ 1 - 5 ]                     █
+█  Tamaño marco (en direcciones) : [ 1 - 5 ]                     █
+█                 Tamaño memoria : 20                            █
+█                Número procesos : [ 1 - 5 ]                     █
+█                 Tiempo llegada : [ 1 - 5 ]                     █
+█               Tiempo ejecución : [ 1 - 5 ]                     █
+█             Mínimo estructural : [ 1 - 5 ]                     █
+█ Tamaño proceso(en direcciones) : [ 1 - 5 ]                     █
+█                                                                █
+██████████████████████████████████████████████████████████████████
+
+¿Cómo quieres ejecutar el algoritmo?
+--->[1] <- Por eventos (presionando Enter)
+    [2] <- Automatica (definiendo el tiempo de espera entre eventos)
+    [3] <- Completa (sin espera alguna)
+    [4] <- Resumen final
+
+ Paginación-FCFS-RELOJ-C-NR
+ T: 0      Nº Dirs: 20     Tam Pág:        Nº Marc: 5     
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P00   3   4    4    -    -    - Fuera de sist.  3-0 2-0 3-0 1-0 
+ P01   3   5    3    -    -    - Fuera de sist.  3-0 2-0 3-0 3-0 5-1 
+ Tiempo Espera Medio: 0.0       Tiempo Respuesta Medio: 0.0
+            ██                            ██
+   Proceso: █[NADA                        ]█
+  Nº Marco: █[   0][   1][   2][   3][   4]█
+    Página: █[    ][    ][    ][    ][    ]█
+ Cnt.Reloj: █[    ][    ][    ][    ][    ]█
+            ██                            ██
+     |               |
+ BM: |               | M=5 
+     |  0            |
+     |   |
+ BT: |   | T=0
+     |  0|
+----------------------------------------------------------------
+ Paginación-FCFS-RELOJ-C-NR
+ T: 3      Nº Dirs: 20     Tam Pág:        Nº Marc: 5      Han llegado los procesos P00 y P01.
+
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P00   3   4    4    0    0   4  En ejecución    3-0 2-0 3-0 1-0 
+ P01   3   5    3    0    0   5  En memoria      3-0 2-0 3-0 3-0 5-1 
+ Tiempo Espera Medio: 0         Tiempo Respuesta Medio: 0
+ El proceso P00 ha entrado a memoria a partir de la posición 0.
+ El proceso P01 ha entrado a memoria a partir de la posición 4.
+ Cola(Orden ejecución): P01
+ El proceso P00 ha iniciado su ejecución.
+            ██                            ██
+   Proceso: █[P00                   ][P01  █
+  Nº Marco: █[   0](   1)[   2][   3][   4]█
+    Página: █[   0](    )[    ][    ][    ]█
+ Cnt.Reloj: █[   1](    )[    ][    ][    ]█
+            ██                            ██
+     |P00         P01|
+ BM: |  0  -  -  -  -| M=5 
+     |  0           4|
+     |         P00|
+ BT: |           0| T=3
+     |  0        3|
+----------------------------------------------------------------
+ Paginación-FCFS-RELOJ-C-NR
+ T: 7      Nº Dirs: 20     Tam Pág:        Nº Marc: 5     
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P00   3   4    4    0    4   -  Finalizado      3-0 2-0 3-0 1-0 
+ P01   3   5    3    4    4   5  En ejecución    3-0 2-0 3-0 3-0 5-1 
+ Tiempo Espera Medio: 2.00      Tiempo Respuesta Medio: 4.00
+ El proceso P00 ha finalizado su ejecución con 1 fallos de página.
+  T: (  3)(  4)(  5)(  6)
+ M0: ╔  0╗╔  0╗╔  0╗╔  0╗
+     ╚  1╝╚  2╝╚  3╝╚  4╝
+ M1: ┌   ┐┌   ┐┌   ┐┌   ┐
+     └   ┘└   ┘└   ┘└   ┘
+ M2: ┌   ┐┌   ┐┌   ┐┌   ┐
+     └   ┘└   ┘└   ┘└   ┘
+ M3: ┌   ┐┌   ┐┌   ┐┌   ┐
+     └   ┘└   ┘└   ┘└   ┘
+ El proceso P01 ha iniciado su ejecución.
+            ██                            ██
+   Proceso: █[NADA                  ][P01  █
+  Nº Marco: █[   0][   1][   2][   3][   4]█
+    Página: █[    ][    ][    ][    ][   0]█
+ Cnt.Reloj: █[    ][    ][    ][    ][   1]█
+            ██                            ██
+     |            P01|
+ BM: |              0| M=5 
+     |  0           4|
+     |         P00         P01|
+ BT: |           0  0  0  0  0| T=7
+     |  0        3           7|
+----------------------------------------------------------------
+ Paginación-FCFS-RELOJ-C-NR
+ T: 12     Nº Dirs: 20     Tam Pág:        Nº Marc: 5     
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P00   3   4    4    0    4   -  Finalizado      3-0 2-0 3-0 1-0 
+ P01   3   5    3    4    9   -  Finalizado      3-0 2-0 3-0 3-0 5-1 
+ Tiempo Espera Medio: 2.00      Tiempo Respuesta Medio: 6.50
+ El proceso P01 ha finalizado su ejecución con 2 fallos de página.
+  T: (  7)(  8)(  9)( 10)( 11)
+ M0: ╔  0╗╔  0╗╔  0╗╔  0╗┌  0┐
+     ╚  1╝╚  2╝╚  3╝╚  4╝└  4┘
+ M1: ┌   ┐┌   ┐┌   ┐┌   ┐╔  1╗
+     └   ┘└   ┘└   ┘└   ┘╚  1╝
+ M2: ┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐
+     └   ┘└   ┘└   ┘└   ┘└   ┘
+            ██                            ██
+   Proceso: █[NADA                        ]█
+  Nº Marco: █[   0][   1][   2][   3][   4]█
+    Página: █[    ][    ][    ][    ][    ]█
+ Cnt.Reloj: █[    ][    ][    ][    ][    ]█
+            ██                            ██
+     |               |
+ BM: |               | M=5 
+     |  0            |
+     |         P00         P01               |
+ BT: |           0  0  0  0  0  0  0  0  1   | T=12
+     |  0        3           7             12|
+----------------------------------------------------------------
+                                                 
+                                                 
+  FCFS - Pag - RELOJ - C - NR                    
+  Resumen Final                                  
+                                                 
+                                                 
+
+ RefTll Tej Tesp Tret  Ini  Fin Fallos 
+ P00  3   4    0    4    3    7      1 
+ P01  3   5    4    9    7   12      2 
+
+ Tiempo de espera medio: 2.00
+ Tiempo de retorno medio: 6.50
