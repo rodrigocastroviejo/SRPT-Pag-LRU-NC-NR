@@ -295,20 +295,10 @@ cabecera() {
     clear
     echo -e                "${cf[$ac]}                                                 ${rstf}"
     echo -e                 "${cf[10]}                                                 ${rstf}"
-    case $algo in
-        # Todavía no se ha seleccionado el algoritmo
-        -1 )
-            echo -e "${cf[10]}${cl[1]}${ft[0]}  FCFS/SJF - Pag - Reloj - C - NR                ${rstf}"
-        ;;
-        # FCFS
-        1 )
-            echo -e "${cf[10]}${cl[1]}${ft[0]}  FCFS - Pag - Reloj - C - NR                    ${rstf}"
-        ;;
-        # SJF
-        2 )
-            echo -e "${cf[10]}${cl[1]}${ft[0]}  SJF - Pag - Reloj - C - NR                     ${rstf}"
-        ;;
-    esac
+
+    # Imprime el nombre del algoritmo en la cabecera
+    echo -e "${cf[10]}${cl[1]}${ft[0]}  SRPT - Pag - LRU - NC - NR                ${rstf}"
+
     printf          "${cf[10]}${cl[1]}  %s%*s${rstf}\n" "${1}" $((47-${#1})) "" # Mantiene el ancho de la cabecera
     echo -e                 "${cf[10]}                                                 ${rstf}"
     echo -e                "${cf[$ac]}                                                 ${rstf}"
@@ -357,8 +347,8 @@ init_globales() {
     readonly maximoProcesos=99                                                # Número máximo de procesos que acepta el script. (El primer proceso el el 1)
     readonly archivoAyuda="$DIR/ayuda.txt"                                    # Fichero de ayuda.
     readonly carpetaInformes="$DIR/informes"                                  # Carpeta donde se guardan los informes
-    archivoInformePlano="informeBN.txt"                                       # Archivo de informes sin color por defecto
-    archivoInformeColor="informeCOLOR.txt"                                    # Archivo de informes con color por defecto
+    archivoInformePlano="$carpetaInformes/informeBN.txt"                      # Archivo de informes sin color por defecto
+    archivoInformeColor="$carpetaInformes/informeCOLOR.txt"                   # Archivo de informes con color por defecto
     readonly carpetaDatos="$DIR/procesos"                                     # Carpeta donde se guardan los datos de las ejecuciones
     readonly archivoUltimaEjecucion="$carpetaDatos/datos.txt"                 # Archivo con los datos de la última ejecución. Siempre se guarda
     readonly archivoUltimaEjecucionRangos="$carpetaDatos/datosrangos.txt"     # Archivo con los rangos de la ultima ejecuion por alguna entrada de datos por aleatoriedad. 
@@ -387,12 +377,12 @@ init_globales() {
     archivoRangos=""                                # Archivo en el que se gurdran los rangos de la ejecucion si el usuario da un archivo perso. para guardarlos
     						    #utiliza en la funcion guardarDatos
 
-    # Algoritmo que se va a usar [1=FCFS  2=SJF]
+    # Algoritmo que se va a usar [1=SRPT]
     algo=-1
 
     # CARACTERÍSTICAS DE LA MEMORIA
     numeroMarcos=""                                 # Número de marcos de la memoria 
-    tamanoMarco=""                                  #Tamaño de los marcos de pagina
+    tamanoMarco=""                                  # Tamaño de los marcos de pagina
     tamanoMemoria=""                                # Número de direcciones de la memoria (calculado mediante: numeroMarcos * tamaño Marcos)
 
     # DATOS DE LOS PROCESOS
