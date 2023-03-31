@@ -20,7 +20,7 @@
 # RET: devuelve 0
 # USO: leer var
 leer() {
-    read -r $1
+    read -r $1   # La opcion -r no perimite utilizar secuencias de escape con la contrabarra
     return 0
 }
 
@@ -83,7 +83,7 @@ leer_numero_entre() {
         2 )
             return 2
         ;;
-        # No se ha introducido nada
+	# El valor es demasiado grande y crearia overflow(explicado en la anterior funcion)
         3 )
             return 3
         ;;
@@ -159,6 +159,7 @@ preguntar() {
         opciones+=("${!i}")
     done
 
+    # Salida por pantalla
     cabecera "$titulo"
     echo -e "$pregunta"
     echo
@@ -2726,7 +2727,7 @@ ej_ejecutar_fin_ejecutar() {
         unset procesoMarcos[$enEjecucion,$pag]
     }
 
-    # Poner el tiempor restanter de ejecución a - para que no muestre 0
+    # Poner el tiempo restante de ejecución a - para que no muestre 0
     tREj[$enEjecucion]="-"
 
     # Actualizar le estado del proceso
@@ -2800,10 +2801,10 @@ ej_ejecutar_memoria_proceso() {
 
 	# descomentar la linea inferior de codigo si desea hacer el agoritmo no continuo y comentar la linea indicada que hace el algoritmo continuo 
 	# si hay suficiente memoria libre (Porque es memoria no continua, si fuese continua habria que hacerlo diferente)	    
-        #if [ ${minimoEstructural[$p]} -le $memoriaLibre ];then
+        if [ ${minimoEstructural[$p]} -le $memoriaLibre ];then
 	
 	# Esta condicion convierte el agoritmo en Continuo, reemplazar por la de arriba
-        if [ ${#minimoEstructural[$p, $d]} -le $memoriaLibre ];then
+        #if [ ${#minimoEstructural[$p, $d]} -le $memoriaLibre ];then
 
 
             # Quitar proceso del la cola de memoria
