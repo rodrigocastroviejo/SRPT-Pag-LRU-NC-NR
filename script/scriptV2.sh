@@ -1368,7 +1368,10 @@ datos_archivo_seleccionar() {
     done
 
 
+    # Resta uno para que concuerde el numero seleccionado con la posicion del archivo seleccionado en el array
     ((seleccion--))
+
+    # Imprime otra vez el menu de seleccion pero resaltando la opcion seleccionada
 
     cabecera "Selección archivo de datos"
     echo "¿Que archivo quieres usar?"
