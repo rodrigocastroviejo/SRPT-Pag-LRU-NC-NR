@@ -1,13 +1,5 @@
 #!/bin/bash -
 
-# INFORMACION IMPORTANTE PARA EL SIGUIENTE: Yo me he basado en la practica FCGS-SJF-Pag-NFU-NC-R, estaba muy bien hecha
-# y yo he modificado lo que me pidio lolo de la mejor forma posible con el nivel que tengo q no es mucho, por lo menos he intentado dejartelo lo que hje ido cambiando 
-# comentado, sobre todo lo que he modificado ha sido la entrada de datos y la ejecucion para añadir mas opciones en ambas aparte de modificar el algoritmo 
-# para que funcionase por reloj, lolo me ha obligado a borrar las cosas de reubicacioon ya que yo tenia NR, pero en la practica enla que me he basado tienes
-# las respectivas funciones que hacian la reubicabilidad (sobre la reubicabilidad es muy importante estas lineas (mas o menos) 2915-...), si las comentas, el 
-# algoritmo es continuo no reubicable, como he hecho yo
-
-
 # ███████████████████████████████
 # █                             █
 # █     FUNCIONES GENERALES     █
@@ -297,7 +289,7 @@ cabecera() {
     echo -e                 "${cf[10]}                                                 ${rstf}"
 
     # Imprime el nombre del algoritmo en la cabecera
-    echo -e "${cf[10]}${cl[1]}${ft[0]}  SRPT - Pag - LRU - NC - NR                ${rstf}"
+    echo -e "${cf[10]}${cl[1]}${ft[0]}  SRPT - Pag - LRU - NC - NR                     ${rstf}"
 
     printf          "${cf[10]}${cl[1]}  %s%*s${rstf}\n" "${1}" $((47-${#1})) "" # Mantiene el ancho de la cabecera
     echo -e                 "${cf[10]}                                                 ${rstf}"
@@ -347,8 +339,8 @@ init_globales() {
     readonly maximoProcesos=99                                                # Número máximo de procesos que acepta el script. (El primer proceso el el 1)
     readonly archivoAyuda="$DIR/ayuda.txt"                                    # Fichero de ayuda.
     readonly carpetaInformes="$DIR/informes"                                  # Carpeta donde se guardan los informes
-    archivoInformePlano="$carpetaInformes/informeBN.txt"                      # Archivo de informes sin color por defecto
-    archivoInformeColor="$carpetaInformes/informeCOLOR.txt"                   # Archivo de informes con color por defecto
+    archivoInformePlano="informeBN.txt"                      	              # Archivo de informes sin color por defecto
+    archivoInformeColor="informeCOLOR.txt"                   		      # Archivo de informes con color por defecto
     readonly carpetaDatos="$DIR/procesos"                                     # Carpeta donde se guardan los datos de las ejecuciones
     readonly archivoUltimaEjecucion="$carpetaDatos/datos.txt"                 # Archivo con los datos de la última ejecución. Siempre se guarda
     readonly archivoUltimaEjecucionRangos="$carpetaDatos/datosrangos.txt"     # Archivo con los rangos de la ultima ejecuion por alguna entrada de datos por aleatoriedad. 
@@ -378,7 +370,7 @@ init_globales() {
     						    #utiliza en la funcion guardarDatos
 
     # Algoritmo que se va a usar [1=SRPT]
-    algo=-1
+    algo=1
 
     # CARACTERÍSTICAS DE LA MEMORIA
     numeroMarcos=""                                 # Número de marcos de la memoria 
@@ -503,10 +495,10 @@ intro_cabecera_inicio() {
     clear
     echo -e         "${cf[ac]}                                                 ${rstf}"
     echo -e         "${cf[10]}                                                 ${rstf}"
-    echo -e "${cf[10]}${cl[1]}  Algoritmo de procesos  :  FCFS/SJF             ${rstf}"
+    echo -e "${cf[10]}${cl[1]}  Algoritmo de procesos  :  SRPT                 ${rstf}"
     echo -e "${cf[10]}${cl[1]}  Tipo de algoritmo      :  PAGINACIÓN           ${rstf}"
-    echo -e "${cf[10]}${cl[1]}  Algoritmo de memoria   :  Reloj                ${rstf}"
-    echo -e "${cf[10]}${cl[1]}  Memoria continua       :  SI                   ${rstf}"
+    echo -e "${cf[10]}${cl[1]}  Algoritmo de memoria   :  LRU                  ${rstf}"
+    echo -e "${cf[10]}${cl[1]}  Memoria continua       :  NO                   ${rstf}"
     echo -e "${cf[10]}${cl[1]}  Memoria reublicable    :  NO                   ${rstf}"
     echo -e         "${cf[10]}                                                 ${rstf}"
     echo -e "${cf[10]}${cl[1]}  Autor: Castroviejo Ausucua, Rodrigo            ${rstf}"
@@ -534,10 +526,10 @@ intro_cabecera_inicio() {
     # Informe texto plano
     informar_plano "#################################################"
     informar_plano "#                                               #"
-    informar_plano "#  Algoritmo de procesos  :  FCFS/SJF           #"
+    informar_plano "#  Algoritmo de procesos  :  SRPT               #"
     informar_plano "#  Tipo de algoritmo      :  PAGINACIÓN         #"
-    informar_plano "#  Algoritmo de memoria   :  RELOJ              #"
-    informar_plano "#  Memoria continua       :  SI                 #"
+    informar_plano "#  Algoritmo de memoria   :  LRU                #"
+    informar_plano "#  Memoria continua       :  NO                 #"
     informar_plano "#  Memoria reublicable    :  NO                 #"
     informar_plano "#                                               #"
     informar_plano "#  Autor: Castroviejo Ausucua, Rodrigo          #"
@@ -568,13 +560,13 @@ intro_cabecera_inicio() {
     # Informe a color.
     informar_color         "${cf[ac]}                                                 ${rstf}"
     informar_color         "${cf[10]}                                                 ${rstf}"
-    informar_color "${cf[10]}${cl[1]}  Algoritmo de procesos  :  FCFS/SJF             ${rstf}"
+    informar_color "${cf[10]}${cl[1]}  Algoritmo de procesos  :  SRPT                 ${rstf}"
     informar_color "${cf[10]}${cl[1]}  Tipo de algoritmo      :  PAGINACIÓN           ${rstf}"
-    informar_color "${cf[10]}${cl[1]}  Algoritmo de memoria   :  RELOJ                ${rstf}"
-    informar_color "${cf[10]}${cl[1]}  Memoria continua       :  SI                   ${rstf}"
+    informar_color "${cf[10]}${cl[1]}  Algoritmo de memoria   :  LRU                  ${rstf}"
+    informar_color "${cf[10]}${cl[1]}  Memoria continua       :  NO                   ${rstf}"
     informar_color "${cf[10]}${cl[1]}  Memoria reublicable    :  NO                   ${rstf}"
     informar_color         "${cf[10]}                                                 ${rstf}"
-    informar_color "${cf[10]}${cl[1]}  Autor: Catalin Andrei, Cacuci                  ${rstf}"
+    informar_color "${cf[10]}${cl[1]}  Autor: Castroviejo Ausucua, Rodrigo            ${rstf}"
     informar_color         "${cf[10]}                                                 ${rstf}"
     informar_color "${cf[10]}${cl[1]}  Autores anteriores:                            ${rstf}"
     informar_color "${cf[10]}${cl[1]}  RR-Pag-NRU-C-FI: Diego García Muñoz            ${rstf}"
@@ -750,20 +742,10 @@ opciones_menu() {
     esac
 }
 
-# DES: Selección del algoritmo a usar
-opciones_algoritmo() {
-    preguntar "Selección de algoritmo" \
-              "¿Qué algoritmo quieres usar?" \
-              algo \
-              "FCFS" \
-              "SJF" 
-}
-
 # DES: Función principar de opciones
 opciones() {
     opciones_informes
     opciones_menu
-    opciones_algoritmo
 }
 
 # ███████████████████████████████
@@ -906,24 +888,6 @@ datos_guardar() {
     if [[ $archivoDatos ]];then
         echo -e -n "${cadena}" > "$archivoDatos"
     fi
-
-}
-
-
-# DES: Crea los nombre de los procesos ej 1 -> P01
-generar_nombre_proceso() {
-
-    local color=""
-
-    nombreProceso[$p]=$(
-        printf "P%0${anchoNumeroProceso}d" "$p"
-    )
-
-    color=${colorProceso[$p]}
-
-    nombreProcesoColor[$p]=$(
-        printf "${cl[$color]}${ft[0]}P%0${anchoNumeroProceso}d${cl[0]}${ft[1]}" "$p"
-    )
 
 }
 
@@ -1262,6 +1226,27 @@ datos_teclado_direcciones() {
             esac
         done
     done
+}
+
+
+# DES: Crea los nombre de los procesos ej 1 -> P01
+generar_nombre_proceso() {
+
+    local color=""
+
+    nombreProceso[$p]=$(
+        printf "P%0${anchoNumeroProceso}d" "$p"		
+	)						# d indica que el parametro que va a sustituir($p) es decimal  
+							# el ancho que va a tener el printf es especificado por anchoNumeroProceso
+							# %0 en el printf, rellena los huecos con 0s en vez de espacios si el ancho
+						        #especificado por anchoNumeroProceso ocupa mas espacios que la variable a sustituir	
+
+    color=${colorProceso[$p]}
+
+    nombreProcesoColor[$p]=$(
+        printf "${cl[$color]}${ft[0]}P%0${anchoNumeroProceso}d${cl[0]}${ft[1]}" "$p"
+    )
+
 }
 
 
