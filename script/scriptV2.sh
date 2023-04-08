@@ -2777,14 +2777,8 @@ ej_ejecutar_memoria_proceso() {
     # Por cada proceso en la cola de memoria
     for p in ${colaMemoria[*]};do
 
-	# descomentar la linea inferior de codigo si desea hacer el agoritmo no continuo y comentar la linea indicada que hace el algoritmo continuo 
-	# si hay suficiente memoria libre (Porque es memoria no continua, si fuese continua habria que hacerlo diferente)	    
         if [ ${minimoEstructural[$p]} -le $memoriaLibre ];then
 	
-	# Esta condicion convierte el agoritmo en Continuo, reemplazar por la de arriba
-        #if [ ${#minimoEstructural[$p, $d]} -le $memoriaLibre ];then
-
-
             # Quitar proceso del la cola de memoria
             colaMemoria=("${colaMemoria[@]:1}")
 
@@ -3028,7 +3022,7 @@ ej_ejecutar() {
         fi
     fi
 
-      # Atender la llegada de procesos
+    # Atender la llegada de procesos
     ej_ejecutar_llegada
 
     # Introducir procesos que han llegado a memoria si se puede
@@ -4091,7 +4085,7 @@ ej() {
 # Ejecución
 
      #si la opcion selecionada es la ejecucion automatica, pregunta un tiempo de espera entre
-     #eventos y lo guarda en un avariable para despues ejecutar automaticamente
+     #eventos y lo guarda en una variable para despues ejecutar automaticamente
     if [ $metodoEjecucion -eq 2  ]; then
 	local tiempoEsperaEntreEventos=""
 	read -p "Introduzca el tiempo de espera entre eventos: " tiempoEsperaEntreEventos
