@@ -3066,17 +3066,7 @@ ej_ejecutar() {
 ej_pantalla_cabecera() {
 
     # Mostrar el algoritmo usado
-    echo -e -n "${ft[0]} Paginación-"
-    case $algo in
-
-        1 )
-            echo -e -n "FCFS-"
-        ;;
-        2 )
-            echo -e -n "SJF-"
-        ;;
-    esac
-    echo -e -n "RELOJ-C-NR${rstf}\n"
+    echo -e -n "${ft[0]} SRPT-Paginacion-LRU-NC-NR${rstf}\n"
 
 }
 
