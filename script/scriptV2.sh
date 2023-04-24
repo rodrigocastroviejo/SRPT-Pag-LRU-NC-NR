@@ -2913,8 +2913,8 @@ ej_ejecutar_memoria_pagina() {
         mar=${marcosActuales[$ind]}
         # Si se encuentra la página
         if [[ -n "${memoriaPagina[$mar]}" ]] && [ ${memoriaPagina[$mar]} -eq $pagina ];then
-            # Incrementar los usos de esa página
-            (( ++memoriaNFU[$mar] ))
+	# Restablece el indice de ultima vez que se uso esa pagina a 1 (el indice mas reciente)
+            memoriaLRU[$mar]=1
             marcoFallo+=($ind)
             return 0
         fi
@@ -2923,25 +2923,27 @@ ej_ejecutar_memoria_pagina() {
     # Si la página no está en memoria
     # Marco en el que se va a introducir la página.
     local marco=""
-    # Menores usos
-    local usos=-1
+    # Menor frecuencia utlizacion LRU
+    local indiceUltimoUsoPaginaActual=-1
 
-    local marc=""
+    local indiceMarcoActual=""
     # Si la página no está en memoria hay que buscar la página con menos frecuencia.
     for ind in ${!marcosActuales[*]};do
+	# ind va a ser el indice que contiene la posicion del marco actual en el vector marcosActuales
+	# mar Contiene el marco actual
         mar=${marcosActuales[$ind]}
         # Si el marco está vacío se usa siempre
         if [[ -z "${memoriaPagina[$mar]}" ]];then
             marco=$mar
-            usos=0
-            marc=$ind
+            indiceUltimoUsoPaginaActual=0
+            indiceMarcoActual=$ind
             break
         
         # si el marco no está vacío
-        elif [[ -z "$marco" ]] || [ ${memoriaNFU[$mar]} -lt $usos ];then
+        elif [[ -z "$marco" ]] || [ ${memoriaLRU[$mar]} -gt $indiceUltimoUsoPaginaActual ];then
             marco=$mar
-            usos=${memoriaNFU[$mar]}
-            marc=$ind
+            indiceUltimoUsoPaginaActual=${memoriaLRU[$mar]}
+            indiceMarcoActual=$ind
         fi
 
     done
@@ -2950,7 +2952,7 @@ ej_ejecutar_memoria_pagina() {
     memoriaPagina[$marco]=$pagina
     # Poner los usos de la página a 1
     memoriaNFU[$marco]=1
-    marcoFallo+=($marc)
+    marcoFallo+=($indiceMarcoActual)
 
     # Incrementar fallos del proceso
     (( numFallos[$enEjecucion]++ ))
@@ -2963,21 +2965,21 @@ ej_ejecutar_memoria_pagina() {
 ej_calcular_marco_siguiente() {
     # Marco en el que se va a introducir la página.
     local marco=""
-    # Menores usos
-    local usos=-1
+    # Menor frecuencia utlizacion LRU
+    local indiceUltimoUsoPaginaActual=-1
     # Si la página no está en memoria hay que buscar la página con menos frecuencia.
     for ind in ${!marcosActuales[*]};do
         mar=${marcosActuales[$ind]}
         # Si el marco está vacío se usa siempre
         if [[ -z "${memoriaPagina[$mar]}" ]];then
             marco=$mar
-            usos=0
+            indiceUltimoUsoPaginaActual=0
             break
         
         # si el marco no está vacío
-        elif [[ -z "$marco" ]] || [ ${memoriaNFU[$mar]} -lt $usos ];then
+        elif [[ -z "$marco" ]] || [ ${memoriaLRU[$mar]} -gt $indiceUltimoUsoPaginaActual ];then
             marco=$mar
-            usos=${memoriaNFU[$mar]}
+            indiceUltimoUsoPaginaActual=${memoriaLRU[$mar]}
         fi
     done
     siguienteMarco=${marco}
