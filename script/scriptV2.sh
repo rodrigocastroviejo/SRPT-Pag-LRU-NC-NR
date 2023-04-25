@@ -2916,6 +2916,15 @@ ej_ejecutar_memoria_pagina() {
 	# Restablece el indice de ultima vez que se uso esa pagina a 1 (el indice mas reciente)
             memoriaLRU[$mar]=1
             marcoFallo+=($ind)
+
+	    # Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
+    		for ind in ${!memoriaLRU[*]};do
+       			 # Comprueba que la paguina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
+	       	 if [ $indiceMarcoActual -ne $ind ];then
+				((memoriaLRU[$ind]++))
+       		fi
+	        done
+
             return 0
         fi
     done
@@ -2956,6 +2965,15 @@ ej_ejecutar_memoria_pagina() {
 
     # Incrementar fallos del proceso
     (( numFallos[$enEjecucion]++ ))
+
+
+    # Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
+    for ind in ${!memoriaLRU[*]};do
+        # Comprueba que la paguina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
+        if [ $indiceMarcoActual -ne $ind ];then
+		((memoriaLRU[$ind]++))
+        fi
+    done
 
     return 1
 
