@@ -2917,23 +2917,25 @@ ej_ejecutar_memoria_pagina() {
             memoriaLRU[$mar]=1
             marcoFallo+=($ind)
 
-	    # Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
-    		for ind in ${!memoriaLRU[*]};do
-       			 # Comprueba que la paguina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
-	       	 if [ $indiceMarcoActual -ne $ind ];then
-				((memoriaLRU[$ind]++))
-       		fi
-	        done
+		# Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
+    		for indInterior in ${!marcosActuales[*]};do
+		    indiceMarcoActual=${marcosActuales[$indInterior]}
+       	            # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
+	  	    if [ $indiceMarcoActual -ne $mar ];then
+	      	         ((memoriaLRU[$indiceMarcoActual]++))
+           	    fi
+		done
 
             return 0
         fi
+
     done
 
     # Si la página no está en memoria
     # Marco en el que se va a introducir la página.
     local marco=""
     # Menor frecuencia utlizacion LRU
-    local indiceUltimoUsoPaginaActual=-1
+    local indiceUltimoUsoPaginaActual=99999
 
     local indiceMarcoActual=""
     # Si la página no está en memoria hay que buscar la página con menos frecuencia.
@@ -2960,7 +2962,7 @@ ej_ejecutar_memoria_pagina() {
     # Introducir la página en el marco
     memoriaPagina[$marco]=$pagina
     # Poner los usos de la página a 1
-    memoriaNFU[$marco]=1
+    memoriaLRU[$marco]=1
     marcoFallo+=($indiceMarcoActual)
 
     # Incrementar fallos del proceso
@@ -2969,9 +2971,10 @@ ej_ejecutar_memoria_pagina() {
 
     # Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
     for ind in ${!memoriaLRU[*]};do
-        # Comprueba que la paguina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
-        if [ $indiceMarcoActual -ne $ind ];then
-		((memoriaLRU[$ind]++))
+        mar=${marcosActuales[$ind]}
+        # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
+        if [ $marco -ne $mar ];then
+		((memoriaLRU[$mar]++))
         fi
     done
 
