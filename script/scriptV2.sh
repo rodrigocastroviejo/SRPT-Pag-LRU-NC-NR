@@ -1,4 +1,4 @@
-#!/bin/bash -
+#!/bin/bash - 
 
 # ███████████████████████████████
 # █                             █
@@ -2692,7 +2692,7 @@ ej_ejecutar_fin_ejecutar() {
 
         unset memoriaProceso[$mar]
         unset memoriaPagina[$mar]
-        unset memoriaNFU[$mar]
+        unset memoriaLRU[$mar]
 
         # Actualizar memoria libre y ocupada
         ((memoriaLibre++))
@@ -2899,6 +2899,8 @@ ej_ejecutar_empezar_ejecucion() {
 # RET: 0=No ha habido fallo 1=Ha habido fallo
 ej_ejecutar_memoria_pagina() {
 
+    local indiceMarcoActual=""
+
     # Página que hay que introducir
     local pagina=${pc[$enEjecucion]}
     pagina=${procesoPagina[$enEjecucion,$pagina]}
@@ -2910,6 +2912,7 @@ ej_ejecutar_memoria_pagina() {
 
     # Comprobar cada marco de la memoria si la página ya está metida
     for ind in ${!marcosActuales[*]};do
+	# Contiene el marco actual
         mar=${marcosActuales[$ind]}
         # Si se encuentra la página
         if [[ -n "${memoriaPagina[$mar]}" ]] && [ ${memoriaPagina[$mar]} -eq $pagina ];then
@@ -2937,7 +2940,7 @@ ej_ejecutar_memoria_pagina() {
     # Menor frecuencia utlizacion LRU
     local indiceUltimoUsoPaginaActual=99999
 
-    local indiceMarcoActual=""
+    indiceMarcoActual=""
     # Si la página no está en memoria hay que buscar la página con menos frecuencia.
     for ind in ${!marcosActuales[*]};do
 	# ind va a ser el indice que contiene la posicion del marco actual en el vector marcosActuales
@@ -2948,7 +2951,7 @@ ej_ejecutar_memoria_pagina() {
             marco=$mar
             indiceUltimoUsoPaginaActual=0
             indiceMarcoActual=$ind
-            break
+	    break
         
         # si el marco no está vacío
         elif [[ -z "$marco" ]] || [ ${memoriaLRU[$mar]} -gt $indiceUltimoUsoPaginaActual ];then
@@ -2968,15 +2971,15 @@ ej_ejecutar_memoria_pagina() {
     # Incrementar fallos del proceso
     (( numFallos[$enEjecucion]++ ))
 
+	# Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
+    		for indInterior in ${!marcosActuales[*]};do
+		    indiceMarcoActual=${marcosActuales[$indInterior]}
+       	            # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
+	  	    if [ $indiceMarcoActual -ne $marco ];then
+	      	         ((memoriaLRU[$indiceMarcoActual]++))
+           	    fi
+		done
 
-    # Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
-    for ind in ${!memoriaLRU[*]};do
-        mar=${marcosActuales[$ind]}
-        # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
-        if [ $marco -ne $mar ];then
-		((memoriaLRU[$mar]++))
-        fi
-    done
 
     return 1
 
@@ -3015,7 +3018,7 @@ ej_ejecutar_guardar_fallos() {
     for mar in ${!marcosActuales[*]};do
         marco=${marcosActuales[$mar]}
         resumenFallos["$mom,$mar"]="${memoriaPagina[$marco]}"
-        resumenNFU["$mom,$mar"]="${memoriaNFU[$marco]}"
+        resumenLRU["$mom,$mar"]="${memoriaLRU[$marco]}"
     done
 
 }
@@ -3337,9 +3340,9 @@ ej_pantalla_fin_fallos() {
             # Imprimir el contador de cada momento del marco
             for (( mom=$primerMomento; mom<=$ultimoMomento; mom++ ));do
                 if [ ${marcoFallo[$mom]} -eq $mar ];then
-                    printf "${cf[3]}╚%${anchoMomento}s╝${cf[0]}" "${resumenNFU[$mom,$mar]}"
+                    printf "${cf[3]}╚%${anchoMomento}s╝${cf[0]}" "${resumenLRU[$mom,$mar]}"
                 else
-                    printf "└%${anchoMomento}s┘" "${resumenNFU[$mom,$mar]}"
+                    printf "└%${anchoMomento}s┘" "${resumenLRU[$mom,$mar]}"
                 fi
             done
             printf "\n"
@@ -3574,10 +3577,9 @@ ej_pantalla_linea_memoria_grande() {
         printf "${cl[3]}█${rstf}\n"
 
 
-        # CONTADOR NFU
-	# aunque ponga Reloj, es solo estetico, funciona como NFU
+        # CONTADOR LRU
         # Etiqueta
-        printf "${ft[0]}${cl[re]}%${anchoEtiquetas}s ${cl[3]}█${rstf}" "Cnt.Reloj:"
+        printf "${ft[0]}${cl[re]}%${anchoEtiquetas}s ${cl[3]}█${rstf}" "Cnt.LRU:"
         mar=${primerMarco}
 
         for (( ; mar<${ultimoMarco}; mar++ ));do
@@ -3597,7 +3599,7 @@ ej_pantalla_linea_memoria_grande() {
 
             if [[ -n "${memoriaPagina[$mar]}" ]];then
                 # Número de usos de la página respectiva al marco
-                local usos=${memoriaNFU[$mar]}
+                local usos=${memoriaLRU[$mar]}
                 printf "%${anchoBloqueIn}s" "${usos}"
             else
                 printf "%${anchoBloqueIn}s"
@@ -3881,7 +3883,7 @@ ej_limpiar_eventos() {
     # Si ha finalizado un proceso
     if [[ -n "${fin}" ]];then
         resumenFallos=()
-        resumenNFU=()
+        resumenLRU=()
         # Por si entra un proceso a la vez que sale
         local corte=${tiempoEjecucion[$fin]}
         marcoFallo=(${marcoFallo[@]:$corte})
@@ -4027,7 +4029,7 @@ ej() {
     local memoriaPagina=()          # Contiene la página que hay en cada marco. El índice respectivo está vacío si no hay nada.
     local memoriaLibre=$numeroMarcos # Número de marcos libres. Se empieza con la memoria vacía.
     local memoriaOcupada=0          # Número de marcos ocupados. Empieza en 0.
-    local memoriaNFU=()             # Contiene el número de usos que tiene cada página en memoria. El índice está vacío si no hay nada.
+    local memoriaLRU=()             # Contiene el número de usos que tiene cada página en memoria. El índice está vacío si no hay nada.
     local marcosActuales=()         # Marcos asignados al proceso en ejecución.
 
     # Procesos
@@ -4078,7 +4080,7 @@ ej() {
 
     declare -A resumenFallos        # Contiene información de los fallos de página que han habido durante la ejecución del proceso
                                     # se muestra cuando un proceso finaliza su ejecución. resumenFallos[$momento,$marco]
-    declare -A resumenNFU           # Contiene el estado del contador para cada marco en cada momento
+    declare -A resumenLRU           # Contiene el estado del contador para cada marco en cada momento
     declare -A paginaTiempo         # Contiene el tiempo en el que se introduce cada página del proceso [$proc,$pc]
     local marcoFallo=()             # Marco que se usa para cada página
     local numFallos=()              # Número de fallos de cada proceso
