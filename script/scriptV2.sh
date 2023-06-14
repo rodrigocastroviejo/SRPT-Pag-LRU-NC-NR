@@ -2838,12 +2838,12 @@ ej_ejecutar_memoria_proceso() {
 
 }
 
-# DES: Ordenar cola de ejecución segun SJF
-ej_ejecutar_ordenar_sjf() {
+# DES: Ordenar cola de ejecución segun SRPT
+ej_ejecutar_ordenar_srpt() {
 
     # Explicación:
     # Se hace print a cadenas del tipo "4.02&01", "3.05&2", "3.12&3"
-    # "TiempoEjecucion.Indice&Proceso"
+    # "TiempoRestanteEjecucion.Indice&Proceso"
     # Estas cadenas se ordenan de forma numerica. Se usa el índice para
     # que, en caso de coincidir los tiempos de ejecucion, como con "3.05&2" y "3.12&3"
     # se mantenga el orden de llegada. La variable anchosIdx es para que un índice 12
@@ -2860,7 +2860,7 @@ ej_ejecutar_ordenar_sjf() {
     colaEjecucion=($(
         for idx in ${!colaEjecucion[*]};do
             pro=${colaEjecucion[$idx]}
-            printf "${tiempoEjecucion[$pro]}.%0${anchoIdx}d&${pro}\n" "${idx}"
+            printf "${tREj[pro]}.%0${anchoIdx}d&${pro}\n" "${idx}"
         done | sort -n | grep -o "&.*$" | tr -d "&"
     ))
 
@@ -3056,15 +3056,7 @@ ej_ejecutar() {
     
     # Si han entrado procesos ordenar la cola de ejecución ( $? es el valor devuelto por la función anterior)
     if [ $? -eq 0 ];then
-        # Ordenar la cola de ejecución según FCFS o SJF
-        case $algo in
-            1 ) #FCFS
-                # Nada porque ya está en orden de llegada.
-                ;;
-            2 ) #SJF
-                ej_ejecutar_ordenar_sjf
-                ;;
-        esac
+        ej_ejecutar_ordenar_srpt
     fi
 
     # Si no hay procesos en ejecución y hay procesos esperando a ser ejecutados
@@ -4046,6 +4038,7 @@ ej() {
     cadenaEstado[2]="En memoria"
     cadenaEstado[3]="En ejecución"
     cadenaEstado[4]="Finalizado"
+    cadenaEstado[5]="Bloqueado"
     for p in ${procesos[*]};do estado[$p]=0 ;done # Poner todos los procesos en estado 0 (fuera del sistema)
 
     local siguienteMarco=""         # Puntero al siguiente marco en el que se va a introducir una página si no está ya en memoria.
