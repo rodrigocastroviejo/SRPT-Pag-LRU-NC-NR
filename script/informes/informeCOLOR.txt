@@ -3,13 +3,13 @@
 #  FCFS-SJF-Pag-Reloj-NC-R: Cacuci Catalin A.   #
 [44m                                                 [0m
 [47m                                                 [0m
-[47m[30m  Algoritmo de procesos  :  FCFS/SJF             [0m
+[47m[30m  Algoritmo de procesos  :  SRPT                 [0m
 [47m[30m  Tipo de algoritmo      :  PAGINACIÓN           [0m
-[47m[30m  Algoritmo de memoria   :  RELOJ                [0m
-[47m[30m  Memoria continua       :  SI                   [0m
+[47m[30m  Algoritmo de memoria   :  LRU                  [0m
+[47m[30m  Memoria continua       :  NO                   [0m
 [47m[30m  Memoria reublicable    :  NO                   [0m
 [47m                                                 [0m
-[47m[30m  Autor: Catalin Andrei, Cacuci                  [0m
+[47m[30m  Autor: Castroviejo Ausucua, Rodrigo            [0m
 [47m                                                 [0m
 [47m[30m  Autores anteriores:                            [0m
 [47m[30m  RR-Pag-NRU-C-FI: Diego García Muñoz            [0m
@@ -50,7 +50,7 @@ Los informes por defecto son [1m[93minformeBN.txt[0m y [1m[93minformeCOLOR.
     [93m[1m[1][0m <- Sí
     [30m[1m[107m[2] <- No[0m
 
-Los informes se guardarán en la carpeta: [1m[93m/home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/informes[0m
+Los informes se guardarán en la carpeta: [1m[93m/home/rodrigo/Descargas/SRPT-Pag-LRU-NC-NR/script/informes[0m
 Archivo de informe en texto plano: [1m[93minformeBN.txt[0m
 Archivo de informe en color: [1m[93minformeCOLOR.txt[0m
 
@@ -58,161 +58,288 @@ Archivo de informe en color: [1m[93minformeCOLOR.txt[0m
     [30m[1m[107m[1] <- Ejecutar el programa[0m
     [93m[1m[2][0m <- Ver la ayuda
 
-¿Qué algoritmo quieres usar?
-    [30m[1m[107m[1] <- FCFS[0m
-    [93m[1m[2][0m <- SJF
-
 ¿Cómo quieres introducir los datos?
     [93m[1m[1][0m <- Por teclado
     [93m[1m[2][0m <- Fichero de Datos de ultima ejecucion (datos.txt)
-    [93m[1m[3][0m <- Por otro fichero de datos
-    [30m[1m[107m[4] <- A traves de RANGOS - manual[0m
+    [30m[1m[107m[3] <- Por otro fichero de datos[0m
+    [93m[1m[4][0m <- A traves de RANGOS - manual
     [93m[1m[5][0m <- Fichero de RANGOS aleatorios de ultima ejecucion (datosrangos.txt)
     [93m[1m[6][0m <- Por otro fichero de RANGOS
 
-¿En que fichero quieres guardar los rangos?
-    [30m[1m[107m[1] <- En el fichero de rangos por defecto (datosrangos.txt)[0m
-    [93m[1m[2][0m <- En otro fichero
-
-Carpeta de procesos: [1m[93m/home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/procesos[0m
-Archivo de procesos: [1m[93m[0m
-
-¿En que fichero quieres guardar los procesos?
-    [30m[1m[107m[1] <- En el fichero de datos por defecto (datos.txt)[0m
-    [93m[1m[2][0m <- En otro fichero
-
-Carpeta de procesos: [1m[93m/home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/procesos[0m
-Archivo de procesos: [1m[93mdatos.txt[0m
-
-[44m                                                                      [0m
-[47m                                                                      [0m
-[47m[30m                   Número marcos : [ 1 - 5 ]     --> 5                [0m
-[47m[30m  Tamaño marco (en direcciones)  : [ 1 - 5 ]     --> 4                [0m
-[47m[30m                  Tamaño memoria : 20                                 [0m
-[47m[30m                 Número procesos : [ 1 - 5 ]     --> 2                [0m
-[47m[30m                  Tiempo llegada : [ 1 - 5 ]                          [0m
-[47m[30m                Tiempo ejecución : [ 1 - 5 ]                          [0m
-[47m[30m              Mínimo estructural : [ 1 - 5 ]                          [0m
-[47m[30m Tamaño proceso (en direcciones) : [ 1 - 5 ]                          [0m
-[47m                                                                      [0m
-[44m                                                                      [0m
+El archivo de datos usado es: [93m[1mSRPTComprobar.txt[0m
 
 ¿Cómo quieres ejecutar el algoritmo?
-    [30m[1m[107m[1] <- Por eventos (presionando Enter)[0m
+    [93m[1m[1][0m <- Por eventos (presionando Enter)
     [93m[1m[2][0m <- Automatica (definiendo el tiempo de espera entre eventos)
-    [93m[1m[3][0m <- Completa (sin espera alguna)
+    [30m[1m[107m[3] <- Completa (sin espera alguna)[0m
     [93m[1m[4][0m <- Resumen final
 
-[1m Paginación-FCFS-RELOJ-C-NR[0m
- [93m[1mT[0m: 0      [93m[1mNº Dirs[0m: 20     [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 5     
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 0      [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29    
 [1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
-[32m[1m P00   3   4    4    -    -    - Fuera de sist.  [22m3-[1m0 [22m2-[1m0 [22m3-[1m0 [22m1-[1m0 [0m
-[33m[1m P01   3   5    3    -    -    - Fuera de sist.  [22m3-[1m0 [22m2-[1m0 [22m3-[1m0 [22m3-[1m0 [22m5-[1m1 [0m
+[33m[1m P01   2   7    5    -    -    - Fuera de sist.  [22m30-[1m0 [22m108-[1m1 [22m31-[1m0 [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    -    -    - Fuera de sist.  [22m65-[1m0 [22m120-[1m1 [22m250-[1m2 [22m350-[1m3 [0m
+[35m[1m P03   6   2    5    -    -    - Fuera de sist.  [22m65-[1m0 [22m120-[1m1 [0m
  [93mTiempo Espera Medio[0m: 0.0       [93mTiempo Respuesta Medio[0m: 0.0
-            [90m██                            ██[0m
-[1m[93m   Proceso: [90m█[0m[49m[39m[NADA [0m      [0m      [0m      [0m     ][0m[90m█[0m
-[1m[93m  Nº Marco: [90m█[0m[   0][0m[   1][0m[   2][0m[   3][0m[   4][0m[90m█[0m
-[1m[93m    Página: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
-[1m[93m Cnt.Reloj: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
-            [90m██                            ██[0m
-     |               [0m|
- BM: |[107m   [107m   [107m   [107m   [107m   [0m| M=5 
-     |  0            [0m|
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[   0][0m[   1][0m[   2][0m[   3][0m[   4][0m[   5][0m[   6][0m[   7][0m[   8][0m[   9][0m[  10][0m[  11][0m[  12][0m[  13][0m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |                                                                                       [0m|
+ BM: |[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0                                                                                    [0m|
      |   [0m|
  BT: |[107m   [0m| T=0
      |  0[0m|
 ----------------------------------------------------------------
-[1m Paginación-FCFS-RELOJ-C-NR[0m
- [93m[1mT[0m: 3      [93m[1mNº Dirs[0m: 20     [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 5      Han llegado los procesos [32m[1mP00[39m[22m y [33m[1mP01[39m[22m.
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 2      [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29     Ha llegado el proceso [33m[1mP01[39m[22m.
 
 [1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
-[32m[1m P00   3   4    4    0    0   4  En ejecución    [4m[22m3-[1m0[24m [22m2-[1m0 [22m3-[1m0 [22m1-[1m0 [0m
-[33m[1m P01   3   5    3    0    0   5  En memoria      [22m3-[1m0 [22m2-[1m0 [22m3-[1m0 [22m3-[1m0 [22m5-[1m1 [0m
+[33m[1m P01   2   7    5    0    0   7  En ejecución    [4m[22m30-[1m0[24m [22m108-[1m1 [22m31-[1m0 [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    -    -    - Fuera de sist.  [22m65-[1m0 [22m120-[1m1 [22m250-[1m2 [22m350-[1m3 [0m
+[35m[1m P03   6   2    5    -    -    - Fuera de sist.  [22m65-[1m0 [22m120-[1m1 [0m
  [93mTiempo Espera Medio[0m: 0         [93mTiempo Respuesta Medio[0m: 0
- El proceso [32m[1mP00[39m[22m ha entrado a memoria a partir de la posición [93m0[0m.
- El proceso [33m[1mP01[39m[22m ha entrado a memoria a partir de la posición [93m4[0m.
- Cola(Orden ejecución): [33m[1mP01[39m[22m
- El proceso [32m[1mP00[39m[22m ha iniciado su ejecución.
-            [90m██                            ██[0m
-[1m[93m   Proceso: [90m█[0m[32m[[1mP00 [22m [0m[32m      [0m[32m      [0m[32m     ][0m[33m[[1mP01 [22m [0m[90m█[0m
-[1m[93m  Nº Marco: [90m█[0m[32m[   0][0m[32m[1m(   1)[0m[32m[   2][0m[32m[   3][0m[33m[   4][0m[90m█[0m
-[1m[93m    Página: [90m█[0m[32m[   0][0m[32m[1m(    )[0m[32m[    ][0m[32m[    ][0m[33m[    ][0m[90m█[0m
-[1m[93m Cnt.Reloj: [90m█[0m[32m[   1][0m[32m[1m(    )[0m[32m[    ][0m[32m[    ][0m[33m[    ][0m[90m█[0m
-            [90m██                            ██[0m
-     |[32m[1mP00[39m[22m         [33m[1mP01[39m[22m[0m|
- BM: |[42m[97m[1m  0[22m[42m[97m  -[42m[97m  -[42m[97m  -[43m[97m  -[0m| M=5 
-     |  0           4[0m|
-     |         [32m[1mP00[39m[22m[0m|
- BT: |[107m   [107m   [107m   [42m[97m  0[0m| T=3
-     |  0        3[0m|
-----------------------------------------------------------------
-[1m Paginación-FCFS-RELOJ-C-NR[0m
- [93m[1mT[0m: 7      [93m[1mNº Dirs[0m: 20     [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 5     
-[1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
-[32m[1m P00   3   4    4    0    4   -  Finalizado      [4m[22m3-[1m0[24m [4m[22m2-[1m0[24m [4m[22m3-[1m0[24m [4m[22m1-[1m0[24m [0m
-[33m[1m P01   3   5    3    4    4   5  En ejecución    [4m[22m3-[1m0[24m [22m2-[1m0 [22m3-[1m0 [22m3-[1m0 [22m5-[1m1 [0m
- [93mTiempo Espera Medio[0m: 2.00      [93mTiempo Respuesta Medio[0m: 4.00
- El proceso [32m[1mP00[39m[22m ha finalizado su ejecución con [93m1[0m fallos de página.
-[93m[1m  T: [0m(  3)(  4)(  5)(  6)
-[93m[1m M0: [0m[1m[100m╔  0╗[49m[100m╔  0╗[49m[100m╔  0╗[49m[100m╔  0╗[49m[0m
-     [100m╚  1╝[49m[100m╚  2╝[49m[100m╚  3╝[49m[100m╚  4╝[49m
-[93m[1m M1: [0m[1m┌   ┐┌   ┐┌   ┐┌   ┐[0m
-     └   ┘└   ┘└   ┘└   ┘
-[93m[1m M2: [0m[1m┌   ┐┌   ┐┌   ┐┌   ┐[0m
-     └   ┘└   ┘└   ┘└   ┘
-[93m[1m M3: [0m[1m┌   ┐┌   ┐┌   ┐┌   ┐[0m
-     └   ┘└   ┘└   ┘└   ┘
+ El proceso [33m[1mP01[39m[22m ha entrado a memoria a partir de la posición [93m0[0m.
  El proceso [33m[1mP01[39m[22m ha iniciado su ejecución.
-            [90m██                            ██[0m
-[1m[93m   Proceso: [90m█[0m[49m[39m[NADA [0m      [0m      [0m     ][0m[33m[[1mP01 [22m [0m[90m█[0m
-[1m[93m  Nº Marco: [90m█[0m[   0][0m[   1][0m[   2][0m[   3][0m[33m[   4][0m[90m█[0m
-[1m[93m    Página: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[33m[   0][0m[90m█[0m
-[1m[93m Cnt.Reloj: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[33m[   1][0m[90m█[0m
-            [90m██                            ██[0m
-     |            [33m[1mP01[39m[22m[0m|
- BM: |[107m   [107m   [107m   [107m   [43m[97m[1m  0[22m[0m| M=5 
-     |  0           4[0m|
-     |         [32m[1mP00[39m[22m         [33m[1mP01[39m[22m[0m|
- BT: |[107m   [107m   [107m   [42m[97m  0[42m[97m  0[42m[97m  0[42m[97m  0[43m[97m  0[0m| T=7
-     |  0        3           7[0m|
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[33m[[1mP01 [22m [0m[33m      [0m[33m      [0m[33m      [0m[33m     ][0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[33m[   0][0m[33m[1m(   1)[0m[33m[   2][0m[33m[   3][0m[33m[   4][0m[   5][0m[   6][0m[   7][0m[   8][0m[   9][0m[  10][0m[  11][0m[  12][0m[  13][0m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[33m[   0][0m[33m[1m(    )[0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[33m[   1][0m[33m[1m(    )[0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |[33m[1mP01[39m[22m                                                                                    [0m|
+ BM: |[43m[97m[1m  0[22m[43m[97m  -[43m[97m  -[43m[97m  -[43m[97m  -[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0              5                                                                     [0m|
+     |      [33m[1mP01[39m[22m[0m|
+ BT: |[107m   [107m   [43m[97m  0[0m| T=2
+     |  0     2[0m|
 ----------------------------------------------------------------
-[1m Paginación-FCFS-RELOJ-C-NR[0m
- [93m[1mT[0m: 12     [93m[1mNº Dirs[0m: 20     [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 5     
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 4      [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29     Ha llegado el proceso [34m[1mP02[39m[22m.
+
 [1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
-[32m[1m P00   3   4    4    0    4   -  Finalizado      [4m[22m3-[1m0[24m [4m[22m2-[1m0[24m [4m[22m3-[1m0[24m [4m[22m1-[1m0[24m [0m
-[33m[1m P01   3   5    3    4    9   -  Finalizado      [4m[22m3-[1m0[24m [4m[22m2-[1m0[24m [4m[22m3-[1m0[24m [4m[22m3-[1m0[24m [4m[22m5-[1m1[24m [0m
- [93mTiempo Espera Medio[0m: 2.00      [93mTiempo Respuesta Medio[0m: 6.50
- El proceso [33m[1mP01[39m[22m ha finalizado su ejecución con [93m2[0m fallos de página.
-[93m[1m  T: [0m(  7)(  8)(  9)( 10)( 11)
-[93m[1m M0: [0m[1m[100m╔  0╗[49m[100m╔  0╗[49m[100m╔  0╗[49m[100m╔  0╗[49m┌  0┐[0m
-     [100m╚  1╝[49m[100m╚  2╝[49m[100m╚  3╝[49m[100m╚  4╝[49m└  4┘
-[93m[1m M1: [0m[1m┌   ┐┌   ┐┌   ┐┌   ┐[100m╔  1╗[49m[0m
-     └   ┘└   ┘└   ┘└   ┘[100m╚  1╝[49m
-[93m[1m M2: [0m[1m┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐[0m
-     └   ┘└   ┘└   ┘└   ┘└   ┘
-            [90m██                            ██[0m
-[1m[93m   Proceso: [90m█[0m[49m[39m[NADA [0m      [0m      [0m      [0m     ][0m[90m█[0m
-[1m[93m  Nº Marco: [90m█[0m[   0][0m[   1][0m[   2][0m[   3][0m[   4][0m[90m█[0m
-[1m[93m    Página: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
-[1m[93m Cnt.Reloj: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
-            [90m██                            ██[0m
-     |               [0m|
- BM: |[107m   [107m   [107m   [107m   [107m   [0m| M=5 
-     |  0            [0m|
-     |         [32m[1mP00[39m[22m         [33m[1mP01[39m[22m               [0m|
- BT: |[107m   [107m   [107m   [42m[97m  0[42m[97m  0[42m[97m  0[42m[97m  0[43m[97m  0[43m[97m  0[43m[97m  0[43m[97m  0[43m[97m  1[107m   [0m| T=12
-     |  0        3           7             12[0m|
+[33m[1m P01   2   7    5    0    2   5  Bloqueado       [4m[22m30-[1m0[24m [4m[22m108-[1m1[24m [22m31-[1m0 [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    0    0   4  En memoria      [22m65-[1m0 [22m120-[1m1 [22m250-[1m2 [22m350-[1m3 [0m
+[35m[1m P03   6   2    5    -    -    - Fuera de sist.  [22m65-[1m0 [22m120-[1m1 [0m
+ [93mTiempo Espera Medio[0m: 0         [93mTiempo Respuesta Medio[0m: 1.00
+ El proceso [34m[1mP02[39m[22m ha entrado a memoria a partir de la posición [93m5[0m.
+ Cola(Orden ejecución): [34m[1mP02[39m[22m [33m[1mP01[39m[22m
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[33m[[1mP01 [22m [0m[33m      [0m[33m      [0m[33m      [0m[33m     ][0m[34m[[1mP02 [22m [0m[34m      [0m[34m      [0m[34m      [0m[34m     ][0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[   2][0m[33m[   3][0m[33m[   4][0m[34m[   5][0m[34m[   6][0m[34m[   7][0m[34m[   8][0m[34m[   9][0m[  10][0m[  11][0m[  12][0m[  13][0m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[33m[   2][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |[33m[1mP01[39m[22m            [34m[1mP02[39m[22m                                                                     [0m|
+ BM: |[43m[97m  0[43m[97m[1m  1[22m[43m[97m  -[43m[97m  -[43m[97m  -[44m[97m  -[44m[97m  -[44m[97m  -[44m[97m  -[44m[97m  -[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0              5             10                                                      [0m|
+     |      [33m[1mP01[39m[22m      [0m|
+ BT: |[107m   [107m   [43m[97m  0[43m[97m  1[107m   [0m| T=4
+     |  0     2     4[0m|
+----------------------------------------------------------------
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 5      [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29    
+[1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
+[33m[1m P01   2   7    5    1    3   5  Bloqueado       [4m[22m30-[1m0[24m [4m[22m108-[1m1[24m [22m31-[1m0 [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    1    1   4  En ejecución    [4m[22m65-[1m0[24m [22m120-[1m1 [22m250-[1m2 [22m350-[1m3 [0m
+[35m[1m P03   6   2    5    -    -    - Fuera de sist.  [22m65-[1m0 [22m120-[1m1 [0m
+ [93mTiempo Espera Medio[0m: 1.00      [93mTiempo Respuesta Medio[0m: 2.00
+ Cola(Orden ejecución): [33m[1mP01[39m[22m
+ El proceso [34m[1mP02[39m[22m ha iniciado su ejecución.
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[33m[[1mP01 [22m [0m[33m      [0m[33m      [0m[33m      [0m[33m     ][0m[34m[[1mP02 [22m [0m[34m      [0m[34m      [0m[34m      [0m[34m     ][0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[   2][0m[33m[   3][0m[33m[   4][0m[34m[   5][0m[34m[1m(   6)[0m[34m[   7][0m[34m[   8][0m[34m[   9][0m[  10][0m[  11][0m[  12][0m[  13][0m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   0][0m[34m[1m(    )[0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[33m[   2][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   1][0m[34m[1m(    )[0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |[33m[1mP01[39m[22m            [34m[1mP02[39m[22m                                                                     [0m|
+ BM: |[43m[97m  0[43m[97m[1m  1[22m[43m[97m  -[43m[97m  -[43m[97m  -[44m[97m[1m  0[22m[44m[97m  -[44m[97m  -[44m[97m  -[44m[97m  -[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0              5             10                                                      [0m|
+     |      [33m[1mP01[39m[22m      [34m[1mP02[39m[22m[0m|
+ BT: |[107m   [107m   [43m[97m  0[43m[97m  1[107m   [44m[97m  0[0m| T=5
+     |  0     2     4  5[0m|
+----------------------------------------------------------------
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 6      [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29     Ha llegado el proceso [35m[1mP03[39m[22m.
+
+[1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
+[33m[1m P01   2   7    5    2    4   5  Bloqueado       [4m[22m30-[1m0[24m [4m[22m108-[1m1[24m [22m31-[1m0 [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    1    2   3  Bloqueado       [4m[22m65-[1m0[24m [22m120-[1m1 [22m250-[1m2 [22m350-[1m3 [0m
+[35m[1m P03   6   2    5    0    0   2  En memoria      [22m65-[1m0 [22m120-[1m1 [0m
+ [93mTiempo Espera Medio[0m: 1.00      [93mTiempo Respuesta Medio[0m: 2.00
+ El proceso [35m[1mP03[39m[22m ha entrado a memoria a partir de la posición [93m10[0m.
+ Cola(Orden ejecución): [35m[1mP03[39m[22m [33m[1mP01[39m[22m [34m[1mP02[39m[22m
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[33m[[1mP01 [22m [0m[33m      [0m[33m      [0m[33m      [0m[33m     ][0m[34m[[1mP02 [22m [0m[34m      [0m[34m      [0m[34m      [0m[34m     ][0m[35m[[1mP03 [22m [0m[35m      [0m[35m      [0m[35m      [0m[35m     ][0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[   2][0m[33m[   3][0m[33m[   4][0m[34m[   5][0m[34m[   6][0m[34m[   7][0m[34m[   8][0m[34m[   9][0m[35m[  10][0m[35m[  11][0m[35m[  12][0m[35m[  13][0m[35m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   0][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[35m[    ][0m[35m[    ][0m[35m[    ][0m[35m[    ][0m[35m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[33m[   2][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   1][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[35m[    ][0m[35m[    ][0m[35m[    ][0m[35m[    ][0m[35m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |[33m[1mP01[39m[22m            [34m[1mP02[39m[22m            [35m[1mP03[39m[22m                                                      [0m|
+ BM: |[43m[97m  0[43m[97m[1m  1[22m[43m[97m  -[43m[97m  -[43m[97m  -[44m[97m[1m  0[22m[44m[97m  -[44m[97m  -[44m[97m  -[44m[97m  -[45m[97m  -[45m[97m  -[45m[97m  -[45m[97m  -[45m[97m  -[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0              5             10             15                                       [0m|
+     |      [33m[1mP01[39m[22m      [34m[1mP02[39m[22m   [0m|
+ BT: |[107m   [107m   [43m[97m  0[43m[97m  1[107m   [44m[97m  0[107m   [0m| T=6
+     |  0     2     4  5  6[0m|
+----------------------------------------------------------------
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 7      [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29    
+[1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
+[33m[1m P01   2   7    5    3    5   5  Bloqueado       [4m[22m30-[1m0[24m [4m[22m108-[1m1[24m [22m31-[1m0 [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    2    3   3  Bloqueado       [4m[22m65-[1m0[24m [22m120-[1m1 [22m250-[1m2 [22m350-[1m3 [0m
+[35m[1m P03   6   2    5    1    1   2  En ejecución    [4m[22m65-[1m0[24m [22m120-[1m1 [0m
+ [93mTiempo Espera Medio[0m: 2.00      [93mTiempo Respuesta Medio[0m: 3.00
+ Cola(Orden ejecución): [33m[1mP01[39m[22m [34m[1mP02[39m[22m
+ El proceso [35m[1mP03[39m[22m ha iniciado su ejecución.
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[33m[[1mP01 [22m [0m[33m      [0m[33m      [0m[33m      [0m[33m     ][0m[34m[[1mP02 [22m [0m[34m      [0m[34m      [0m[34m      [0m[34m     ][0m[35m[[1mP03 [22m [0m[35m      [0m[35m      [0m[35m      [0m[35m     ][0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[   2][0m[33m[   3][0m[33m[   4][0m[34m[   5][0m[34m[   6][0m[34m[   7][0m[34m[   8][0m[34m[   9][0m[35m[  10][0m[35m[1m(  11)[0m[35m[  12][0m[35m[  13][0m[35m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   0][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[35m[   0][0m[35m[1m(    )[0m[35m[    ][0m[35m[    ][0m[35m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[33m[   2][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   1][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[35m[   1][0m[35m[1m(    )[0m[35m[    ][0m[35m[    ][0m[35m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |[33m[1mP01[39m[22m            [34m[1mP02[39m[22m            [35m[1mP03[39m[22m                                                      [0m|
+ BM: |[43m[97m  0[43m[97m[1m  1[22m[43m[97m  -[43m[97m  -[43m[97m  -[44m[97m[1m  0[22m[44m[97m  -[44m[97m  -[44m[97m  -[44m[97m  -[45m[97m[1m  0[22m[45m[97m  -[45m[97m  -[45m[97m  -[45m[97m  -[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0              5             10             15                                       [0m|
+     |      [33m[1mP01[39m[22m      [34m[1mP02[39m[22m   [35m[1mP03[39m[22m[0m|
+ BT: |[107m   [107m   [43m[97m  0[43m[97m  1[107m   [44m[97m  0[107m   [45m[97m  0[0m| T=7
+     |  0     2     4  5  6  7[0m|
+----------------------------------------------------------------
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 9      [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29    
+[1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
+[33m[1m P01   2   7    5    5    7   5  Bloqueado       [4m[22m30-[1m0[24m [4m[22m108-[1m1[24m [22m31-[1m0 [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    4    5   3  Bloqueado       [4m[22m65-[1m0[24m [22m120-[1m1 [22m250-[1m2 [22m350-[1m3 [0m
+[35m[1m P03   6   2    5    1    3   -  Finalizado      [4m[22m65-[1m0[24m [4m[22m120-[1m1[24m [0m
+ [93mTiempo Espera Medio[0m: 3.33      [93mTiempo Respuesta Medio[0m: 5.00
+ El proceso [35m[1mP03[39m[22m ha finalizado su ejecución con [93m2[0m fallos de página.
+[93m[1m  T: [0m(  7)(  8)
+[93m[1m M0: [0m[1m[100m╔  0╗[49m┌  0┐[0m
+     [100m╚  1╝[49m└  2┘
+[93m[1m M1: [0m[1m┌   ┐[100m╔  1╗[49m[0m
+     └  1┘[100m╚  1╝[49m
+[93m[1m M2: [0m[1m┌   ┐┌   ┐[0m
+     └  1┘└  2┘
+[93m[1m M3: [0m[1m┌   ┐┌   ┐[0m
+     └  1┘└  2┘
+[93m[1m M4: [0m[1m┌   ┐┌   ┐[0m
+     └  1┘└  2┘
+ Cola(Orden ejecución): [34m[1mP02[39m[22m [33m[1mP01[39m[22m
+ El proceso [33m[1mP01[39m[22m ha iniciado su ejecución.
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[33m[[1mP01 [22m [0m[33m      [0m[33m      [0m[33m      [0m[33m     ][0m[34m[[1mP02 [22m [0m[34m      [0m[34m      [0m[34m      [0m[34m     ][0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[   2][0m[33m[   3][0m[33m[   4][0m[34m[   5][0m[34m[   6][0m[34m[   7][0m[34m[   8][0m[34m[   9][0m[  10][0m[  11][0m[  12][0m[  13][0m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   0][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[33m[   2][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   1][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[34m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |[33m[1mP01[39m[22m            [34m[1mP02[39m[22m                                                                     [0m|
+ BM: |[43m[97m  0[43m[97m[1m  1[22m[43m[97m  -[43m[97m  -[43m[97m  -[44m[97m[1m  0[22m[44m[97m  -[44m[97m  -[44m[97m  -[44m[97m  -[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0              5             10                                                      [0m|
+     |      [33m[1mP01[39m[22m      [34m[1mP02[39m[22m   [35m[1mP03[39m[22m      [0m|
+ BT: |[107m   [107m   [43m[97m  0[43m[97m  1[107m   [44m[97m  0[107m   [45m[97m  0[45m[97m  1[107m   [0m| T=9
+     |  0     2     4  5  6  7     9[0m|
+----------------------------------------------------------------
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 10     [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29    
+[1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
+[33m[1m P01   2   7    5    6    8   5  Bloqueado       [4m[22m30-[1m0[24m [4m[22m108-[1m1[24m [22m31-[1m0 [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    5    6   3  En ejecución    [4m[22m65-[1m0[24m [4m[22m120-[1m1[24m [22m250-[1m2 [22m350-[1m3 [0m
+[35m[1m P03   6   2    5    1    3   -  Finalizado      [4m[22m65-[1m0[24m [4m[22m120-[1m1[24m [0m
+ [93mTiempo Espera Medio[0m: 4.00      [93mTiempo Respuesta Medio[0m: 5.66
+ Cola(Orden ejecución): [33m[1mP01[39m[22m
+ El proceso [34m[1mP02[39m[22m ha iniciado su ejecución.
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[33m[[1mP01 [22m [0m[33m      [0m[33m      [0m[33m      [0m[33m     ][0m[34m[[1mP02 [22m [0m[34m      [0m[34m      [0m[34m      [0m[34m     ][0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[   2][0m[33m[   3][0m[33m[   4][0m[34m[   5][0m[34m[   6][0m[34m[1m(   7)[0m[34m[   8][0m[34m[   9][0m[  10][0m[  11][0m[  12][0m[  13][0m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   0][0m[34m[   1][0m[34m[1m(    )[0m[34m[    ][0m[34m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[33m[   2][0m[33m[   1][0m[33m[    ][0m[33m[    ][0m[33m[    ][0m[34m[   2][0m[34m[   1][0m[34m[1m(    )[0m[34m[    ][0m[34m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |[33m[1mP01[39m[22m            [34m[1mP02[39m[22m                                                                     [0m|
+ BM: |[43m[97m  0[43m[97m[1m  1[22m[43m[97m  -[43m[97m  -[43m[97m  -[44m[97m  0[44m[97m[1m  1[22m[44m[97m  -[44m[97m  -[44m[97m  -[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0              5             10                                                      [0m|
+     |      [33m[1mP01[39m[22m      [34m[1mP02[39m[22m   [35m[1mP03[39m[22m      [34m[1mP02[39m[22m[0m|
+ BT: |[107m   [107m   [43m[97m  0[43m[97m  1[107m   [44m[97m  0[107m   [45m[97m  0[45m[97m  1[107m   [44m[97m  1[0m| T=10
+     |  0     2     4  5  6  7     9 10[0m|
+----------------------------------------------------------------
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 13     [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29    
+[1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
+[33m[1m P01   2   7    5    9   11   5  En ejecución    [4m[22m30-[1m0[24m [4m[22m108-[1m1[24m [4m[22m31-[1m0[24m [22m42-[1m0 [22m50-[1m0 [22m250-[1m2 [22m350-[1m3 [0m
+[34m[1m P02   4   4    5    5    9   -  Finalizado      [4m[22m65-[1m0[24m [4m[22m120-[1m1[24m [4m[22m250-[1m2[24m [4m[22m350-[1m3[24m [0m
+[35m[1m P03   6   2    5    1    3   -  Finalizado      [4m[22m65-[1m0[24m [4m[22m120-[1m1[24m [0m
+ [93mTiempo Espera Medio[0m: 5.00      [93mTiempo Respuesta Medio[0m: 7.66
+ El proceso [34m[1mP02[39m[22m ha finalizado su ejecución con [93m4[0m fallos de página.
+[93m[1m  T: [0m(  5)( 10)( 11)( 12)
+[93m[1m M0: [0m[1m[100m╔   ╗[49m[100m╔  0╗[49m┌  0┐┌  0┐[0m
+     [100m╚   ╝[49m[100m╚  2╝[49m└  3┘└  4┘
+[93m[1m M1: [0m[1m┌   ┐┌  1┐[100m╔  1╗[49m[100m╔  1╗[49m[0m
+     └   ┘└  1┘[100m╚  2╝[49m[100m╚  3╝[49m
+[93m[1m M2: [0m[1m┌   ┐┌   ┐┌  2┐┌  2┐[0m
+     └   ┘└  2┘└  1┘└  2┘
+[93m[1m M3: [0m[1m┌   ┐┌   ┐┌   ┐┌  3┐[0m
+     └   ┘└  2┘└  3┘└  1┘
+[93m[1m M4: [0m[1m┌   ┐┌   ┐┌   ┐┌   ┐[0m
+     └   ┘└  2┘└  3┘└  4┘
+ El proceso [33m[1mP01[39m[22m ha iniciado su ejecución.
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[33m[[1mP01 [22m [0m[33m      [0m[33m      [0m[33m      [0m[33m     ][0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[1m(   2)[0m[33m[   3][0m[33m[   4][0m[   5][0m[   6][0m[   7][0m[   8][0m[   9][0m[  10][0m[  11][0m[  12][0m[  13][0m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[33m[   0][0m[33m[   1][0m[33m[1m(    )[0m[33m[    ][0m[33m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[33m[   1][0m[33m[   2][0m[33m[1m(    )[0m[33m[    ][0m[33m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |[33m[1mP01[39m[22m                                                                                    [0m|
+ BM: |[43m[97m[1m  0[22m[43m[97m  1[43m[97m  -[43m[97m  -[43m[97m  -[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0              5                                                                     [0m|
+     |      [33m[1mP01[39m[22m      [34m[1mP02[39m[22m   [35m[1mP03[39m[22m      [34m[1mP02[39m[22m      [33m[1mP01[39m[22m[0m|
+ BT: |[107m   [107m   [43m[97m  0[43m[97m  1[107m   [44m[97m  0[107m   [45m[97m  0[45m[97m  1[107m   [44m[97m  1[44m[97m  2[44m[97m  3[43m[97m  0[0m| T=13
+     |  0     2     4  5  6  7     9 10       13[0m|
+----------------------------------------------------------------
+[1m SRPT-Paginacion-LRU-NC-NR[0m
+ [93m[1mT[0m: 18     [93m[1mNº Dirs[0m: 2900   [93m[1mTam Pág[0m:        [93m[1mNº Marc[0m: 29    
+[1m Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página[0m
+[33m[1m P01   2   7    5    9   16   -  Finalizado      [4m[22m30-[1m0[24m [4m[22m108-[1m1[24m [4m[22m31-[1m0[24m [4m[22m42-[1m0[24m [4m[22m50-[1m0[24m [4m[22m250-[1m2[24m [4m[22m350-[1m3[24m [0m
+[34m[1m P02   4   4    5    5    9   -  Finalizado      [4m[22m65-[1m0[24m [4m[22m120-[1m1[24m [4m[22m250-[1m2[24m [4m[22m350-[1m3[24m [0m
+[35m[1m P03   6   2    5    1    3   -  Finalizado      [4m[22m65-[1m0[24m [4m[22m120-[1m1[24m [0m
+ [93mTiempo Espera Medio[0m: 5.00      [93mTiempo Respuesta Medio[0m: 9.33
+ El proceso [33m[1mP01[39m[22m ha finalizado su ejecución con [93m4[0m fallos de página.
+[93m[1m  T: [0m(  2)(  3)( 13)( 14)( 15)( 16)( 17)
+[93m[1m M0: [0m[1m┌   ┐┌   ┐[100m╔  0╗[49m[100m╔  0╗[49m[100m╔  0╗[49m┌  0┐┌  0┐[0m
+     └   ┘└   ┘[100m╚  1╝[49m[100m╚  1╝[49m[100m╚  1╝[49m└  2┘└  3┘
+[93m[1m M1: [0m[1m┌   ┐┌   ┐┌  1┐┌  1┐┌  1┐┌  1┐┌  1┐[0m
+     └   ┘└   ┘└  2┘└  3┘└  4┘└  5┘└  6┘
+[93m[1m M2: [0m[1m[100m╔   ╗[49m┌   ┐┌   ┐┌   ┐┌   ┐[100m╔  2╗[49m┌  2┐[0m
+     [100m╚   ╝[49m└   ┘└  3┘└  4┘└  5┘[100m╚  1╝[49m└  2┘
+[93m[1m M3: [0m[1m┌   ┐[100m╔   ╗[49m┌   ┐┌   ┐┌   ┐┌   ┐[100m╔  3╗[49m[0m
+     └   ┘[100m╚   ╝[49m└  3┘└  4┘└  5┘└  6┘[100m╚  1╝[49m
+[93m[1m M4: [0m[1m┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐[0m
+     └   ┘└   ┘└  3┘└  4┘└  5┘└  6┘└  7┘
+            [90m██                                                                                                                                                                            ██[0m
+[1m[93m   Proceso: [90m█[0m[49m[39m[NADA [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m      [0m     ][0m[90m█[0m
+[1m[93m  Nº Marco: [90m█[0m[   0][0m[   1][0m[   2][0m[   3][0m[   4][0m[   5][0m[   6][0m[   7][0m[   8][0m[   9][0m[  10][0m[  11][0m[  12][0m[  13][0m[  14][0m[  15][0m[  16][0m[  17][0m[  18][0m[  19][0m[  20][0m[  21][0m[  22][0m[  23][0m[  24][0m[  25][0m[  26][0m[  27][0m[  28][0m[90m█[0m
+[1m[93m    Página: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+[1m[93m   Cnt.LRU: [90m█[0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[    ][0m[90m█[0m
+            [90m██                                                                                                                                                                            ██[0m
+     |                                                                                       [0m|
+ BM: |[107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [107m   [0m| M=29 
+     |  0                                                                                    [0m|
+     |      [33m[1mP01[39m[22m      [34m[1mP02[39m[22m   [35m[1mP03[39m[22m      [34m[1mP02[39m[22m      [33m[1mP01[39m[22m               [0m|
+ BT: |[107m   [107m   [43m[97m  0[43m[97m  1[107m   [44m[97m  0[107m   [45m[97m  0[45m[97m  1[107m   [44m[97m  1[44m[97m  2[44m[97m  3[43m[97m  0[43m[97m  0[43m[97m  0[43m[97m  2[43m[97m  3[107m   [0m| T=18
+     |  0     2     4  5  6  7     9 10       13             18[0m|
 ----------------------------------------------------------------
 [44m                                                 [0m
 [47m                                                 [0m
-[47m[30m[1m  FCFS - Pag - RELOJ - C - NR                    [0m
+[47m[30m[1m  SRPT - Pag - LRU - NC - NR                     [0m
+[47m                                                 [0m
 [47m[30m  Resumen Final                                  [0m
 [47m                                                 [0m
 [44m                                                 [0m
 
 [1m RefTll Tej Tesp Tret  Ini  Fin Fallos [0m
-[32m[1m P00  3   4    0    4    3    7      1 [0m
-[33m[1m P01  3   5    4    9    7   12      2 [0m
+[33m[1m P01  2   7    9   16   13   18      4 [0m
+[34m[1m P02  4   4    5    9   10   13      4 [0m
+[35m[1m P03  6   2    1    3    7    9      2 [0m
 
- Tiempo de espera medio: 2.00
- Tiempo de retorno medio: 6.50
+ Tiempo de espera medio: 5.00
+ Tiempo de retorno medio: 9.33

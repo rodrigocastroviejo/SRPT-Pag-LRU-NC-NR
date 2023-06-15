@@ -1,28 +1,28 @@
 #Numero marcos min: 
-1
+50
 #Numero marcos max: 
-5
+100
 #Tamaño marco min: 
-1
+26
 #Tamaño marco max: 
-5
+50
 #Numero procesos min: 
-1
+4
 #Numero procesos max: 
-5
+8
 #Tiempo de llegada min: 
-1
+4
 #Tiempo de llegada max: 
-5
+15
 #Tiempo de ejecucion min: 
-1
+2
 #Tiempo de ejecucion max: 
-5
+6
 #Tamaño minimo estructural min: 
 1
 #Tamaño minimo estructural max: 
-5
+15
 #Direccion min: 
-1
+100000000
 #Direccion max: 
-5
+10000000000

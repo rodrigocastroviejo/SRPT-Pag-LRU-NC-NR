@@ -1,9 +1,9 @@
 #################################################
 #                                               #
-#  Algoritmo de procesos  :  FCFS/SJF           #
+#  Algoritmo de procesos  :  SRPT               #
 #  Tipo de algoritmo      :  PAGINACIÓN         #
-#  Algoritmo de memoria   :  RELOJ              #
-#  Memoria continua       :  SI                 #
+#  Algoritmo de memoria   :  LRU                #
+#  Memoria continua       :  NO                 #
 #  Memoria reublicable    :  NO                 #
 #                                               #
 #  Autor: Castroviejo Ausucua, Rodrigo          #
@@ -46,7 +46,7 @@ Los informes por defecto son informeBN.txt y informeCOLOR.txt.
     [1] <- Sí
 --->[2] <- No
 
-Los informes se guardarán en la carpeta: /home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/informes
+Los informes se guardarán en la carpeta: /home/rodrigo/Descargas/SRPT-Pag-LRU-NC-NR/script/informes
 Archivo de informe en texto plano: informeBN.txt
 Archivo de informe en color: informeCOLOR.txt
 
@@ -54,161 +54,408 @@ Archivo de informe en color: informeCOLOR.txt
 --->[1] <- Ejecutar el programa
     [2] <- Ver la ayuda
 
-¿Qué algoritmo quieres usar?
---->[1] <- FCFS
-    [2] <- SJF
-
 ¿Cómo quieres introducir los datos?
     [1] <- Por teclado
     [2] <- Fichero de Datos de ultima ejecucion (datos.txt)
-    [3] <- Por otro fichero de datos
---->[4] <- A traves de RANGOS - manual
+--->[3] <- Por otro fichero de datos
+    [4] <- A traves de RANGOS - manual
     [5] <- Fichero de RANGOS aleatorios de ultima ejecucion (datosrangos.txt)
     [6] <- Por otro fichero de RANGOS
 
-¿En que fichero quieres guardar los rangos?
---->[1] <- En el fichero de rangos por defecto (datosrangos.txt)
-    [2] <- En otro fichero
-
-Carpeta de procesos: /home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/procesos
-Archivo de procesos: 
-
-¿En que fichero quieres guardar los procesos?
---->[1] <- En el fichero de datos por defecto (datos.txt)
-    [2] <- En otro fichero
-
-Carpeta de procesos: /home/rodrigo/Descargas/FCFS-SJF-Pag-NFU-NC-R/script/procesos
-Archivo de procesos: datos.txt
-
-██████████████████████████████████████████████████████████████████
-█                                                                █
-█                  Número marcos : [ 1 - 5 ]                     █
-█  Tamaño marco (en direcciones) : [ 1 - 5 ]                     █
-█                 Tamaño memoria : 20                            █
-█                Número procesos : [ 1 - 5 ]                     █
-█                 Tiempo llegada : [ 1 - 5 ]                     █
-█               Tiempo ejecución : [ 1 - 5 ]                     █
-█             Mínimo estructural : [ 1 - 5 ]                     █
-█ Tamaño proceso(en direcciones) : [ 1 - 5 ]                     █
-█                                                                █
-██████████████████████████████████████████████████████████████████
+El archivo de datos usado es: SRPTComprobar.txt
 
 ¿Cómo quieres ejecutar el algoritmo?
---->[1] <- Por eventos (presionando Enter)
+    [1] <- Por eventos (presionando Enter)
     [2] <- Automatica (definiendo el tiempo de espera entre eventos)
-    [3] <- Completa (sin espera alguna)
+--->[3] <- Completa (sin espera alguna)
     [4] <- Resumen final
 
- Paginación-FCFS-RELOJ-C-NR
- T: 0      Nº Dirs: 20     Tam Pág:        Nº Marc: 5     
+ SRPT-Paginacion-LRU-NC-NR
+ T: 0      Nº Dirs: 2900   Tam Pág:        Nº Marc: 29    
  Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
- P00   3   4    4    -    -    - Fuera de sist.  3-0 2-0 3-0 1-0 
- P01   3   5    3    -    -    - Fuera de sist.  3-0 2-0 3-0 3-0 5-1 
+ P01   2   7    5    -    -    - Fuera de sist.  30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    -    -    - Fuera de sist.  65-0 120-1 250-2 350-3 
+ P03   6   2    5    -    -    - Fuera de sist.  65-0 120-1 
  Tiempo Espera Medio: 0.0       Tiempo Respuesta Medio: 0.0
-            ██                            ██
-   Proceso: █[NADA                        ]█
-  Nº Marco: █[   0][   1][   2][   3][   4]█
-    Página: █[    ][    ][    ][    ][    ]█
- Cnt.Reloj: █[    ][    ][    ][    ][    ]█
-            ██                            ██
-     |               |
- BM: |               | M=5 
-     |  0            |
+            ██                                                                            ██
+   Proceso: █[NADA                                                                         █
+  Nº Marco: █[   0][   1][   2][   3][   4][   5][   6][   7][   8][   9][  10][  11][  12]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █                                                                              █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |                                                                                       |
+ BM: |                                                                                       | M=29 
+     |  0                                                                                    |
      |   |
  BT: |   | T=0
      |  0|
 ----------------------------------------------------------------
- Paginación-FCFS-RELOJ-C-NR
- T: 3      Nº Dirs: 20     Tam Pág:        Nº Marc: 5      Han llegado los procesos P00 y P01.
+ SRPT-Paginacion-LRU-NC-NR
+ T: 2      Nº Dirs: 2900   Tam Pág:        Nº Marc: 29     Ha llegado el proceso P01.
 
  Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
- P00   3   4    4    0    0   4  En ejecución    3-0 2-0 3-0 1-0 
- P01   3   5    3    0    0   5  En memoria      3-0 2-0 3-0 3-0 5-1 
+ P01   2   7    5    0    0   7  En ejecución    30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    -    -    - Fuera de sist.  65-0 120-1 250-2 350-3 
+ P03   6   2    5    -    -    - Fuera de sist.  65-0 120-1 
  Tiempo Espera Medio: 0         Tiempo Respuesta Medio: 0
- El proceso P00 ha entrado a memoria a partir de la posición 0.
- El proceso P01 ha entrado a memoria a partir de la posición 4.
- Cola(Orden ejecución): P01
- El proceso P00 ha iniciado su ejecución.
-            ██                            ██
-   Proceso: █[P00                   ][P01  █
-  Nº Marco: █[   0](   1)[   2][   3][   4]█
-    Página: █[   0](    )[    ][    ][    ]█
- Cnt.Reloj: █[   1](    )[    ][    ][    ]█
-            ██                            ██
-     |P00         P01|
- BM: |  0  -  -  -  -| M=5 
-     |  0           4|
-     |         P00|
- BT: |           0| T=3
-     |  0        3|
-----------------------------------------------------------------
- Paginación-FCFS-RELOJ-C-NR
- T: 7      Nº Dirs: 20     Tam Pág:        Nº Marc: 5     
- Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
- P00   3   4    4    0    4   -  Finalizado      3-0 2-0 3-0 1-0 
- P01   3   5    3    4    4   5  En ejecución    3-0 2-0 3-0 3-0 5-1 
- Tiempo Espera Medio: 2.00      Tiempo Respuesta Medio: 4.00
- El proceso P00 ha finalizado su ejecución con 1 fallos de página.
-  T: (  3)(  4)(  5)(  6)
- M0: ╔  0╗╔  0╗╔  0╗╔  0╗
-     ╚  1╝╚  2╝╚  3╝╚  4╝
- M1: ┌   ┐┌   ┐┌   ┐┌   ┐
-     └   ┘└   ┘└   ┘└   ┘
- M2: ┌   ┐┌   ┐┌   ┐┌   ┐
-     └   ┘└   ┘└   ┘└   ┘
- M3: ┌   ┐┌   ┐┌   ┐┌   ┐
-     └   ┘└   ┘└   ┘└   ┘
+ El proceso P01 ha entrado a memoria a partir de la posición 0.
  El proceso P01 ha iniciado su ejecución.
-            ██                            ██
-   Proceso: █[NADA                  ][P01  █
-  Nº Marco: █[   0][   1][   2][   3][   4]█
-    Página: █[    ][    ][    ][    ][   0]█
- Cnt.Reloj: █[    ][    ][    ][    ][   1]█
-            ██                            ██
-     |            P01|
- BM: |              0| M=5 
-     |  0           4|
-     |         P00         P01|
- BT: |           0  0  0  0  0| T=7
-     |  0        3           7|
+            ██                                                                            ██
+   Proceso: █[P01                         ][NADA                                           █
+  Nº Marco: █[   0](   1)[   2][   3][   4][   5][   6][   7][   8][   9][  10][  11][  12]█
+    Página: █[   0](    )[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[   1](    )[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █                                                                              █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |P01                                                                                    |
+ BM: |  0  -  -  -  -                                                                        | M=29 
+     |  0              5                                                                     |
+     |      P01|
+ BT: |        0| T=2
+     |  0     2|
 ----------------------------------------------------------------
- Paginación-FCFS-RELOJ-C-NR
- T: 12     Nº Dirs: 20     Tam Pág:        Nº Marc: 5     
+ SRPT-Paginacion-LRU-NC-NR
+ T: 4      Nº Dirs: 2900   Tam Pág:        Nº Marc: 29     Ha llegado el proceso P02.
+
  Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
- P00   3   4    4    0    4   -  Finalizado      3-0 2-0 3-0 1-0 
- P01   3   5    3    4    9   -  Finalizado      3-0 2-0 3-0 3-0 5-1 
- Tiempo Espera Medio: 2.00      Tiempo Respuesta Medio: 6.50
- El proceso P01 ha finalizado su ejecución con 2 fallos de página.
-  T: (  7)(  8)(  9)( 10)( 11)
- M0: ╔  0╗╔  0╗╔  0╗╔  0╗┌  0┐
-     ╚  1╝╚  2╝╚  3╝╚  4╝└  4┘
- M1: ┌   ┐┌   ┐┌   ┐┌   ┐╔  1╗
-     └   ┘└   ┘└   ┘└   ┘╚  1╝
- M2: ┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐
-     └   ┘└   ┘└   ┘└   ┘└   ┘
-            ██                            ██
-   Proceso: █[NADA                        ]█
-  Nº Marco: █[   0][   1][   2][   3][   4]█
-    Página: █[    ][    ][    ][    ][    ]█
- Cnt.Reloj: █[    ][    ][    ][    ][    ]█
-            ██                            ██
-     |               |
- BM: |               | M=5 
-     |  0            |
-     |         P00         P01               |
- BT: |           0  0  0  0  0  0  0  0  1   | T=12
-     |  0        3           7             12|
+ P01   2   7    5    0    2   5  Bloqueado       30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    0    0   4  En memoria      65-0 120-1 250-2 350-3 
+ P03   6   2    5    -    -    - Fuera de sist.  65-0 120-1 
+ Tiempo Espera Medio: 0         Tiempo Respuesta Medio: 1.00
+ El proceso P02 ha entrado a memoria a partir de la posición 5.
+ Cola(Orden ejecución): P02 P01
+            ██                                                                            ██
+   Proceso: █[P01                         ][P02                         ][NADA             █
+  Nº Marco: █[   0][   1][   2][   3][   4][   5][   6][   7][   8][   9][  10][  11][  12]█
+    Página: █[   0][   1][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[   2][   1][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █                                                                              █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |P01            P02                                                                     |
+ BM: |  0  1  -  -  -  -  -  -  -  -                                                         | M=29 
+     |  0              5             10                                                      |
+     |      P01      |
+ BT: |        0  1   | T=4
+     |  0     2     4|
+----------------------------------------------------------------
+ SRPT-Paginacion-LRU-NC-NR
+ T: 5      Nº Dirs: 2900   Tam Pág:        Nº Marc: 29    
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P01   2   7    5    1    3   5  Bloqueado       30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    1    1   4  En ejecución    65-0 120-1 250-2 350-3 
+ P03   6   2    5    -    -    - Fuera de sist.  65-0 120-1 
+ Tiempo Espera Medio: 1.00      Tiempo Respuesta Medio: 2.00
+ Cola(Orden ejecución): P01
+ El proceso P02 ha iniciado su ejecución.
+            ██                                                                            ██
+   Proceso: █[P01                         ][P02                         ][NADA             █
+  Nº Marco: █[   0][   1][   2][   3][   4][   5](   6)[   7][   8][   9][  10][  11][  12]█
+    Página: █[   0][   1][    ][    ][    ][   0](    )[    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[   2][   1][    ][    ][    ][   1](    )[    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █                                                                              █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |P01            P02                                                                     |
+ BM: |  0  1  -  -  -  0  -  -  -  -                                                         | M=29 
+     |  0              5             10                                                      |
+     |      P01      P02|
+ BT: |        0  1     0| T=5
+     |  0     2     4  5|
+----------------------------------------------------------------
+ SRPT-Paginacion-LRU-NC-NR
+ T: 6      Nº Dirs: 2900   Tam Pág:        Nº Marc: 29     Ha llegado el proceso P03.
+
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P01   2   7    5    2    4   5  Bloqueado       30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    1    2   3  Bloqueado       65-0 120-1 250-2 350-3 
+ P03   6   2    5    0    0   2  En memoria      65-0 120-1 
+ Tiempo Espera Medio: 1.00      Tiempo Respuesta Medio: 2.00
+ El proceso P03 ha entrado a memoria a partir de la posición 10.
+ Cola(Orden ejecución): P03 P01 P02
+            ██                                                                            ██
+   Proceso: █[P01                         ][P02                         ][P03              █
+  Nº Marco: █[   0][   1][   2][   3][   4][   5][   6][   7][   8][   9][  10][  11][  12]█
+    Página: █[   0][   1][    ][    ][    ][   0][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[   2][   1][    ][    ][    ][   1][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █           ][NADA                                                             █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |P01            P02            P03                                                      |
+ BM: |  0  1  -  -  -  0  -  -  -  -  -  -  -  -  -                                          | M=29 
+     |  0              5             10             15                                       |
+     |      P01      P02   |
+ BT: |        0  1     0   | T=6
+     |  0     2     4  5  6|
+----------------------------------------------------------------
+ SRPT-Paginacion-LRU-NC-NR
+ T: 7      Nº Dirs: 2900   Tam Pág:        Nº Marc: 29    
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P01   2   7    5    3    5   5  Bloqueado       30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    2    3   3  Bloqueado       65-0 120-1 250-2 350-3 
+ P03   6   2    5    1    1   2  En ejecución    65-0 120-1 
+ Tiempo Espera Medio: 2.00      Tiempo Respuesta Medio: 3.00
+ Cola(Orden ejecución): P01 P02
+ El proceso P03 ha iniciado su ejecución.
+            ██                                                                            ██
+   Proceso: █[P01                         ][P02                         ][P03              █
+  Nº Marco: █[   0][   1][   2][   3][   4][   5][   6][   7][   8][   9][  10](  11)[  12]█
+    Página: █[   0][   1][    ][    ][    ][   0][    ][    ][    ][    ][   0](    )[    ]█
+   Cnt.LRU: █[   2][   1][    ][    ][    ][   1][    ][    ][    ][    ][   1](    )[    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █           ][NADA                                                             █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |P01            P02            P03                                                      |
+ BM: |  0  1  -  -  -  0  -  -  -  -  0  -  -  -  -                                          | M=29 
+     |  0              5             10             15                                       |
+     |      P01      P02   P03|
+ BT: |        0  1     0     0| T=7
+     |  0     2     4  5  6  7|
+----------------------------------------------------------------
+ SRPT-Paginacion-LRU-NC-NR
+ T: 9      Nº Dirs: 2900   Tam Pág:        Nº Marc: 29    
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P01   2   7    5    5    7   5  Bloqueado       30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    4    5   3  Bloqueado       65-0 120-1 250-2 350-3 
+ P03   6   2    5    1    3   -  Finalizado      65-0 120-1 
+ Tiempo Espera Medio: 3.33      Tiempo Respuesta Medio: 5.00
+ El proceso P03 ha finalizado su ejecución con 2 fallos de página.
+  T: (  7)(  8)
+ M0: ╔  0╗┌  0┐
+     ╚  1╝└  2┘
+ M1: ┌   ┐╔  1╗
+     └  1┘╚  1╝
+ M2: ┌   ┐┌   ┐
+     └  1┘└  2┘
+ M3: ┌   ┐┌   ┐
+     └  1┘└  2┘
+ M4: ┌   ┐┌   ┐
+     └  1┘└  2┘
+ Cola(Orden ejecución): P02 P01
+ El proceso P01 ha iniciado su ejecución.
+            ██                                                                            ██
+   Proceso: █[P01                         ][P02                         ][NADA             █
+  Nº Marco: █[   0][   1][   2][   3][   4][   5][   6][   7][   8][   9][  10][  11][  12]█
+    Página: █[   0][   1][    ][    ][    ][   0][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[   2][   1][    ][    ][    ][   1][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █                                                                              █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |P01            P02                                                                     |
+ BM: |  0  1  -  -  -  0  -  -  -  -                                                         | M=29 
+     |  0              5             10                                                      |
+     |      P01      P02   P03      |
+ BT: |        0  1     0     0  1   | T=9
+     |  0     2     4  5  6  7     9|
+----------------------------------------------------------------
+ SRPT-Paginacion-LRU-NC-NR
+ T: 10     Nº Dirs: 2900   Tam Pág:        Nº Marc: 29    
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P01   2   7    5    6    8   5  Bloqueado       30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    5    6   3  En ejecución    65-0 120-1 250-2 350-3 
+ P03   6   2    5    1    3   -  Finalizado      65-0 120-1 
+ Tiempo Espera Medio: 4.00      Tiempo Respuesta Medio: 5.66
+ Cola(Orden ejecución): P01
+ El proceso P02 ha iniciado su ejecución.
+            ██                                                                            ██
+   Proceso: █[P01                         ][P02                         ][NADA             █
+  Nº Marco: █[   0][   1][   2][   3][   4][   5][   6](   7)[   8][   9][  10][  11][  12]█
+    Página: █[   0][   1][    ][    ][    ][   0][   1](    )[    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[   2][   1][    ][    ][    ][   2][   1](    )[    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █                                                                              █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |P01            P02                                                                     |
+ BM: |  0  1  -  -  -  0  1  -  -  -                                                         | M=29 
+     |  0              5             10                                                      |
+     |      P01      P02   P03      P02|
+ BT: |        0  1     0     0  1     1| T=10
+     |  0     2     4  5  6  7     9 10|
+----------------------------------------------------------------
+ SRPT-Paginacion-LRU-NC-NR
+ T: 13     Nº Dirs: 2900   Tam Pág:        Nº Marc: 29    
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P01   2   7    5    9   11   5  En ejecución    30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    5    9   -  Finalizado      65-0 120-1 250-2 350-3 
+ P03   6   2    5    1    3   -  Finalizado      65-0 120-1 
+ Tiempo Espera Medio: 5.00      Tiempo Respuesta Medio: 7.66
+ El proceso P02 ha finalizado su ejecución con 4 fallos de página.
+  T: (  5)( 10)( 11)( 12)
+ M0: ╔   ╗╔  0╗┌  0┐┌  0┐
+     ╚   ╝╚  2╝└  3┘└  4┘
+ M1: ┌   ┐┌  1┐╔  1╗╔  1╗
+     └   ┘└  1┘╚  2╝╚  3╝
+ M2: ┌   ┐┌   ┐┌  2┐┌  2┐
+     └   ┘└  2┘└  1┘└  2┘
+ M3: ┌   ┐┌   ┐┌   ┐┌  3┐
+     └   ┘└  2┘└  3┘└  1┘
+ M4: ┌   ┐┌   ┐┌   ┐┌   ┐
+     └   ┘└  2┘└  3┘└  4┘
+ El proceso P01 ha iniciado su ejecución.
+            ██                                                                            ██
+   Proceso: █[P01                         ][NADA                                           █
+  Nº Marco: █[   0][   1](   2)[   3][   4][   5][   6][   7][   8][   9][  10][  11][  12]█
+    Página: █[   0][   1](    )[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[   1][   2](    )[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █                                                                              █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |P01                                                                                    |
+ BM: |  0  1  -  -  -                                                                        | M=29 
+     |  0              5                                                                     |
+     |      P01      P02   P03      P02      P01|
+ BT: |        0  1     0     0  1     1  2  3  0| T=13
+     |  0     2     4  5  6  7     9 10       13|
+----------------------------------------------------------------
+ SRPT-Paginacion-LRU-NC-NR
+ T: 18     Nº Dirs: 2900   Tam Pág:        Nº Marc: 29    
+ Ref Tll Tej nMar Tesp Tret Trej Estado          Dirección - Página
+ P01   2   7    5    9   16   -  Finalizado      30-0 108-1 31-0 42-0 50-0 250-2 350-3 
+ P02   4   4    5    5    9   -  Finalizado      65-0 120-1 250-2 350-3 
+ P03   6   2    5    1    3   -  Finalizado      65-0 120-1 
+ Tiempo Espera Medio: 5.00      Tiempo Respuesta Medio: 9.33
+ El proceso P01 ha finalizado su ejecución con 4 fallos de página.
+  T: (  2)(  3)( 13)( 14)( 15)( 16)( 17)
+ M0: ┌   ┐┌   ┐╔  0╗╔  0╗╔  0╗┌  0┐┌  0┐
+     └   ┘└   ┘╚  1╝╚  1╝╚  1╝└  2┘└  3┘
+ M1: ┌   ┐┌   ┐┌  1┐┌  1┐┌  1┐┌  1┐┌  1┐
+     └   ┘└   ┘└  2┘└  3┘└  4┘└  5┘└  6┘
+ M2: ╔   ╗┌   ┐┌   ┐┌   ┐┌   ┐╔  2╗┌  2┐
+     ╚   ╝└   ┘└  3┘└  4┘└  5┘╚  1╝└  2┘
+ M3: ┌   ┐╔   ╗┌   ┐┌   ┐┌   ┐┌   ┐╔  3╗
+     └   ┘╚   ╝└  3┘└  4┘└  5┘└  6┘╚  1╝
+ M4: ┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐
+     └   ┘└   ┘└  3┘└  4┘└  5┘└  6┘└  7┘
+            ██                                                                            ██
+   Proceso: █[NADA                                                                         █
+  Nº Marco: █[   0][   1][   2][   3][   4][   5][   6][   7][   8][   9][  10][  11][  12]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                                                                            ██
+   Proceso: █                                                                              █
+  Nº Marco: █[  13][  14][  15][  16][  17][  18][  19][  20][  21][  22][  23][  24][  25]█
+    Página: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ][    ]█
+            ██                                                                            ██
+            ██                ██
+   Proceso: █                 ]█
+  Nº Marco: █[  26][  27][  28]█
+    Página: █[    ][    ][    ]█
+   Cnt.LRU: █[    ][    ][    ]█
+            ██                ██
+     |                                                                                       |
+ BM: |                                                                                       | M=29 
+     |  0                                                                                    |
+     |      P01      P02   P03      P02      P01               |
+ BT: |        0  1     0     0  1     1  2  3  0  0  0  2  3   | T=18
+     |  0     2     4  5  6  7     9 10       13             18|
 ----------------------------------------------------------------
                                                  
                                                  
-  FCFS - Pag - RELOJ - C - NR                    
+  SRPT - Pag - LRU - NC - NR                     
+                                                 
   Resumen Final                                  
                                                  
                                                  
 
  RefTll Tej Tesp Tret  Ini  Fin Fallos 
- P00  3   4    0    4    3    7      1 
- P01  3   5    4    9    7   12      2 
+ P01  2   7    9   16   13   18      4 
+ P02  4   4    5    9   10   13      4 
+ P03  6   2    1    3    7    9      2 
 
- Tiempo de espera medio: 2.00
- Tiempo de retorno medio: 6.50
+ Tiempo de espera medio: 5.00
+ Tiempo de retorno medio: 9.33

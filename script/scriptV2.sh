@@ -369,8 +369,6 @@ init_globales() {
     archivoRangos=""                                # Archivo en el que se gurdran los rangos de la ejecucion si el usuario da un archivo perso. para guardarlos
     						    #utiliza en la funcion guardarDatos
 
-    # Algoritmo que se va a usar [1=SRPT]
-    algo=1
 
     # CARACTERÍSTICAS DE LA MEMORIA
     numeroMarcos=""                                 # Número de marcos de la memoria 
@@ -2658,8 +2656,8 @@ datos() {
 # DES: Calcular tiempo de espera y de ejecución para los procesos
 ej_ejecutar_tesp_tret() {
 
-    # Por cada proceso que está esperando a entrar a memoria o a ser ejecutado
-    for p in ${colaMemoria[*]} ${colaEjecucion[*]};do
+    # Por cada proceso que está esperando a entrar a memoria o a ser ejecutado o en cola de bloqueo
+    for p in ${colaMemoria[*]} ${colaEjecucion[*]} ${colaBloquedos[*]};do
 
         # Incrementar su tiempo de espera y de retorno
         ((tEsp[$p]++))
@@ -2895,6 +2893,38 @@ ej_ejecutar_empezar_ejecucion() {
 
 }
 
+# DES: Meter un proceso bloqueado al procesador iniciando la ejecucion desde el punto donde se saco el
+#  proceso de CPU
+ej_ejecutar_empezar_ejecucion() {
+
+    # Asignar procesador al proceso
+    enEjecucion=${colaEjecucion[0]}
+
+    # Quitar proceso de la cola de ejecución
+    colaEjecucion=("${colaEjecucion[@]:1}")
+
+    # Cambiar estado del proceso
+    estado[$enEjecucion]=3
+
+    # Hayar los marcos del proceso actual
+    for (( i=0; i<${minimoEstructural[$enEjecucion]}; i++ ));do
+        marcosActuales+=(${procesoMarcos[$enEjecucion,$i]})
+    done
+
+    # Establece el marco siguiente al primer marco del proceso en ejecucución
+    siguienteMarco=${marcosActuales[0]}
+
+    # Poner el proceso que se ha inciado para mostrarlo en la pantalla
+    inicio=$enEjecucion
+    # Mostrar la pantalla porque es un evento importante
+    mostrarPantalla=1
+
+    procesoInicio[$enEjecucion]=$t
+
+}
+
+
+
 # DES: Introducir siguiente página del proceso a memoria
 # RET: 0=No ha habido fallo 1=Ha habido fallo
 ej_ejecutar_memoria_pagina() {
@@ -3009,6 +3039,7 @@ ej_calcular_marco_siguiente() {
     siguienteMarco=${marco}
 }
 
+
 # DES: Guardar el estado de la memoria en este momento para luego mostrar el resumen con los fallos
 #      No está directamente relacionado con la ejecución. Es solo para la pantalla.
 ej_ejecutar_guardar_fallos() {
@@ -3020,6 +3051,36 @@ ej_ejecutar_guardar_fallos() {
         resumenFallos["$mom,$mar"]="${memoriaPagina[$marco]}"
         resumenLRU["$mom,$mar"]="${memoriaLRU[$marco]}"
     done
+
+}
+
+# DES: Saca el proceso ejecutandose actual de la CPU y guarda su estado actual para recuperar su 
+#	ejecucion a partir de este punto mas adelante. Propiedad apropiativa SRPT.
+ej_sacar_proceso_cpu(){
+    colaEjecucion+=($enEjecucion)
+
+    # Actualizar el estado del proceso a bloqueado
+    estado[$enEjecucion]=5
+
+    # Resetear los marcos actuales
+    marcosActuales=()
+
+	# posible procesoBloqueo donde guardamos los tiempos de bloqueo para imprimirlos en pantalla
+    #procesoFin[$enEjecucion]=$t
+
+
+	# posible bloqueo de proceso para mostrarlo en pantalla
+    # Poner el proceso que ha terminado para mostrarlo en pantalla
+    # fin=$enEjecucion
+
+    # Mostrar la pantalla porque es un evento interesante
+    # mostrarPantalla=1
+
+    # Liberar procesador
+    unset enEjecucion
+
+    siguienteMarco=""
+
 
 }
 
@@ -3058,13 +3119,17 @@ ej_ejecutar() {
     if [ $? -eq 0 ];then
         ej_ejecutar_ordenar_srpt
     fi
-
+	
     # Si no hay procesos en ejecución y hay procesos esperando a ser ejecutados
     [[ -z "$enEjecucion" ]] && [ ${#colaEjecucion[*]} -gt 0 ] \
         && ej_ejecutar_empezar_ejecucion
+    
+    # Comportamiento apropiativo SRPT, comprueba que no ha llegado ningun proceso con mayor prioridad al actual en ejecucion
+    if [[ -n "$colaEjecucion" ]] && [ ${tREj[$enEjecucion]} -gt ${tREj[${colaEjecucion[0]}]} ]; then 
+		ej_sacar_proceso_cpu 
 
     # Si hay un proceso en ejecución, introducir su siguiente página a memoria
-    if [[ -n "$enEjecucion" ]];then
+    elif [[ -n "$enEjecucion" ]];then
         ej_ejecutar_memoria_pagina
         ej_calcular_marco_siguiente
 
@@ -3889,16 +3954,8 @@ ej_resumen() {
     # CABECERA
     echo -e                "${cf[$ac]}                                                 ${rstf}"
     echo -e                 "${cf[10]}                                                 ${rstf}"
-    case $algo in
-        # FCFS
-        1 )
-            echo -e "${cf[10]}${cl[1]}${ft[0]}  FCFS - Pag - RELOJ - C - NR                    ${rstf}"
-        ;;
-        # SJF
-        2 )
-            echo -e "${cf[10]}${cl[1]}${ft[0]}  SJF - Pag - RELOJ - C - NR                     ${rstf}"
-        ;;
-    esac
+    echo -e "${cf[10]}${cl[1]}${ft[0]}  SRPT - Pag - LRU - NC - NR                     ${rstf}"
+    echo -e                 "${cf[10]}                                                 ${rstf}"
     printf          "${cf[10]}${cl[1]}  %-47s${rstf}\n" "Resumen Final" # Mantiene el ancho de la cabecera
     echo -e                 "${cf[10]}                                                 ${rstf}"
     echo -e                "${cf[$ac]}                                                 ${rstf}"
@@ -4024,6 +4081,7 @@ ej() {
     local memoriaLRU=()             # Contiene el número de usos que tiene cada página en memoria. El índice está vacío si no hay nada.
     local marcosActuales=()         # Marcos asignados al proceso en ejecución.
 
+
     # Procesos
     local pc=()                     # Contador de los procesos. Contiene la siguiente instrucción a ejecutar para cada proceso.
     for p in ${procesos[*]};do pc[$p]=0 ;done # Poner contador a 0 para todos los procesos
@@ -4051,7 +4109,7 @@ ej() {
     # Colas
     local colaLlegada=("${listaLlegada[@]}") # Procesos que están por llegar. En orden de llegada
     local colaMemoria=()            # Procesos que han llegado pero no caben en la memoria y están esperando
-    local colaEjecucion=()          # Procesos en memoria esperando a ser ejecutados. Se ordena según el algorimo dado (FCFS o SJF)
+    local colaEjecucion=()          # Procesos en memoria esperando a ser ejecutados. Se ordena según SRPT
     local enEjecucion               # Proceso en ejecución (Vacío si no se ejecuta nada)
 
    

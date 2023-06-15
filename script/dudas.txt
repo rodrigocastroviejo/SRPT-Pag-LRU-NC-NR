@@ -1,0 +1,32 @@
+302 - No entiendo como mantiene ancho cabecera/ posible utilidad para mantener anchos
+1262 - Posible punto a mejorar generarNombresProcesos, pasar $p como argumento porque la funcion es simplemente un trozo de codigo que se repite en varias 
+	funciones y por no repetirlo lo copia tal cual y llama a la funcion donde se encontraba ese codigo, NO teniendo nigun sentido la funcion por si misma
+970 - No entiendo como guarda en la variable cada elemento en una posicion distinta del array, o si lo guarda en una sola posicion y es una cadena larga 
+
+40 - Añadir Descripcion y uso a leer numero y leer numero entre
+
+
+variables archivoInforme comentar donde se establece la ruta absoluta del archivo o cambiar para que se realice directamente con $DIR
+
+
+1375 - posible funcion de volver a imprimir el menu pero con la opcion seleccionada resaltada
+
+1580 - informe plano no tiene las flechas con el resultado de la seleccion aleatoria entre el rango
+
+2175 - posible mejora de guardar siempre los rangos en archivoUltimaEjecucionRangos (en rangos_guardar())
+
+posible fundion en la ejecucion aleatoria, repeticion de for(p=0...)
+
+posible funcion de calcular anchos.
+
+
+4035 - añadir un nuevo estado fruto de el programa ser apropiativo (bloqueado)
+
+4050 - Colas - añadir cola para implementar cola bloqueados (apropiativo)
+
+3001- cambiar el vector donde se guardan los indices nfu en cada instante de ejec
+
+3041- cambiar el switch por unicamente SRpT , donde ejecuta realmente srpt
+
+2917 - donde se actualiza los indices NFU de reutilizacion de las paginas
+
