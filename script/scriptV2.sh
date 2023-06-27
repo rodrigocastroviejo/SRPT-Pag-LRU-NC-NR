@@ -2861,7 +2861,6 @@ ej_ejecutar_ordenar_srpt() {
             printf "${tREj[pro]}.%0${anchoIdx}d&${pro}\n" "${idx}"
         done | sort -n | grep -o "&.*$" | tr -d "&"
     ))
-
 }
 
 # DES: Meter proceso al procesador
@@ -2893,38 +2892,6 @@ ej_ejecutar_empezar_ejecucion() {
 
 }
 
-# DES: Meter un proceso bloqueado al procesador iniciando la ejecucion desde el punto donde se saco el
-#  proceso de CPU
-ej_ejecutar_empezar_ejecucion() {
-
-    # Asignar procesador al proceso
-    enEjecucion=${colaEjecucion[0]}
-
-    # Quitar proceso de la cola de ejecución
-    colaEjecucion=("${colaEjecucion[@]:1}")
-
-    # Cambiar estado del proceso
-    estado[$enEjecucion]=3
-
-    # Hayar los marcos del proceso actual
-    for (( i=0; i<${minimoEstructural[$enEjecucion]}; i++ ));do
-        marcosActuales+=(${procesoMarcos[$enEjecucion,$i]})
-    done
-
-    # Establece el marco siguiente al primer marco del proceso en ejecucución
-    siguienteMarco=${marcosActuales[0]}
-
-    # Poner el proceso que se ha inciado para mostrarlo en la pantalla
-    inicio=$enEjecucion
-    # Mostrar la pantalla porque es un evento importante
-    mostrarPantalla=1
-
-    procesoInicio[$enEjecucion]=$t
-
-}
-
-
-
 # DES: Introducir siguiente página del proceso a memoria
 # RET: 0=No ha habido fallo 1=Ha habido fallo
 ej_ejecutar_memoria_pagina() {
@@ -2946,8 +2913,8 @@ ej_ejecutar_memoria_pagina() {
         mar=${marcosActuales[$ind]}
         # Si se encuentra la página
         if [[ -n "${memoriaPagina[$mar]}" ]] && [ ${memoriaPagina[$mar]} -eq $pagina ];then
-	# Restablece el indice de ultima vez que se uso esa pagina a 1 (el indice mas reciente)
-            memoriaLRU[$mar]=1
+	# Restablece el indice de ultima vez que se uso esa pagina a 0 (el indice mas reciente)
+            memoriaLRU[$mar]=0
             marcoFallo+=($ind)
 
 		# Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
@@ -2995,7 +2962,7 @@ ej_ejecutar_memoria_pagina() {
     # Introducir la página en el marco
     memoriaPagina[$marco]=$pagina
     # Poner los usos de la página a 1
-    memoriaLRU[$marco]=1
+    memoriaLRU[$marco]=0
     marcoFallo+=($indiceMarcoActual)
 
     # Incrementar fallos del proceso
@@ -3045,7 +3012,9 @@ ej_calcular_marco_siguiente() {
 ej_ejecutar_guardar_fallos() {
 
     local marco=""
+	# Contiene la instruccion actual a ejecutar
     local mom=$(( ${pc[$enEjecucion]} - 1 ))
+
     for mar in ${!marcosActuales[*]};do
         marco=${marcosActuales[$mar]}
         resumenFallos["$mom,$mar"]="${memoriaPagina[$marco]}"
@@ -3075,6 +3044,7 @@ ej_sacar_proceso_cpu(){
 
     # Mostrar la pantalla porque es un evento interesante
     # mostrarPantalla=1
+
 
     # Liberar procesador
     unset enEjecucion
@@ -3127,6 +3097,7 @@ ej_ejecutar() {
     # Comportamiento apropiativo SRPT, comprueba que no ha llegado ningun proceso con mayor prioridad al actual en ejecucion
     if [[ -n "$colaEjecucion" ]] && [ ${tREj[$enEjecucion]} -gt ${tREj[${colaEjecucion[0]}]} ]; then 
 		ej_sacar_proceso_cpu 
+		ej_ejecutar_empezar_ejecucion
 
     # Si hay un proceso en ejecución, introducir su siguiente página a memoria
     elif [[ -n "$enEjecucion" ]];then
@@ -3157,7 +3128,7 @@ ej_pantalla_cabecera() {
 ej_pantalla_tiempo() {
     printf " ${cl[$re]}${ft[0]}%s${rstf}: %-6s" "T" "${t}"
     printf " ${cl[$re]}${ft[0]}%7s${rstf}: %-6s" "Nº Dirs" "${tamanoMemoria}"
-    printf " ${cl[$re]}${ft[0]}%8s${rstf}: %-6s" "Tam Pág" "${tamanoPagina}"
+    printf " ${cl[$re]}${ft[0]}%8s${rstf}: %-6s" "Tam Pág" "${tamanoMarco}"
     printf " ${cl[$re]}${ft[0]}%7s${rstf}: %-6s" "Nº Marc" "${numeroMarcos}"
 }
 
@@ -3297,7 +3268,10 @@ ej_pantalla_tabla() {
 }
 
 # DES: Mostrar media de Tesp y de Tret
+
 ej_pantalla_media_tiempos() {
+	 
+	export LC_NUMERIC="en_US.UTF-8"
 
     local mediaTesp
     local mediaTret
@@ -3310,7 +3284,7 @@ ej_pantalla_media_tiempos() {
         (( cont++ ))
     done
     [ $cont -ne 0 ] \
-        && mediaTesp="$(bc -l <<<"scale=2;$sum / $cont")"
+        && mediaTesp="$(bc <<<"scale=2;$sum / $cont")"
     sum=0
     cont=0
 
@@ -3319,19 +3293,15 @@ ej_pantalla_media_tiempos() {
         (( cont++ ))
     done
     [ $cont -ne 0 ] \
-        && mediaTret="$(bc -l <<<"scale=2;$sum / $cont")"
+        && mediaTret="$(bc <<<"scale=2;$sum / $cont")"
     
     # IMPRESIÓN
     if [ -n "${mediaTesp}" ];then
-        printf " ${cl[$re]}%s${rstf}: %-9s" "Tiempo Espera Medio" "${mediaTesp}"
-    else
-        printf " ${cl[$re]}%s${rstf}: %-9s" "Tiempo Espera Medio" "0.0"
+        printf " ${cl[$re]}%s${rstf}: %-9.2f" "Tiempo Espera Medio" "${mediaTesp}" 
     fi
 
     if [ -n "${mediaTret}" ];then
-        printf " ${cl[$re]}%s${rstf}: %s\n" "Tiempo Respuesta Medio" "${mediaTret}"
-    else
-        printf " ${cl[$re]}%s${rstf}: %s\n" "Tiempo Respuesta Medio" "0.0"
+        printf " ${cl[$re]}%s${rstf}: %-5.2f\n" "Tiempo Respuesta Medio" "${mediaTret}" 
     fi
 
 }
@@ -3377,6 +3347,8 @@ ej_pantalla_fin_fallos() {
         done
         printf "\n"
 
+		#set -x
+
         # Imprimir la evolución de cada marco
         for (( mar=0; mar<${minimoEstructural[$fin]}; mar++ ));do
             # Etiqueta del marco
@@ -3386,24 +3358,26 @@ ej_pantalla_fin_fallos() {
             # Imprimir la página de cada momento del marco
             printf "${ft[0]}"
             for (( mom=$primerMomento; mom<=$ultimoMomento; mom++ ));do
-                if [ ${marcoFallo[$mom]} -eq $mar ];then
-                    printf "${cf[3]}╔%${anchoGen}s╗${cf[0]}" "${resumenFallos[$mom,$mar]}"
-                else
+                #if [ ${marcoFallo[$mom]} -eq $mar ];then
+                    #printf "${cf[3]}╔%${anchoGen}s╗${cf[0]}" "${resumenFallos[$mom,$mar]}"
+                #else
                     printf "┌%${anchoGen}s┐" "${resumenFallos[$mom,$mar]}"
-                fi
+                #fi
             done
             printf "${rstf}\n"
             printf "%${anchoEtiquetas}s" ""
             # Imprimir el contador de cada momento del marco
             for (( mom=$primerMomento; mom<=$ultimoMomento; mom++ ));do
-                if [ ${marcoFallo[$mom]} -eq $mar ];then
-                    printf "${cf[3]}╚%${anchoMomento}s╝${cf[0]}" "${resumenLRU[$mom,$mar]}"
-                else
+                #if [ ${marcoFallo[$mom]} -eq $mar ];then
+                    #printf "${cf[3]}╚%${anchoMomento}s╝${cf[0]}" "${resumenLRU[$mom,$mar]}"
+                #else
                     printf "└%${anchoMomento}s┘" "${resumenLRU[$mom,$mar]}"
-                fi
+                #fi
             done
             printf "\n"
         done
+
+		#set +x
 
         if [ $ultimoMomento -eq $(( ${tiempoEjecucion[$fin]} - 1 )) ];then
             break;
@@ -3818,16 +3792,19 @@ ej_pantalla_linea_tiempo() {
 
         #PROCESOS
         # Imprimir la etiqueta si estamos en la primera linea
-        [ $l -eq 0 ] && printf "%${anchoEtiqueta}s" ""
-        printf "|"
+		[ $l -eq 0 ] && printf "%${anchoEtiqueta}s" ""
+		printf "|"
         ultimoProceso=-2
-        for (( m=$primerTiempo; m<=$ultimoTiempo; m++ ));do
+		for (( m=-1; m<=(( $ultimoTiempo - 1 )); m++ ));do
+			if [ $t -eq 0  ]; then 
+				break
+			fi
             # Si el marco está vacío o es el mismo proceso
             if [ -z "${tiempoProceso[$m]}" ] || [ ${ultimoProceso} -eq ${tiempoProceso[$m]} ];then
-                printf "%${anchoBloque}s"
-                if [ -z "${tiempoProceso[$m]}" ];then
-                    ultimoProceso=-1
-                fi
+				printf "%${anchoBloque}s"
+          	 	 if [ -z "${tiempoProceso[$m]}" ];then
+           	   		  ultimoProceso=-1
+           		 fi
             # Si se cambia de proceso
             elif [ ${ultimoProceso} -ne ${tiempoProceso[$m]} ];then
                 temp=${tiempoProceso[$m]}
@@ -3841,9 +3818,12 @@ ej_pantalla_linea_tiempo() {
         # Imprimir la etiqueta si estamos en la primera linea
         [ $l -eq 0 ] && printf "%${anchoEtiqueta}s" " BT: "
         printf "|"
-        for (( m=$primerTiempo; m<=$ultimoTiempo; m++ ));do
+		for (( m=-1; m<=(($ultimoTiempo - 1)); m++ ));do
             # Poner el color
-            if [ $m -gt $t ];then
+            if [ $t -eq 0 ];then
+                printf "${cf[2]}"
+				break
+            elif [ $m -gt $t ];then
                 printf "${rstf}"
             elif [ -n "${tiempoProceso[$m]}" ];then
                 temp=${tiempoProceso[$m]}
@@ -3868,10 +3848,15 @@ ej_pantalla_linea_tiempo() {
         for (( m=$primerTiempo; m<=$ultimoTiempo; m++ ));do
 
             if [[ "$ultimoProceso" -eq "-2" || -z "${tiempoProceso[$m]}" && $ultimoProceso -ne -1 || -n "${tiempoProceso[$m]}" && "${ultimoProceso}" -ne "${tiempoProceso[$m]}" ]];then
-                printf "%${anchoBloque}s" "$m"
-                [ -z "${tiempoProceso[$m]}" ] \
-                    && ultimoProceso=-1 \
+				if [ $t -eq 0 ];then 
+					#Variable de relleno ya que no puedo dejar un if vacio
+					local variableRelleno
+				else
+                	printf "%${anchoBloque}s" "$m"
+              		  [ -z "${tiempoProceso[$m]}" ] \
+                   	  && ultimoProceso=-1 \
                     || ultimoProceso=${tiempoProceso[$m]}
+				fi
             else
                 printf "%${anchoBloque}s"
             fi
@@ -4096,7 +4081,7 @@ ej() {
     cadenaEstado[2]="En memoria"
     cadenaEstado[3]="En ejecución"
     cadenaEstado[4]="Finalizado"
-    cadenaEstado[5]="Bloqueado"
+    cadenaEstado[5]="En pausa"
     for p in ${procesos[*]};do estado[$p]=0 ;done # Poner todos los procesos en estado 0 (fuera del sistema)
 
     local siguienteMarco=""         # Puntero al siguiente marco en el que se va a introducir una página si no está ya en memoria.
