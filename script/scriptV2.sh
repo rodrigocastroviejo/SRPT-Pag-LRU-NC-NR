@@ -2921,7 +2921,7 @@ ej_ejecutar_memoria_pagina() {
     		for indInterior in ${!marcosActuales[*]};do
 		    indiceMarcoActual=${marcosActuales[$indInterior]}
        	            # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
-	  	    if [ $indiceMarcoActual -ne $mar ];then
+	  	    if [ $indiceMarcoActual -ne $mar ] && [[ -n ${memoriaPagina[$indiceMarcoActual]} ]];then
 	      	         ((memoriaLRU[$indiceMarcoActual]++))
            	    fi
 		done
@@ -2968,11 +2968,11 @@ ej_ejecutar_memoria_pagina() {
     # Incrementar fallos del proceso
     (( numFallos[$enEjecucion]++ ))
 
-	# Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
+			# Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
     		for indInterior in ${!marcosActuales[*]};do
 		    indiceMarcoActual=${marcosActuales[$indInterior]}
-       	            # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
-	  	    if [ $indiceMarcoActual -ne $marco ];then
+       	    # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
+	  	    if [ $indiceMarcoActual -ne $marco ] && [[ -n ${memoriaPagina[$indiceMarcoActual]} ]];then
 	      	         ((memoriaLRU[$indiceMarcoActual]++))
            	    fi
 		done
@@ -3098,6 +3098,10 @@ ej_ejecutar() {
     if [[ -n "$colaEjecucion" ]] && [ ${tREj[$enEjecucion]} -gt ${tREj[${colaEjecucion[0]}]} ]; then 
 		ej_sacar_proceso_cpu 
 		ej_ejecutar_empezar_ejecucion
+        ej_ejecutar_memoria_pagina
+        ej_calcular_marco_siguiente
+
+        (( pc[$enEjecucion]++ ))
 
     # Si hay un proceso en ejecución, introducir su siguiente página a memoria
     elif [[ -n "$enEjecucion" ]];then
@@ -3306,6 +3310,33 @@ ej_pantalla_media_tiempos() {
 
 }
 
+# DES:Guarda en un vector para cada tiempo en el que se ejecuta el proceso, si tiene el indice mas alto 
+# 		entre todos los indicesLRU de los marcos en ese tiempo del proceso, pone a -1 esa posicion si no lo es
+# 		y a 1, si si que es el más alto para ese tiempo 
+calcular_LRU_mas_alto() { 
+	
+	local indiceMarcoLRUMasAlto
+	local LRUMasAlto=-1
+	for (( marcoAComparar=0; marcoAComparar<${minimoEstructural[$fin]}; marcoAComparar++ ));do
+#		set -x 
+		if [[ -n ${resumenLRU[$mom,$marcoAComparar]} ]] && [[ -n ${resumenLRU[$mom,$mar]} ]] && [ ${resumenLRU[$mom,$marcoAComparar]} -gt $LRUMasAlto ];then 	
+			indiceMarcoLRUMasAlto=$marcoAComparar
+			LRUMasAlto=${resumenLRU[$mom,$marcoAComparar]}
+		fi
+#		set +x
+
+	done
+
+	if [[ -n $indiceMarcoLRUMasAlto ]] && [ $indiceMarcoLRUMasAlto -eq $mar ];then 
+	
+			return 1		
+	else 
+			return 0
+	fi
+
+}
+
+
 # DES: Mostrar un resumen con los fallos de página que han habido durante la ejecución
 ej_pantalla_fin_fallos() {
 
@@ -3347,7 +3378,6 @@ ej_pantalla_fin_fallos() {
         done
         printf "\n"
 
-		#set -x
 
         # Imprimir la evolución de cada marco
         for (( mar=0; mar<${minimoEstructural[$fin]}; mar++ ));do
@@ -3366,18 +3396,28 @@ ej_pantalla_fin_fallos() {
             done
             printf "${rstf}\n"
             printf "%${anchoEtiquetas}s" ""
-            # Imprimir el contador de cada momento del marco
+	
+
+		    # Imprimir el contador de cada momento del marco
             for (( mom=$primerMomento; mom<=$ultimoMomento; mom++ ));do
+				# Subrayado del indice más alto de LRU, 
+				calcular_LRU_mas_alto
+		
+
                 #if [ ${marcoFallo[$mom]} -eq $mar ];then
                     #printf "${cf[3]}╚%${anchoMomento}s╝${cf[0]}" "${resumenLRU[$mom,$mar]}"
                 #else
-                    printf "└%${anchoMomento}s┘" "${resumenLRU[$mom,$mar]}"
+					if [ $? -eq 1 ];then 
+						# He utilizado el tput como alternativa a las secuencias de escape para subrayar porque no funcionaban
+						printf "└  %${anchoMomento}s┘" "$(tput smul)${resumenLRU[$mom,$mar]}$(tput sgr0)"
+					else
+                   		printf "└%${anchoMomento}s┘" "${resumenLRU[$mom,$mar]}"
+					fi
                 #fi
             done
             printf "\n"
         done
 
-		#set +x
 
         if [ $ultimoMomento -eq $(( ${tiempoEjecucion[$fin]} - 1 )) ];then
             break;
@@ -3795,7 +3835,7 @@ ej_pantalla_linea_tiempo() {
 		[ $l -eq 0 ] && printf "%${anchoEtiqueta}s" ""
 		printf "|"
         ultimoProceso=-2
-		for (( m=-1; m<=(( $ultimoTiempo - 1 )); m++ ));do
+		for (( m=$primerTiempo; m<=$ultimoTiempo; m++ ));do
 			if [ $t -eq 0  ]; then 
 				break
 			fi
@@ -3818,7 +3858,7 @@ ej_pantalla_linea_tiempo() {
         # Imprimir la etiqueta si estamos en la primera linea
         [ $l -eq 0 ] && printf "%${anchoEtiqueta}s" " BT: "
         printf "|"
-		for (( m=-1; m<=(($ultimoTiempo - 1)); m++ ));do
+		for (( m=$primerTiempo; m<=(( $ultimoTiempo - 1 )); m++ ));do
             # Poner el color
             if [ $t -eq 0 ];then
                 printf "${cf[2]}"
@@ -3852,12 +3892,12 @@ ej_pantalla_linea_tiempo() {
 					#Variable de relleno ya que no puedo dejar un if vacio
 					local variableRelleno
 				else
-                	printf "%${anchoBloque}s" "$m"
+                	printf "%-${anchoBloque}s" "$m"
               		  [ -z "${tiempoProceso[$m]}" ] \
                    	  && ultimoProceso=-1 \
                     || ultimoProceso=${tiempoProceso[$m]}
 				fi
-            else
+			else
                 printf "%${anchoBloque}s"
             fi
         done
