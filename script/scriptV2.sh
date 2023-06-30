@@ -93,6 +93,32 @@ leer_numero_entre() {
 
 }
 
+# DES: Funcion unica para el modo de ejecucion rangosAleatoriosTotales, devueve:
+# 0: si el valor es valido
+# 1: Si el numero introducido se pasa del minimo
+# 2: Si el numero introducido se pasa del maximo
+
+leer_numero_entre_rangosAleatoriosTotal() {
+
+    # Se establece el mínimo y el máximo
+    local min=$2
+    local max
+    # Si se da máximo y si no.
+    [ $# -eq 3 ] && max=$3 || max=$numeroMaximo
+
+    # Si el número introducido se pasa del mínimo
+    if [ ${!1} -lt $min ];then
+        return 1
+    # Si el número introducido se pasa del máximo
+    elif [ ${!1} -gt $max ];then
+        return 2
+	fi
+
+    return 0
+
+}
+
+
 # DES: Lee un nombre de archivo válido
 # USO: leer_nombre_archivo var
 leer_nombre_archivo() {
@@ -1592,6 +1618,308 @@ datos_random_informes() {
     informar_plano ""
 }
 
+# DES: Tabla con los rangos min y max del fichero rangosAleatoriosTotal.txt y los rangos min y max calculados aleatoriamente a partir dentro 
+# 	de ese rangos de rangosAleatoriosTotal.txt	
+datos_rangosAleatorioTotal_tabla() {
+    echo -e         "${cf[ac]}                                                                      ${rstf}"
+    echo -e         "${cf[10]}                                                                      ${rstf}"
+	printf  "${cf[10]}${cl[1]}                                 %-13s   %-13s ${rstf}\n" "Rangos Fichero" "Rangos calculados"
+	printf  "${cf[10]}${cl[1]}                   Número marcos : %-13s 		%-20s %-13s %-s ${rstf}\n" "[ ${numeroMarcosMinimoFichero} - $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} - $numeroMarcosMaximo ]" "--> $numeroMarcos" 
+    printf  "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s 		%-20s %-13s %-s ${rstf}\n" "[ ${tamanoMarcoMinimoFichero} - ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} - ${tamanoMarcoMaximo} ]" "--> $tamanoMarco"
+    printf  "${cf[10]}${cl[1]}                  Tamaño memoria : %-13s 		%-20s ${rstf}\n" "$tamanoMemoria" 
+    printf  "${cf[10]}${cl[1]}                 Número procesos : %-13s 		%-20s %-13s %-s ${rstf}\n" "[ ${numeroProcesosMinimoFichero} - ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} - ${numeroProcesosMaximo} ]" "--> $numeroProcesos"
+    printf  "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s 		%-20s %-13s %-s ${rstf}\n" "[ ${tiempoLlegadaMinimoFichero} - ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} - ${tiempoLlegadaMaximo} ]"
+    printf  "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s 		%-20s %-13s %-s ${rstf}\n" "[ ${tiempoEjecucionMinimoFichero} - ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} - ${tiempoEjecucionMaximo} ]"
+    printf  "${cf[10]}${cl[1]}              Mínimo estructural : %-13s 		%-20s %-13s %-s ${rstf}\n" "[ ${minimoEstructuralMinimoFichero} - ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} - ${minimoEstructuralMaximo} ]"
+    printf  "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s 		%-20s %-13s %-s ${rstf}\n" "[ ${direccionMinimaFichero} - ${direccionMaximaFichero} ]" "[ ${direccionMinima} - ${direccionMaxima} ]"
+    echo -e         "${cf[10]}                                                                      ${rstf}"
+    echo -e         "${cf[ac]}                                                                      ${rstf}"
+    echo
+}
+
+# DES: Comprueba si los rangos del fichero rangosAleatoriosTotal.txt son validos, retorna 1 en caso de que sean validos, 0 en caso contrario
+comprueba_rangosFichero_validos() {
+	echo "hola"
+}
+
+
+# DES: Muestra los errores en los rangos calculados dentro de los min y max establecidos en rangosAleatoriosTotal.txt, por ejemplo,
+#  	si hubiese un min de procesos negativo, mostraria un error indicando la imposibilidad de un numero de proceso negativo.
+mostrar_errores_rangosAleatorioTotal() {
+	errores_numero_marcos
+	errores_tamano_marcos
+	errores_numero_procesos
+	errores_tiempo_llegada_procesos
+	errores_tiempo_ejecucion_procesos
+	errores_minimo_estructural_procesos
+	errores_direcciones_procesos
+}
+
+errores_numero_marcos() {
+
+	leer_numero_entre_rangosAleatoriosTotal numeroMarcosMinimo 1 
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El numero de marcos debe ser minimo 1: "
+            ;;
+        esac
+
+	leer_numero_entre_rangosAleatoriosTotal numeroMarcosMaximo 1
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El numero de marcos debe ser minimo 1: "
+            ;;
+        esac
+
+		
+	if [ $numeroMarcosMinimo -gt $numeroMarcosMaximo ];then
+		echo -n -e "El maximo de numero de marcos debe ser mayor que el minimo"
+	fi
+
+}
+
+errores_tamano_marcos() {
+
+	leer_numero_entre_rangosAleatoriosTotal tamanoMarcoMinimo 1 
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El tamaño de los marcos debe ser minimo 1: "
+            ;;
+        esac
+
+	leer_numero_entre_rangosAleatoriosTotal tamanoMarcoMaximo 1
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El tamaño de los marcos debe ser minimo 1: "
+            ;;
+        esac
+
+		
+	if [ $tamanoMarcoMinimo -gt $tamanoMarcoMaximo ];then
+		echo -n -e "El maximo de tamaño de los marcos debe ser mayor que el minimo"
+	fi
+}
+
+errores_numero_procesos() {
+
+	leer_numero_entre_rangosAleatoriosTotal numeroProcesosMinimo 1 99
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El numero de procesos debe ser minimo 1: "
+            ;;
+
+			2 )
+				echo -n -e "El numero de procesos no puede ser mayor que 99"
+			;;
+        esac
+
+	leer_numero_entre_rangosAleatoriosTotal numeroProcesosMaximo 1 99
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El numero de procesos debe ser minimo 1: "
+            ;;
+
+			2 )
+				echo -n -e "El numero de procesos no puede ser mayor que 99"
+			;;
+        esac
+
+		
+	if [ $numeroProcesosMinimo -gt $numeroProcesosMaximo ];then
+		echo -n -e "El maximo de numero de procesos debe ser mayor que el minimo"
+	fi
+}
+
+errores_tiempo_llegada_procesos() {
+
+	leer_numero_entre_rangosAleatoriosTotal tiempoLlegadaMinimo 1 
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El tiempo de llegada de los procesos debe ser minimo 1: "
+            ;;
+        esac
+
+	leer_numero_entre_rangosAleatoriosTotal tiempoLlegadaMaximo 1
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El tiempo de llegada de los procesos debe ser minimo 1: "
+            ;;
+        esac
+
+		
+	if [ $tiempoLlegadaMinimo -gt $tiempoLlegadaMaximo ];then
+		echo -n -e "El tiempo maximo de llegada de los procesos debe ser mayor que el minimo"
+	fi
+}
+
+errores_tiempo_ejecucion_procesos() {
+
+	leer_numero_entre_rangosAleatoriosTotal tiempoEjecucionMinimo 1 
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El tiempo de ejecucion de los procesos debe ser minimo 1: "
+            ;;
+        esac
+
+	leer_numero_entre_rangosAleatoriosTotal tiempoEjecucionMaximo 1
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El tiempo de ejecucion de los procesos debe ser minimo 1: "
+            ;;
+        esac
+
+		
+	if [ $tiempoEjecucionMinimo -gt $tiempoEjecucionMaximo ];then
+		echo -n -e "El tiempo maximo de ejecucion de los procesos debe ser mayor que el minimo"
+	fi
+}
+
+errores_minimo_estructural_procesos() {
+	leer_numero_entre_rangosAleatoriosTotal minimoEstructuralMinimo 1 
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El minimo Estructural de los procesos que debe estar en memoria debe ser minimo 1: "
+            ;;
+			2 )
+				echo -n -e "El minimo Estructural de los procesos no puede ser mayor que el tamaño de la memoria: $tamanoMemoria"
+			;;
+        esac
+
+	leer_numero_entre_rangosAleatoriosTotal minimoEstructuralMaximo 1 
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "El minimo Estructural de los procesos que debe estar en memoria debe ser minimo 1: "
+            ;;
+			2 )
+				echo -n -e "El minimo Estructural de los procesos no puede ser mayor que el tamaño de la memoria: $tamanoMemoria"
+			;;
+        esac
+
+		
+	if [ $minimoEstructuralMinimo -gt $minimoEstructuralMaximo ];then
+		echo -n -e "El maximo del minimo estructural de los procesos debe ser mayor que el minimo"
+	fi
+}
+
+errores_direcciones_procesos() {
+	leer_numero_entre_rangosAleatoriosTotal direccionMinima 1  
+
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "La direccion minima de los procesos que debe ser minimo 1: "
+            ;;
+        esac
+
+	leer_numero_entre_rangosAleatoriosTotal direccionMaxima 1 
+	# En caso de que el valor devuelto por la función anterior
+        case $? in
+            
+            # Valor válido
+            0 )
+            ;;
+            # Valor no número natural o No se introduce nada
+            1 )
+                echo -n -e "La direccion minima de los procesos debe ser minimo 1: "
+            ;;
+        esac
+
+		
+	if [ $direccionMinima -gt $direccionMaxima ];then
+		echo -n -e "El maximo del rango de las direcciones debe ser mayor que el minimo"
+	fi
+}
+
+
+
 # DES: Introducir el rango minimo y maximo del numero de marcos de pagina
 datos_random_num_marcos_pagina() {
 
@@ -1600,7 +1928,7 @@ datos_random_num_marcos_pagina() {
 
     echo -n -e "Introduce el minimo del rango de ${ft[0]}${cl[$re]}marcos de pagina${rstf}: "
     while :;do
-
+ 
         leer_numero numeroMarcosMinimo
         # En caso de que el valor devuelto por la función anterior
         case $? in
@@ -2335,6 +2663,99 @@ rangos_archivo_leer() {
    done < "$seleccion"
 }
 
+
+rangos_archivoRangosAleatorioTotal_leer() {
+    local linea=""
+    # número de linea
+    local n=0
+    # número de proceso
+    local p=1
+    # número de dirección
+    local d=0
+
+    # Datos del proceso que se está leyendo
+    local datosProceso=()
+
+    seleccion="rangosAleatorioTotal.txt"
+
+    # se va leyendo cada linea del archivo
+    while read linea;do
+        case $n in
+            # Numero de marcos min
+            1 )
+	         numeroMarcosMinimoFichero=$linea
+            ;;
+            # Numero de marcos max
+            3 )
+	    	numeroMarcosMaximoFichero=$linea
+            ;;
+            # Tamaño de marco min
+            5 )
+	    	tamanoMarcoMinimoFichero=$linea
+            ;;
+
+            # Tamaño de marco max
+            7 )
+	    	tamanoMarcoMaximoFichero=$linea
+            ;;
+
+            # Numero de procesos min
+            9 )
+	    	numeroProcesosMinimoFichero=$linea
+            ;;
+
+            # Numero de procesos min
+            11 )
+	    	numeroProcesosMaximoFichero=$linea
+            ;;
+
+            # Tiempo de llegada min
+            13 )
+	    	tiempoLlegadaMinimoFichero=$linea
+            ;;
+
+	    # Tiempo de llegada max
+            15 )
+	    	tiempoLlegadaMaximoFichero=$linea
+            ;;
+
+            # Tiempo de ejecucion min
+            17 )
+			tiempoEjecucionMinimoFichero=$linea
+            ;;
+	   
+	    # Tiempo de ejecucion max
+            19 )
+			tiempoEjecucionMaximoFichero=$linea
+            ;;
+
+	    # tme minimo(tamaño minimo estructural)
+            21 )
+                minimoEstructuralMinimoFichero=$linea
+            ;;
+
+	    # tme maximo(tamaño minimo estructural)
+            23 )
+                minimoEstructuralMaximoFichero=$linea
+            ;;
+
+	    #Direccion min
+	    	25 )
+                direccionMinimaFichero=$linea
+            ;;
+
+	    #Direccion max
+	    	27 )
+                direccionMaximaFichero=$linea
+            ;;
+
+        esac
+
+	((n++))
+
+   done < "$seleccion"
+}
+
 # DES: Generar los procesos de forma pseudo-aleatoria a partir de los rangos utilizados en la ultima ejecucion aleatoria
 rangos_random_ultima_ejecucion() {
 
@@ -2371,6 +2792,8 @@ rangos_random_ultima_ejecucion() {
 
     # Da los valores a las variables correspondientes de los rangos utilizados en la ultima ejecucion aleatoria
     rangos_archivo_leer
+
+
 
     # Generacion entre el min y max del numero de procesos tamaño de memoria y tamañano de pagina
     # se generan aqui por ser necesarios para el calculo de los marcos de pagina y por que el numero de 
@@ -2574,6 +2997,188 @@ ejecucion_rangos_archivo() {
 
 }
 
+ejecucion_rangos_total() {
+
+    # pregunta si guardar los datos utilizados 
+    datos_pregunta_guardar
+
+    # Archivo que se ha seleccionado de la lista
+    local seleccion="rangosAletorioTotal.txt"
+
+    # Hacer los informes
+    datos_archivo_informes
+
+
+    # Parámetros
+    local numeroMarcosMinimo="" 
+    local numeroMarcosMaximo="" 
+
+    local numeroMarcosMinimoFichero="" 
+    local numeroMarcosMaximoFichero="" 
+
+    local tamanoMarcoMinimo=""
+    local tamanoMarcoMaximo=""
+
+    local tamanoMarcoMinimoFichero=""
+    local tamanoMarcoMaximoFichero=""
+
+    local numeroProcesosMinimo=""
+    local numeroProcesosMaximo=""
+
+    local numeroProcesosMinimoFichero=""
+    local numeroProcesosMaximoFichero=""
+
+    local tiempoLlegadaMinimo="-"
+    local tiempoLlegadaMaximo="-"
+
+    local tiempoLlegadaMinimoFichero="-"
+    local tiempoLlegadaMaximoFichero="-"
+
+    local tiempoEjecucionMinimo="-"
+    local tiempoEjecucionMaximo="-"
+
+    local tiempoEjecucionMinimoFichero="-"
+    local tiempoEjecucionMaximoFichero="-"
+
+    # Para saber si da igual que hayan desperdicios
+    local desperdicios=""
+    local minimoEstructuralMinimo="-"
+    local minimoEstructuralMaximo="-"
+
+    local minimoEstructuralMinimoFichero="-"
+    local minimoEstructuralMaximoFichero="-"
+
+    local direccionMinima="-"
+    local direccionMaxima="-"
+
+    local direccionMinimaFichero="-"
+    local direccionMaximaFichero="-"
+
+	# Da los valores a las variables(del fichero) correspondientes de los rangos del fichero
+	rangos_archivoRangosAleatorioTotal_leer
+
+	local flagRangosValidos=0
+	while [ $flagRangosValidos -eq 0 ];do
+		# Asigna aleatoriamente los min y max dentro de los rangos dados para cada variable por rangosAleatoriosTotal.txt
+ 		aleatorio_entre numeroMarcosMinimo ${numeroMarcosMinimoFichero} ${numeroMarcosMaximoFichero}
+ 		aleatorio_entre numeroMarcosMaximo ${numeroMarcosMinimoFichero} ${numeroMarcosMaximoFichero}
+
+ 		aleatorio_entre tamanoMarcoMinimo ${tamanoMarcoMinimoFichero} ${tamanoMarcoMaximoFichero}
+ 		aleatorio_entre tamanoMarcoMaximo ${tamanoMarcoMinimoFichero} ${tamanoMarcoMaximoFichero}
+
+ 		aleatorio_entre numeroProcesosMinimo ${numeroProcesosMinimoFichero} ${numeroProcesosMaximoFichero}
+ 		aleatorio_entre numeroProcesosMaximo ${numeroProcesosMinimoFichero} ${numeroProcesosMaximoFichero}
+
+ 		aleatorio_entre tiempoLlegadaMinimo ${tiempoLlegadaMinimoFichero} ${tiempoLlegadaMaximoFichero}
+ 		aleatorio_entre tiempoLlegadaMaximo ${tiempoLlegadaMinimoFichero} ${tiempoLlegadaMaximoFichero}
+
+ 		aleatorio_entre tiempoEjecucionMinimo ${tiempoEjecucionMinimoFichero} ${tiempoEjecucionMaximoFichero}
+ 		aleatorio_entre tiempoEjecucionMaximo ${tiempoEjecucionMinimoFichero} ${tiempoEjecucionMaximoFichero}
+
+ 		aleatorio_entre minimoEstructuralMinimo ${minimoEstructuralMinimoFichero} ${minimoEstructuralMaximoFichero}
+ 		aleatorio_entre minimoEstructuralMaximo ${minimoEstructuralMinimoFichero} ${minimoEstructuralMaximoFichero}
+
+ 		aleatorio_entre direccionMinima ${direccionMinimaFichero} ${direccionMaximaFichero}
+ 		aleatorio_entre direccionMaxima ${direccionMinimaFichero} ${direccionMaximaFichero}
+
+		
+		comprueba_rangosFichero_validos
+		if [ $? -eq 1 ];then
+			$flagRangosValidos=1
+		fi
+
+    	# Generacion entre el min y max del numero de procesos tamaño de memoria y tamañano de pagina
+    	# se generan aqui por ser necesarios para el calculo de los marcos de pagina y por que el numero de 
+   	 	# procesos es necesario en el apartarado que genera los procesos 
+		if [ $flagRangosValidos -eq 1 ];then
+ 	 		aleatorio_entre numeroProcesos ${numeroProcesosMinimo} ${numeroProcesosMaximo}
+	   		aleatorio_entre numeroMarcos ${numeroMarcosMinimo} ${numeroMarcosMaximo}
+   		 	aleatorio_entre tamanoMarco ${tamanoMarcoMinimo} ${tamanoMarcoMaximo}
+
+   		 	# Calcula el numero de marcos de pagina
+   		 	tamanoMemoria=$(($numeroMarcos * $tamanoMarco))
+		else
+			$numeroProcesos=0
+			$numeroMarcos=0
+			$tamanoMarco=0
+		fi
+
+   		# Mostrar la tabla con los rangos min y max dados por el fichero rangosAleatoriosTotal.txt 
+		#	y los rangos min y max elegidos aleatoriamente a partir de ese fichero 
+   		clear
+	
+   		datos_rangosAleatorioTotal_tabla
+		mostrar_errores_rangosAleatorioTotal
+		echo -e -n "\n"
+		echo -e -n "\n"
+
+
+    	# Informar de la tabla
+
+		# RECORDAR REALIZAR SU RESPECTIVA FUNCION EN LOS INFORMES
+
+    	#datos_random_informes
+    	pausa_tecla
+
+	done
+    # GENERAR LOS PROCESOS    
+    for (( p=0; p < ${numeroProcesos}; p++ ));do
+
+        clear
+        echo "Generando procesos..."
+        barra_loading "$(( $p + 1 ))" "${numeroProcesos}"
+
+        # Añadir proceso a lista de procesos
+        procesos+=($p)
+        # Asignar color al proceso.
+        colorProceso[$p]=$(( (${p} % 12) + 5 ))
+        # Dar nombre al proceso 1 -> P01
+        generar_nombre_proceso
+        
+        aleatorio_entre tiempoLlegada[$p] ${tiempoLlegadaMinimo} ${tiempoLlegadaMaximo}
+        aleatorio_entre tiempoEjecucion[$p] ${tiempoEjecucionMinimo} ${tiempoEjecucionMaximo}
+        
+        # Si se aceptan desperdicios cambiar como se calcula el mínimo estructural
+        if [[ $desperdicios -eq 1 ]];then
+            aleatorio_entre minimoEstructural[$p] ${minimoEstructuralMinimo} ${minimoEstructuralMaximo}
+        else
+            # tiempo de ejecución es menor al mínimo máximo se escoge como máximo el tiempo de ejecución
+            if [[ ${tiempoEjecucion[$p]} -lt ${minimoEstructuralMaximo} ]];then
+                aleatorio_entre minimoEstructural[$p] ${minimoEstructuralMinimo} ${tiempoEjecucion[$p]}
+            # Si no se coge el mínimo máximo
+            else
+                aleatorio_entre minimoEstructural[$p] ${minimoEstructuralMinimo} ${minimoEstructuralMaximo}
+            fi
+        fi
+
+        # calcular las direcciones y páginas
+        for (( d=0; d < ${tiempoEjecucion[$p]}; d++ ));do
+            aleatorio_entre procesoDireccion[$p,$d] ${direccionMinima} ${direccionMaxima}
+            procesoPagina[${p},${d}]=$(( procesoDireccion[${p},${d}] / $tamanoMarco ))
+
+            # Actualizar anchoGen si la dirección de página es muy grande
+            [ ${#procesoPagina[$p,$d]} -gt $anchoGen ] && anchoGen=${#procesoPagina[$p,$d]}
+
+        done
+
+        # calcular anchos
+        # Calcular ancho columna tiempo llegada
+        [ $(( ${#tiempoLlegada[$p]} + 2 )) -gt ${anchoColTll} ] \
+            && anchoColTll=$(( ${#tiempoLlegada[$p]} + 2 ))
+        # Calcular ancho columna minimo estructural
+        [ $(( ${#minimoEstructural[$p]} + 2 )) -gt ${anchoColNm} ] \
+            && anchoColNm=$(( ${#minimoEstructural[$p]} + 2 ))
+        # Calcular ancho columna tiempo llegada
+        [ $(( ${#tiempoEjecucion[$p]} + 2 )) -gt ${anchoColTej} ] \
+            && anchoColTej=$(( ${#tiempoEjecucion[$p]} + 2 ))
+
+    done
+
+    datos_ordenar_llegada
+
+
+}
+
 
 
 # ------------------------------------
@@ -2590,11 +3195,13 @@ datos() {
               "¿Cómo quieres introducir los datos?" \
               metodo \
               "Por teclado" \
-	      "Fichero de Datos de ultima ejecucion (datos.txt)" \
-              "Por otro fichero de datos" \
-	      "A traves de RANGOS - manual" \
-	      "Fichero de RANGOS aleatorios de ultima ejecucion (datosrangos.txt)" \
-              "Por otro fichero de RANGOS"
+	     	 "Fichero de Datos de ultima ejecucion (datos.txt)" \
+          	"Por otro fichero de datos" \
+	     	 "A traves de RANGOS - manual" \
+	      	"Fichero de RANGOS aleatorios de ultima ejecucion (datosrangos.txt)" \
+          	"Por otro fichero de RANGOS" \
+			"Aleatorio rangos total"
+
 
     anchoTotal=$( tput cols )
 
@@ -2621,8 +3228,13 @@ datos() {
 	    rangos_random_ultima_ejecucion
 	;;
 	6 )
+        # Introducir los datos por un fichero de RANGOS
 	    ejecucion_rangos_archivo
-            # Introducir los datos por un fichero de RANGOS
+            
+        ;;
+	7 )
+		# Introducir los datos mediante un rango aleatorio(establecido por la maquina) que se va acotando hasta ser valido 
+		ejecucion_rangos_total
             
         ;;
     esac
@@ -3016,7 +3628,6 @@ ej_ejecutar_guardar_fallos() {
     local mom=$(( ${pc[$enEjecucion]} - 1 ))
 
     for mar in ${!marcosActuales[*]};do
-        marco=${marcosActuales[$mar]}
         resumenFallos["$mom,$mar"]="${memoriaPagina[$marco]}"
         resumenLRU["$mom,$mar"]="${memoriaLRU[$marco]}"
     done
@@ -3026,6 +3637,7 @@ ej_ejecutar_guardar_fallos() {
 # DES: Saca el proceso ejecutandose actual de la CPU y guarda su estado actual para recuperar su 
 #	ejecucion a partir de este punto mas adelante. Propiedad apropiativa SRPT.
 ej_sacar_proceso_cpu(){
+	
     colaEjecucion+=($enEjecucion)
 
     # Actualizar el estado del proceso a bloqueado
@@ -3033,18 +3645,6 @@ ej_sacar_proceso_cpu(){
 
     # Resetear los marcos actuales
     marcosActuales=()
-
-	# posible procesoBloqueo donde guardamos los tiempos de bloqueo para imprimirlos en pantalla
-    #procesoFin[$enEjecucion]=$t
-
-
-	# posible bloqueo de proceso para mostrarlo en pantalla
-    # Poner el proceso que ha terminado para mostrarlo en pantalla
-    # fin=$enEjecucion
-
-    # Mostrar la pantalla porque es un evento interesante
-    # mostrarPantalla=1
-
 
     # Liberar procesador
     unset enEjecucion
