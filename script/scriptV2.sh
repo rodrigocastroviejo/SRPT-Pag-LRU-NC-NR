@@ -326,7 +326,26 @@ cabecera() {
 # DES: Crea un número pseudoaleatorio y lo asigna a la variable.
 # USO: aleatorio_entre var min max
 aleatorio_entre() {
-    eval "${1}=$( shuf -i ${2}-${3} -n 1 )"
+
+	# shuf no deja calcular un aleatorio si el rango dado es negativo, sumamos la diferencia del negativo hasta 0 
+	#	y calculamos el aleatorio, posteriormente, le restamos otra vez esa distancia para poder obtener numeros aleatorios negativos
+	if [ $2 -lt 0 ];then 
+		local distanciaACeroMin=$(( $2 * -1 )) 
+		eval "${1}=$( shuf -i $(( $2 + $distanciaACeroMin ))-$(( $3 + $distanciaACeroMin )) -n 1 )"
+		eval "${1}=$(( $1 - $distanciaACeroMin ))"
+	
+	# En caso de que min y max sean negativos y el max sea menor que el min, basar la diferencia a 0 en el max, porque si no se queda a negativo
+	elif [ $2 -lt 0 ] && [ $3 -lt $2 ];then 
+		local distanciaACeroMin=$(( $3 * -1 )) 
+		eval "${1}=$( shuf -i $(( $2 + $distanciaACeroMin ))-$(( $3 + $distanciaACeroMin )) -n 1 )"
+		eval "${1}=$(( $1 - $distanciaACeroMin ))"
+	elif [ $3 -lt 0 ];then 
+		local distanciaACeroMax=$(( $3 * -1 )) 
+		eval "${1}=$( shuf -i $(( $2 + $distanciaACeroMax ))-$(( $3 + $distanciaACeroMax )) -n 1 )"
+		eval "${1}=$(( $1 - $distanciaACeroMax ))"
+	else
+    	eval "${1}=$( shuf -i ${2}-${3} -n 1 )"
+	fi
 }
 
 # DES: Espera a que se pulse una tecla para continuar el programa
@@ -366,10 +385,13 @@ init_globales() {
     readonly archivoAyuda="$DIR/ayuda.txt"                                    # Fichero de ayuda.
     readonly carpetaInformes="$DIR/informes"                                  # Carpeta donde se guardan los informes
     archivoInformePlano="informeBN.txt"                      	              # Archivo de informes sin color por defecto
-    archivoInformeColor="informeCOLOR.txt"                   		      # Archivo de informes con color por defecto
-    readonly carpetaDatos="$DIR/procesos"                                     # Carpeta donde se guardan los datos de las ejecuciones
-    readonly archivoUltimaEjecucion="$carpetaDatos/datos.txt"                 # Archivo con los datos de la última ejecución. Siempre se guarda
-    readonly archivoUltimaEjecucionRangos="$carpetaDatos/datosrangos.txt"     # Archivo con los rangos de la ultima ejecuion por alguna entrada de datos por aleatoriedad. 
+    archivoInformeColor="informeCOLOR.txt"                   		          # Archivo de informes con color por defecto
+    readonly carpetaLast="$DIR/fLast"                                            # Carpeta donde se guardan los datos de las ejecuciones
+    readonly carpetaDatos="$DIR/fDatos"                                          # Carpeta donde se guardan los datos de las ejecuciones
+    readonly carpetaRangos="$DIR/fRangos"                                        # Carpeta donde se guardan los datos de las ejecuciones
+    readonly carpetaRangosAleatoriosTotal="$DIR/fAleatoriosTotal"                # Carpeta donde se guardan los datos de las ejecuciones
+    readonly archivoUltimaEjecucion="$carpetaLast/datosLast.txt"                 # Archivo con los datos de la última ejecución. Siempre se guarda
+    readonly archivoUltimaEjecucionRangos="$carpetaLast/datosRangosLast.txt"     # Archivo con los rangos de la ultima ejecuion por alguna entrada de datos por aleatoriedad. 
     readonly anchoInformePlano=95                                             # Ancho del infome en texto plano
 
     readonly anchoNumeroProceso=${#maximoProcesos}                            # Se usa para nombrar a los procesos y rellenar el nombre con 0s ej P01
@@ -786,13 +808,11 @@ datos_pregunta_guardar() {
 	    preguntar "Seleccion de archivo" \
               "¿En que fichero quieres guardar los procesos?" \
               guardarSeleccionArchivo \
-	      "En el fichero de datos por defecto (datos.txt)" \
+	      "En el fichero de datos por defecto (datosDefault.txt)" \
               "En otro fichero"
     
-	     # si la opcion seleccionada es 1, los guardara mediante la funcion datos_guardar() en datos.txt (ultima ejecucion)
-	     # como eso se realiza en la datos() despues del case de seleccionar la forma de entrada de datos
 	    if [ $guardarSeleccionArchivo -eq 1 ]; then
-		    archivoDatos="datos.txt"
+		    archivoDatos="datosDefault.txt"
 	    fi
 
 	     # guarda los datos en otro fichero introducido por el usuario
@@ -837,11 +857,12 @@ rangos_pregunta_guardar() {
 	    preguntar "Seleccion de archivo" \
               "¿En que fichero quieres guardar los rangos?" \
               guardarSeleccionArchivo \
-	      "En el fichero de rangos por defecto (datosrangos.txt)" \
+	      "En el fichero de rangos por defecto (datosRangosDefault.txt)" \
               "En otro fichero"
     
-	     # si la opcion seleccionada es 1, los guardara mediante la funcion rangos_guardar() en datosrangos.txt (rangos ultima ejecucion)
-	     #como eso se realiza en las propias funciones de rangos aleatorios, no se realiza nada es esta funcion
+	    if [ $guardarSeleccionArchivo -eq 1 ]; then
+		    archivoRangos="rangosDefault.txt"
+	    fi
 
 	     # guarda los datos en otro fichero introducido por el usuario
 	    if [ $guardarSeleccionArchivo -eq 2 ]; then
@@ -851,7 +872,7 @@ rangos_pregunta_guardar() {
                 
                 
    	             # Si el archivo ya existe pregunta si sobreescribir
-       		         if [[ -f "${carpetaDatos}/${archivoRangos}" ]] \
+       		         if [[ -f "${carpetaRangos}/${archivoRangos}" ]] \
                		     && ! preguntar_si_no "${ft[0]}${cl[$av]}AVISO${rstf}. El archivo ya existe. ¿Sobreescribirlo?";then
 
 	                   	 echo -e -n "Introduce otro nombre para el ${ft[0]}${cl[re]}archivo de procesos${rstf}: "
@@ -872,7 +893,7 @@ rangos_pregunta_guardar() {
             informar_color ""
 
             # Pasa el archivo de procesos a ruta absoluta
-            archivoRangos="${carpetaDatos}/${archivoRangos}"
+            archivoRangos="${carpetaRangos}/${archivoRangos}"
             
 
 }
@@ -883,6 +904,10 @@ datos_guardar() {
     # Si la carpeta de datos no existe, crearla
     [ ! -d "${carpetaDatos}" ] \
         && mkdir "${carpetaDatos}"
+
+    # Si la carpeta de fLast no existe, crearla
+    [ ! -d "${carpetaLast}" ] \
+        && mkdir "${carpetaLast}"
 
     # Se crea una cadena que luego se guarda en los archivos respectivos
     local cadena=""
@@ -1640,12 +1665,35 @@ datos_rangosAleatorioTotal_tabla() {
 # DES: Comprueba si los rangos del fichero rangosAleatoriosTotal.txt son validos, retorna 1 en caso de que sean validos
 comprueba_rangosFichero_validos() {
 	validos_numero_marcos
+	if [ $? -ne 1 ];then
+		return 0
+	fi
 	validos_tamano_marcos
+	if [ $? -ne 1 ];then
+		return 0
+	fi
 	validos_numero_procesos
+	if [ $? -ne 1 ];then
+		return 0
+	fi
 	validos_tiempo_llegada_procesos
+	if [ $? -ne 1 ];then
+		return 0
+	fi
 	validos_tiempo_ejecucion_procesos
+	if [ $? -ne 1 ];then
+		return 0
+	fi
 	validos_minimo_estructural_procesos
+	if [ $? -ne 1 ];then
+		return 0
+	fi
 	validos_direcciones_procesos
+	if [ $? -ne 1 ];then
+		return 0
+	else 
+		return 1
+	fi
 }
 
 validos_numero_marcos() {
@@ -1851,6 +1899,8 @@ validos_direcciones_procesos() {
 # DES: Muestra los errores en los rangos calculados dentro de los min y max establecidos en rangosAleatoriosTotal.txt, por ejemplo,
 #  	si hubiese un min de procesos negativo, mostraria un error indicando la imposibilidad de un numero de proceso negativo.
 mostrar_errores_rangosAleatorioTotal() {
+
+    echo -e "${ft[0]}${cl[$re]}ERRORES${rstf}"
 	errores_numero_marcos
 	errores_tamano_marcos
 	errores_numero_procesos
@@ -2590,6 +2640,10 @@ datos_random_direcciones() {
 #DES: guarda los rangos de la ultima ejecucion por datos aleatorios
 rangos_guardar() {
 
+    # Si la carpeta de fRangos no existe, crearla
+    [ ! -d "${carpetaRangos}" ] \
+        && mkdir "${carpetaRangos}"
+
 	#con solo un > elimina el contenido del archivo y pasa a ser ese echo la primera linea
 	echo "#Numero marcos min: " > $archivoRangos 
 	echo "$numeroMarcosMinimo" >> $archivoRangos 
@@ -2704,7 +2758,7 @@ datos_random() {
     rangos_guardar
 
     archivoRangos=$archivoUltimaEjecucionRangos
-    # guarda siempre en el archivo de ultimaEjecucion(datosrangos.txt)
+    # guarda siempre en el archivo de ultimaEjecucion(datosRangosLast.txt)
     rangos_guardar
 
     # Mostrar la tabla antes de generar los procesos
@@ -2881,7 +2935,7 @@ rangos_archivoRangosAleatorioTotal_leer() {
     # Datos del proceso que se está leyendo
     local datosProceso=()
 
-    seleccion="rangosAleatorioTotal.txt"
+    seleccion="$carpetaRangosAleatoriosTotal/rangosAleatorioTotal.txt"
 
     # se va leyendo cada linea del archivo
     while read linea;do
@@ -2964,11 +3018,14 @@ rangos_archivoRangosAleatorioTotal_leer() {
 # DES: Generar los procesos de forma pseudo-aleatoria a partir de los rangos utilizados en la ultima ejecucion aleatoria
 rangos_random_ultima_ejecucion() {
 
+    # Preguntar si guardar rangos a archivo custom
+    rangos_pregunta_guardar
+
     # pregunta si guardar los datos utilizados 
     datos_pregunta_guardar
     
     # guarda el archivo de ultima ejecucion de rangos como archivo a utilizar en la funcion que lee el archivo
-    local seleccion="datosrangos.txt"
+    local seleccion="datosRangosLast.txt"
    
     # Parámetros
     local numeroMarcosMinimo="" 
@@ -2999,7 +3056,6 @@ rangos_random_ultima_ejecucion() {
     rangos_archivo_leer
 
 
-
     # Generacion entre el min y max del numero de procesos tamaño de memoria y tamañano de pagina
     # se generan aqui por ser necesarios para el calculo de los marcos de pagina y por que el numero de 
     # procesos es necesario en el apartarado que genera los procesos 
@@ -3010,8 +3066,11 @@ rangos_random_ultima_ejecucion() {
     # Calcula el tamano de la memoria en direcciones
     tamanoMemoria=$(($numeroMarcos * $tamanoMarco))
 
+	rangos_guardar
 
+    # Guardar en el archivo datosRangosLast.txt
     archivoRangos=$archivoUltimaEjecucionRangos
+	rangos_guardar
 
     # Mostrar la tabla antes de generar los procesos
     clear
@@ -3082,6 +3141,9 @@ rangos_random_ultima_ejecucion() {
 # DES: Generar los procesos de forma pseudo-aleatoria a partir de los rangos suministrados por un fichero de rangos
 ejecucion_rangos_archivo() {
 
+    # Preguntar si guardar rangos a archivo custom
+    rangos_pregunta_guardar
+
     # pregunta si guardar los datos utilizados 
     datos_pregunta_guardar
 
@@ -3136,6 +3198,12 @@ ejecucion_rangos_archivo() {
 
     # Calcula el numero de marcos de pagina
     tamanoMemoria=$(($numeroMarcos * $tamanoMarco))
+
+	rangos_guardar
+
+    # Guardar en el archivo datosRangosLast.txt
+    archivoRangos=$archivoUltimaEjecucionRangos
+	rangos_guardar
 
      # Mostrar la tabla antes de generar los procesos
     clear
@@ -3203,6 +3271,9 @@ ejecucion_rangos_archivo() {
 }
 
 ejecucion_rangos_total() {
+
+    # Preguntar si guardar rangos a archivo custom
+    rangos_pregunta_guardar
 
     # pregunta si guardar los datos utilizados 
     datos_pregunta_guardar
@@ -3286,6 +3357,7 @@ ejecucion_rangos_total() {
  		aleatorio_entre direccionMinima ${direccionMinimaFichero} ${direccionMaximaFichero}
  		aleatorio_entre direccionMaxima ${direccionMinimaFichero} ${direccionMaximaFichero}
 
+
 		
 		comprueba_rangosFichero_validos
 		if [ $? -eq 1 ];then
@@ -3309,6 +3381,26 @@ ejecucion_rangos_total() {
 			$tamanoMarco=0
 		fi
 
+		# Para evitar estar calculando rangos entre el min y max del fichero eternamente porque los rangos calculados no son validos
+		# 	Tras calcularlos por primera vez y no ser validos, establecemos todos los minimos en negativo a su minimo valido
+		if [ $flagRangosValidos -eq 0 ];then
+			[[ $numeroMarcosMinimoFichero -lt 1 ]] 
+				numeroMarcosMinimoFichero=1
+			[[ $tamanoMarcoMinimoFichero -lt 1 ]] 
+				tamanoMarcoMinimoFichero=1
+			[[ $numeroProcesosMinimoFichero -lt 1 ]] 
+				numeroProcesosMinimoFichero=1
+			[[ $tiempoLlegadaMinimoFichero -lt 0 ]] 
+				tiempoLlegadaMinimoFichero=1
+			[[ $tiempoEjecucionMinimoFichero -lt 1 ]] 
+				tiempoEjecucionMinimoFichero=1
+			[[ $minimoEstructuralMinimoFichero -lt 1 ]]
+				minimoEstructuralMinimoFichero=1 
+			[[ $direccionMinimaFichero -lt 0 ]] 
+				direccionMinimaFichero=0
+
+		fi
+		
    		# Mostrar la tabla con los rangos min y max dados por el fichero rangosAleatoriosTotal.txt 
 		#	y los rangos min y max elegidos aleatoriamente a partir de ese fichero 
    		clear
@@ -3327,6 +3419,12 @@ ejecucion_rangos_total() {
     	pausa_tecla
 
 	done
+
+	rangos_guardar
+
+    # Guardar en el archivo datosRangosLast.txt
+    archivoRangos=$archivoUltimaEjecucionRangos
+	rangos_guardar
 
 	# Muestra la tabla con los rangos calculados aptos para ejecucion
 	datos_rangosAleatorioTotal_tabla

@@ -1,5 +1,0 @@
-Al establecer minimo estructural, solo se va a meter ese minimo en memoria aunque tengamos mas esapcio disponible?
-
-Que significa que haya desperdicios
-
-

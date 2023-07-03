@@ -1,8 +1,6 @@
 # Numero de marcos de pagina:
-20
+3
 # Numero de direcciones por marco de pagina (tamaño marco de pagina):
-100
+12
 # Tll,Nm,dir1,dir2,dir3,...
-3,3,34,23,523,654
-15,5,987,876,554,345,23,123
-10,3,23,2566,34
+1,1,12,2,3,9,14,9,14,6,3,9,8,14
