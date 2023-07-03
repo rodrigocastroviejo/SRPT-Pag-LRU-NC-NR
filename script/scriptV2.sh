@@ -1368,7 +1368,6 @@ datos_teclado() {
 # DES: Comprueba que la carpeta existe y que hay archivos dentro.
 #      Tambien crea la lista con los archivos que hay dentro
 datos_archivo_comprobar() {
-
     # Si no existe la carpeta
     if [ ! -d "${carpetaDatos}" ];then
         mkdir "${carpetaDatos}"
@@ -1383,6 +1382,28 @@ datos_archivo_comprobar() {
     # Si no hay archivos en la carpeta
     if [ "${lista[0]}" == "*" ];then
         echo -e "${cl[av]}${ft[0]}AVISO.${rstf} No se ha encontrado ningún archivo en la carpeta ${ft[0]}${cl[re]}${carpetaDatos}${rstf}. Saliendo..."
+        exit
+    fi
+
+}
+
+# DES: Comprueba que la carpeta existe y que hay archivos dentro.
+#      Tambien crea la lista con los archivos que hay dentro
+rangos_archivo_comprobar() {
+    # Si no existe la carpeta
+    if [ ! -d "${carpetaRangos}" ];then
+        mkdir "${carpetaRangos}"
+        echo -e "${cl[av]}${ft[0]}AVISO.${rstf} No se ha encontrado ningún archivo en la carpeta ${ft[0]}${cl[re]}${carpetaRangos}${rstf}. Saliendo..."
+        exit
+    fi
+
+    for arch in "$carpetaRangos"/*;do
+        lista+=("${arch##*/}")
+    done
+
+    # Si no hay archivos en la carpeta
+    if [ "${lista[0]}" == "*" ];then
+        echo -e "${cl[av]}${ft[0]}AVISO.${rstf} No se ha encontrado ningún archivo en la carpeta ${ft[0]}${cl[re]}${carpetaRangos}${rstf}. Saliendo..."
         exit
     fi
 
@@ -1461,8 +1482,12 @@ datos_archivo_leer() {
     # Datos del proceso que se está leyendo
     local datosProceso=()
 
+	if [ -z $seleccion ];then 
+		seleccion="${carpetaLast}/datosLast.txt"
+	else
     # Hayar path completa del archivo seleccionado
     seleccion="${carpetaDatos}/$seleccion"
+	fi
 
     # se va leyendo cada linea del archivo
     while read linea;do
@@ -1563,18 +1588,20 @@ datos_archivo() {
 
 datos_archivo_ultima_ejecucion() {
 
-    # Como el archivo que vamos a seleccionar siempre es el mismo (datos.txt (ultima Ejecucion)), no hace falta las funciones
+    # Como el archivo que vamos a seleccionar siempre es el mismo (datosLast.txt (ultima Ejecucion)), no hace falta las funciones
     # de comprobacion y seleccion del archivo del que sacar los datos
     
-    local seleccion="datos.txt"
+	# Dejamos vacioa la seleccion para realizar una comprovacion en datos_archivo_leer y poder identificar que se trata del datosLast.txt
+    local seleccion=""
 
-    # Hacer los informes del archivo seleccionado
-    datos_archivo_informes
 
     # Interpreta los datos que hay en el archivo seleccionado
     # y crea todas las demás variables a partir de ellos
     datos_archivo_leer
     
+    # Hacer los informes del archivo seleccionado
+    datos_archivo_informes
+
     # Ordenar los procesos
     datos_ordenar_llegada
     
@@ -2842,7 +2869,11 @@ rangos_archivo_leer() {
     # Datos del proceso que se está leyendo
     local datosProceso=()
 
-    seleccion="${carpetaDatos}/$seleccion"
+	if [ -z $seleccion ];then 
+		seleccion="${carpetaLast}/datosRangosLast.txt"
+	else 
+    	seleccion="${carpetaRangos}/$seleccion"
+	fi
 
     # se va leyendo cada linea del archivo
     while read linea;do
@@ -3024,8 +3055,9 @@ rangos_random_ultima_ejecucion() {
     # pregunta si guardar los datos utilizados 
     datos_pregunta_guardar
     
-    # guarda el archivo de ultima ejecucion de rangos como archivo a utilizar en la funcion que lee el archivo
-    local seleccion="datosRangosLast.txt"
+    # Vacio para realizar una comprobacion en rangos_archivo_leer y determinar que tenemos que leer los datos desde el archivo de rangos
+	# 	de ultima ejecucion
+    local seleccion=""
    
     # Parámetros
     local numeroMarcosMinimo="" 
@@ -3153,7 +3185,7 @@ ejecucion_rangos_archivo() {
     local seleccion=""
 
     # comprobaciones previas
-    datos_archivo_comprobar
+    rangos_archivo_comprobar
 
     # Seleccionar archivo
     datos_archivo_seleccionar
@@ -3922,14 +3954,23 @@ ej_calcular_marco_siguiente() {
 #      No está directamente relacionado con la ejecución. Es solo para la pantalla.
 ej_ejecutar_guardar_fallos() {
 
+	#restaruar en caso de que el proceso haya sido sacado previamente los vectores resumenFallos y resumenLRU
+	
+#	for((mom=0; mom<${tiempoEjecucion[$enEjecucion]}; mom++));do
+#    	for mar in ${!marcosActuales[*]};do
+#   		    resumenFallos[$mom,$mar]=${resumenFallosProcesosEnPausa[$enEjecucion,$mom,$mar]}
+#			resumenLRU[$mom,$mar]=${resumenLRUProcesosEnPausa[$enEjecucion,$mom,$mar]}
+#		done
+#    done
+
     local marco=""
 	# Contiene la instruccion actual a ejecutar
     local mom=$(( ${pc[$enEjecucion]} - 1 ))
 
     for mar in ${!marcosActuales[*]};do
 		marco=${marcosActuales[$mar]}
-        resumenFallos["$mom,$mar"]="${memoriaPagina[$marco]}"
-        resumenLRU["$mom,$mar"]="${memoriaLRU[$marco]}"
+        resumenFallosProcesosEnPausa["$enEjecucion,$mom,$mar"]="${memoriaPagina[$marco]}"
+        resumenLRUProcesosEnPausa["$enEjecucion,$mom,$mar"]="${memoriaLRU[$marco]}"
     done
 
 }
@@ -3943,6 +3984,15 @@ ej_sacar_proceso_cpu(){
     # Actualizar el estado del proceso a bloqueado
     estado[$enEjecucion]=5
 
+	# Guardar el estado del resumen de fallos para poder reunudarlo cuando el proceso vuelva a entrar en CPU
+
+	#for((mom=0; mom<${tiempoEjecucion[$enEjecucion]}; mom++));do
+    #	for mar in ${!marcosActuales[*]};do
+   	#	    resumenFallosProcesosEnPausa[$enEjecucion,$mom,$mar]=${resumenFallos[$mom,$mar]}
+    #    	resumenLRUProcesosEnPausa["$enEjecucion,$mom,$mar"]="${resumenLRU[$mom,$mar]}"
+	#	done
+    #done
+
     # Resetear los marcos actuales
     marcosActuales=()
 
@@ -3950,7 +4000,6 @@ ej_sacar_proceso_cpu(){
     unset enEjecucion
 
     siguienteMarco=""
-
 
 }
 
@@ -4291,7 +4340,7 @@ ej_pantalla_fin_fallos() {
                 #if [ ${marcoFallo[$mom]} -eq $mar ];then
                     #printf "${cf[3]}╔%${anchoGen}s╗${cf[0]}" "${resumenFallos[$mom,$mar]}"
                 #else
-                    printf "┌%${anchoGen}s┐" "${resumenFallos[$mom,$mar]}"
+                    printf "┌%${anchoGen}s┐" "${resumenFallosProcesosEnPausa[$fin,$mom,$mar]}"
                 #fi
             done
             printf "${rstf}\n"
@@ -4309,9 +4358,9 @@ ej_pantalla_fin_fallos() {
                 #else
 					if [ $? -eq 1 ];then 
 						# He utilizado el tput como alternativa a las secuencias de escape para subrayar porque no funcionaban
-						printf "└  %${anchoMomento}s┘" "$(tput smul)${resumenLRU[$mom,$mar]}$(tput sgr0)"
+						printf "└  %${anchoMomento}s┘" "$(tput smul)${resumenLRUProcesosEnPausa[$fin,$mom,$mar]}$(tput sgr0)"
 					else
-                   		printf "└%${anchoMomento}s┘" "${resumenLRU[$mom,$mar]}"
+                   		printf "└%${anchoMomento}s┘" "${resumenLRUProcesosEnPausa[$fin,$mom,$mar]}"
 					fi
                 #fi
             done
@@ -5054,12 +5103,19 @@ ej() {
     local inicio=""                 # Proceso que ha empezado a ejecutarse
     local fin=""                    # Proceso que ha finalizado su ejecución
 
-    declare -A resumenFallos        # Contiene información de los fallos de página que han habido durante la ejecución del proceso
-                                    # se muestra cuando un proceso finaliza su ejecución. resumenFallos[$momento,$marco]
-    declare -A resumenLRU           # Contiene el estado del contador para cada marco en cada momento
-    declare -A paginaTiempo         # Contiene el tiempo en el que se introduce cada página del proceso [$proc,$pc]
-    local marcoFallo=()             # Marco que se usa para cada página
-    local numFallos=()              # Número de fallos de cada proceso
+    declare -A resumenFallos        			# Contiene información de los fallos de página que han habido durante la ejecución del proceso
+                                   				# se muestra cuando un proceso finaliza su ejecución. resumenFallos[$momento,$marco]
+
+	declare -A resumenFallosProcesosEnPausa  	# Cuando se saca un proceso de CPU, guarda es estado de resumenFallos, para poder restaurar resumenFallos
+												#	cuando se vuelva a meter el proceso a CPU, resumenFallosProcesosEnPausa[$proceso,$momento,$marco]
+
+    declare -A resumenLRU           			# Contiene el estado del contador para cada marco en cada momento
+	declare -A resumenLRUProcesosEnPausa		# Cuando se saca un proceso de CPU, guarda es estado de resumenLRU, para poder restaurar resumenLRU
+												#	cuando se vuelva a meter el proceso a CPU, resumenLRUProcesosEnPausa[$proceso,$momento,$marco]
+
+    declare -A paginaTiempo         			# Contiene el tiempo en el que se introduce cada página del proceso [$proc,$pc]
+    local marcoFallo=()             			# Marco que se usa para cada página
+    local numFallos=()              			# Número de fallos de cada proceso
     for p in ${procesos[*]};do numFallos[$p]=0 ;done
 
     # Variables para la linea temporal
