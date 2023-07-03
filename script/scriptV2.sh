@@ -3954,23 +3954,14 @@ ej_calcular_marco_siguiente() {
 #      No está directamente relacionado con la ejecución. Es solo para la pantalla.
 ej_ejecutar_guardar_fallos() {
 
-	#restaruar en caso de que el proceso haya sido sacado previamente los vectores resumenFallos y resumenLRU
-	
-#	for((mom=0; mom<${tiempoEjecucion[$enEjecucion]}; mom++));do
-#    	for mar in ${!marcosActuales[*]};do
-#   		    resumenFallos[$mom,$mar]=${resumenFallosProcesosEnPausa[$enEjecucion,$mom,$mar]}
-#			resumenLRU[$mom,$mar]=${resumenLRUProcesosEnPausa[$enEjecucion,$mom,$mar]}
-#		done
-#    done
-
     local marco=""
 	# Contiene la instruccion actual a ejecutar
     local mom=$(( ${pc[$enEjecucion]} - 1 ))
 
     for mar in ${!marcosActuales[*]};do
 		marco=${marcosActuales[$mar]}
-        resumenFallosProcesosEnPausa["$enEjecucion,$mom,$mar"]="${memoriaPagina[$marco]}"
-        resumenLRUProcesosEnPausa["$enEjecucion,$mom,$mar"]="${memoriaLRU[$marco]}"
+        resumenFallos["$enEjecucion,$mom,$mar"]="${memoriaPagina[$marco]}"
+        resumenLRU["$enEjecucion,$mom,$mar"]="${memoriaLRU[$marco]}"
     done
 
 }
@@ -3983,15 +3974,6 @@ ej_sacar_proceso_cpu(){
 
     # Actualizar el estado del proceso a bloqueado
     estado[$enEjecucion]=5
-
-	# Guardar el estado del resumen de fallos para poder reunudarlo cuando el proceso vuelva a entrar en CPU
-
-	#for((mom=0; mom<${tiempoEjecucion[$enEjecucion]}; mom++));do
-    #	for mar in ${!marcosActuales[*]};do
-   	#	    resumenFallosProcesosEnPausa[$enEjecucion,$mom,$mar]=${resumenFallos[$mom,$mar]}
-    #    	resumenLRUProcesosEnPausa["$enEjecucion,$mom,$mar"]="${resumenLRU[$mom,$mar]}"
-	#	done
-    #done
 
     # Resetear los marcos actuales
     marcosActuales=()
@@ -4267,12 +4249,10 @@ calcular_LRU_mas_alto() {
 	local indiceMarcoLRUMasAlto
 	local LRUMasAlto=-1
 	for (( marcoAComparar=0; marcoAComparar<${minimoEstructural[$fin]}; marcoAComparar++ ));do
-#		set -x 
-		if [[ -n ${resumenLRU[$mom,$marcoAComparar]} ]] && [[ -n ${resumenLRU[$mom,$mar]} ]] && [ ${resumenLRU[$mom,$marcoAComparar]} -gt $LRUMasAlto ];then 	
+		if [[ -n ${resumenLRU[$fin,$mom,$marcoAComparar]} ]] && [[ -n ${resumenLRU[$fin,$mom,$mar]} ]] && [ ${resumenLRU[$fin,$mom,$marcoAComparar]} -gt $LRUMasAlto ];then 	
 			indiceMarcoLRUMasAlto=$marcoAComparar
-			LRUMasAlto=${resumenLRU[$mom,$marcoAComparar]}
+			LRUMasAlto=${resumenLRU[$fin,$mom,$marcoAComparar]}
 		fi
-#		set +x
 
 	done
 
@@ -4340,7 +4320,7 @@ ej_pantalla_fin_fallos() {
                 #if [ ${marcoFallo[$mom]} -eq $mar ];then
                     #printf "${cf[3]}╔%${anchoGen}s╗${cf[0]}" "${resumenFallos[$mom,$mar]}"
                 #else
-                    printf "┌%${anchoGen}s┐" "${resumenFallosProcesosEnPausa[$fin,$mom,$mar]}"
+                    printf "┌%${anchoGen}s┐" "${resumenFallos[$fin,$mom,$mar]}"
                 #fi
             done
             printf "${rstf}\n"
@@ -4358,9 +4338,9 @@ ej_pantalla_fin_fallos() {
                 #else
 					if [ $? -eq 1 ];then 
 						# He utilizado el tput como alternativa a las secuencias de escape para subrayar porque no funcionaban
-						printf "└  %${anchoMomento}s┘" "$(tput smul)${resumenLRUProcesosEnPausa[$fin,$mom,$mar]}$(tput sgr0)"
+						printf "└  %${anchoMomento}s┘" "$(tput smul)${resumenLRU[$fin,$mom,$mar]}$(tput sgr0)"
 					else
-                   		printf "└%${anchoMomento}s┘" "${resumenLRUProcesosEnPausa[$fin,$mom,$mar]}"
+                   		printf "└%${anchoMomento}s┘" "${resumenLRU[$fin,$mom,$mar]}"
 					fi
                 #fi
             done
@@ -4913,8 +4893,6 @@ ej_limpiar_eventos() {
 
     # Si ha finalizado un proceso
     if [[ -n "${fin}" ]];then
-        resumenFallos=()
-        resumenLRU=()
         # Por si entra un proceso a la vez que sale
         local corte=${tiempoEjecucion[$fin]}
         marcoFallo=(${marcoFallo[@]:$corte})
@@ -5104,14 +5082,9 @@ ej() {
     local fin=""                    # Proceso que ha finalizado su ejecución
 
     declare -A resumenFallos        			# Contiene información de los fallos de página que han habido durante la ejecución del proceso
-                                   				# se muestra cuando un proceso finaliza su ejecución. resumenFallos[$momento,$marco]
+                                   				# se muestra cuando un proceso finaliza su ejecución. resumenFallosProcesosEnPausa[$proceso,$momento,$marco]
 
-	declare -A resumenFallosProcesosEnPausa  	# Cuando se saca un proceso de CPU, guarda es estado de resumenFallos, para poder restaurar resumenFallos
-												#	cuando se vuelva a meter el proceso a CPU, resumenFallosProcesosEnPausa[$proceso,$momento,$marco]
-
-    declare -A resumenLRU           			# Contiene el estado del contador para cada marco en cada momento
-	declare -A resumenLRUProcesosEnPausa		# Cuando se saca un proceso de CPU, guarda es estado de resumenLRU, para poder restaurar resumenLRU
-												#	cuando se vuelva a meter el proceso a CPU, resumenLRUProcesosEnPausa[$proceso,$momento,$marco]
+    declare -A resumenLRU           			# Contiene el estado del contador para cada marco en cada momento, resumenLRUProcesosEnPausa[$proceso,$momento,$marco]
 
     declare -A paginaTiempo         			# Contiene el tiempo en el que se introduce cada página del proceso [$proc,$pc]
     local marcoFallo=()             			# Marco que se usa para cada página

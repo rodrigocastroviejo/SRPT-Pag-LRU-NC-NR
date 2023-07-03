@@ -218,7 +218,7 @@ El archivo de datos usado es: /home/rodrigo/Descargas/SRPT-Pag-LRU-NC-NR/script/
  El proceso P02 ha finalizado su ejecución con 4 fallos de página.
   T: (  4)(  5)(  6)(  7)
  M0: ┌  0┐┌  0┐┌  0┐┌  0┐
-     └  0┘└  1┘└  2┘└  3┘
+     └  0(B┘└  1(B┘└  2(B┘└  3(B┘
  M1: ┌   ┐┌  1┐┌  1┐┌  1┐
      └   ┘└  0┘└  1┘└  2┘
  M2: ┌   ┐┌   ┐┌  2┐┌  2┐
@@ -264,7 +264,7 @@ El archivo de datos usado es: /home/rodrigo/Descargas/SRPT-Pag-LRU-NC-NR/script/
  El proceso P03 ha finalizado su ejecución con 2 fallos de página.
   T: (  8)(  9)
  M0: ┌  0┐┌  0┐
-     └  0┘└  1┘
+     └  0(B┘└  1(B┘
  M1: ┌   ┐┌  1┐
      └   ┘└  0┘
  M2: ┌   ┐┌   ┐
@@ -309,9 +309,9 @@ El archivo de datos usado es: /home/rodrigo/Descargas/SRPT-Pag-LRU-NC-NR/script/
  El proceso P01 ha finalizado su ejecución con 4 fallos de página.
   T: (  2)(  3)( 10)( 11)( 12)( 13)( 14)
  M0: ┌  0┐┌  0┐┌  0┐┌  0┐┌  0┐┌  0┐┌  0┐
-     └  0┘└  1┘└  0┘└  0┘└  0┘└  1┘└  2┘
+     └  0(B┘└  1(B┘└  0┘└  0┘└  0┘└  1┘└  2┘
  M1: ┌   ┐┌  1┐┌  1┐┌  1┐┌  1┐┌  1┐┌  1┐
-     └   ┘└  0┘└  1┘└  2┘└  3┘└  4┘└  5┘
+     └   ┘└  0┘└  1(B┘└  2(B┘└  3(B┘└  4(B┘└  5(B┘
  M2: ┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐┌  2┐┌  2┐
      └   ┘└   ┘└   ┘└   ┘└   ┘└  0┘└  1┘
  M3: ┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐┌   ┐┌  3┐
@@ -343,3 +343,18 @@ El archivo de datos usado es: /home/rodrigo/Descargas/SRPT-Pag-LRU-NC-NR/script/
  BT: |        0  1  0  1  2  3  0  1  0  0  0  2  3| T=15
      |0     2     4           8     10             15 |
 ----------------------------------------------------------------
+                                                 
+                                                 
+  SRPT - Pag - LRU - NC - NR                     
+                                                 
+  Resumen Final                                  
+                                                 
+                                                 
+
+ RefTll Tej Tesp Tret  Ini  Fin Fallos 
+ P01  2   7    6   13   10   15      4 
+ P02  4   4    0    4    4    8      4 
+ P03  6   2    2    4    8   10      2 
+
+ Tiempo de espera medio: 2.66
+ Tiempo de retorno medio: 7.00
