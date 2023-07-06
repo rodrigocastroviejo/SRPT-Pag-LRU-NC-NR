@@ -4236,10 +4236,14 @@ ej_pantalla_fin_fallos() {
 				calcular_LRU_mas_alto
 
 				# sombreado del marco que se ha introducido una nueva pagina, o se haya reusado una pagina de dicho marco
-                #if [ ${marcoFallo[$mom]} -eq $mar ];then
-                   # printf "${cf[3]}╚%${anchoMomento}s╝${cf[0]}" "${resumenLRU[$fin,$mom,$mar]}"
-				if [ -z ${resumenLRU[$fin,$mom,$mar]} ];then
-					printf "└%${anchoMomento}s┘" ""
+                if [ ${marcoFallo[$mom]} -eq $mar ];then
+                    printf "${cf[3]}╚%${anchoMomento}s╝${cf[0]}" "${resumenLRU[$fin,$mom,$mar]}"
+				elif [ -z ${resumenLRU[$fin,$mom,$mar]} ];then
+					if [ $indiceMarcoLRUMasAlto -eq $mar ] && [ $mom -ne 0 ];then 
+					 	printf "└${ft[0]}${ft[2]}${cl[$re]}%${anchoMomento}s${rstf}┘" "*"
+					else
+						printf "└%${anchoMomento}s┘" ""
+					fi
 				else
 					# Subrayado del indice LRU mas alto 
 					if [ $indiceMarcoLRUMasAlto -eq $mar ];then 
