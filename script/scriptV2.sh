@@ -1691,14 +1691,14 @@ datos_rangosAleatorioTotal_tabla() {
 	printf "${cf[10]}${cl[1]}                             %-13s   %-49s ${rstf}\n" "Rangos Aleatorios Total" "Rangos calculados"
 	datos_comprobar_validez_min_tabla numeroMarcosMinimo 1
 	if [ $? -eq 1 ];then 
-		printf "${cf[10]}${cl[1]}                   Número marcos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroMarcosMinimoFichero} / $numeroMarcosMaximoFichero ]" "[ - / - ]" "--> $numeroMarcos" 
+		printf "${cf[10]}${cl[1]}                   Número marcos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroMarcosMinimoFichero} / $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} / - ]" "--> $numeroMarcos" 
 	else
 		printf "${cf[10]}${cl[1]}                   Número marcos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroMarcosMinimoFichero} / $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} / $numeroMarcosMaximo ]" "--> $numeroMarcos" 
 	fi
 	datos_comprobar_validez_min_tabla tamanoMarcoMinimo 1
 
 	if [ $? -eq 1 ];then 
-    	printf "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tamanoMarcoMinimoFichero} / ${tamanoMarcoMaximoFichero} ]" "[ - / - ]" "--> $tamanoMarco"
+    	printf "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tamanoMarcoMinimoFichero} / ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} / - ]" "--> $tamanoMarco"
 	else
     	printf "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tamanoMarcoMinimoFichero} / ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} / ${tamanoMarcoMaximo} ]" "--> $tamanoMarco"
 	fi
@@ -1709,35 +1709,35 @@ datos_rangosAleatorioTotal_tabla() {
 
 	datos_comprobar_validez_min_tabla numeroProcesosMinimo 1
 	if [ $? -eq 1 ];then 
-    	printf "${cf[10]}${cl[1]}                 Número procesos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroProcesosMinimoFichero} / ${numeroProcesosMaximoFichero} ]"	"[ - / - ]" "--> $numeroProcesos"
+    	printf "${cf[10]}${cl[1]}                 Número procesos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroProcesosMinimoFichero} / ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} / - ]" "--> $numeroProcesos"
 	else
     	printf "${cf[10]}${cl[1]}                 Número procesos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroProcesosMinimoFichero} / ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} / ${numeroProcesosMaximo} ]" "--> $numeroProcesos"
 	fi
 
 	datos_comprobar_validez_min_tabla tiempoLlegadaMinimo 0
 	if [ $? -eq 1 ];then 
-    	printf "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoLlegadaMinimoFichero} / ${tiempoLlegadaMaximoFichero} ]" "[ - / - ]"
+    	printf "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoLlegadaMinimoFichero} / ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} / - ]"
 	else
     	printf "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoLlegadaMinimoFichero} / ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} / ${tiempoLlegadaMaximo} ]"
 	fi
 
 	datos_comprobar_validez_min_tabla tiempoEjecucionMinimo 1
 	if [ $? -eq 1 ];then 
-    	printf "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoEjecucionMinimoFichero} / ${tiempoEjecucionMaximoFichero} ]" "[ - / - ]"
+    	printf "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoEjecucionMinimoFichero} / ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} / - ]"
 	else
     	printf "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoEjecucionMinimoFichero} / ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} / ${tiempoEjecucionMaximo} ]"
 	fi
 
 	datos_comprobar_validez_min_tabla minimoEstructuralMinimo 1
 	if [ $? -eq 1 ];then 
-    	printf "${cf[10]}${cl[1]}              Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${minimoEstructuralMinimoFichero} / ${minimoEstructuralMaximoFichero} ]" "[ - / - ]"
+    	printf "${cf[10]}${cl[1]}              Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${minimoEstructuralMinimoFichero} / ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} / - ]"
 	else
     	printf "${cf[10]}${cl[1]}              Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${minimoEstructuralMinimoFichero} / ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} / ${minimoEstructuralMaximo} ]"
 	fi
 
 	datos_comprobar_validez_min_tabla direccionMinima 0
 	if [ $? -eq 1 ];then 
-    	printf "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${direccionMinimaFichero} / ${direccionMaximaFichero} ]" "[ - / - ]"
+    	printf "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${direccionMinimaFichero} / ${direccionMaximaFichero} ]" "[ ${direccionMinima} / - ]"
 	else
     	printf "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${direccionMinimaFichero} / ${direccionMaximaFichero} ]" "[ ${direccionMinima} / ${direccionMaxima} ]"
 	fi
