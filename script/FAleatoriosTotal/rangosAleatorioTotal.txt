@@ -1,7 +1,7 @@
 #Numero marcos min: 
--15
+5
 #Numero marcos max: 
-15
+25
 #Tamaño marco min: 
 -15
 #Tamaño marco max: 

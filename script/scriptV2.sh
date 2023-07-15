@@ -1676,20 +1676,72 @@ datos_random_informes() {
     informar_plano ""
 }
 
+# DES: Si el primer argumento(el min) es menor que el valor minimo valido(segundo argumento), deja vacio la variable pasada como 1er arg, para que no se muestre en la tabla
+datos_comprobar_validez_min_tabla() {
+	if [ ${!1} -lt $2 ];then
+		return 1
+	fi		
+}
+
 # DES: Tabla con los rangos min y max del fichero rangosAleatoriosTotal.txt y los rangos min y max calculados aleatoriamente a partir dentro 
 # 	de ese rangos de rangosAleatoriosTotal.txt	
 datos_rangosAleatorioTotal_tabla() {
     echo -e         "${cf[ac]}                                                                                                         ${rstf}"
     echo -e         "${cf[10]}                                                                                                         ${rstf}"
 	printf "${cf[10]}${cl[1]}                             %-13s   %-49s ${rstf}\n" "Rangos Aleatorios Total" "Rangos calculados"
-	printf "${cf[10]}${cl[1]}                   Número marcos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroMarcosMinimoFichero} - $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} - $numeroMarcosMaximo ]" "--> $numeroMarcos" 
-    printf "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tamanoMarcoMinimoFichero} - ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} - ${tamanoMarcoMaximo} ]" "--> $tamanoMarco"
-    printf "${cf[10]}${cl[1]}                  Tamaño memoria : %-13s %-55s ${rstf}\n" "$tamanoMemoria" 
-    printf "${cf[10]}${cl[1]}                 Número procesos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroProcesosMinimoFichero} - ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} - ${numeroProcesosMaximo} ]" "--> $numeroProcesos"
-    printf "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoLlegadaMinimoFichero} - ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} - ${tiempoLlegadaMaximo} ]"
-    printf "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoEjecucionMinimoFichero} - ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} - ${tiempoEjecucionMaximo} ]"
-    printf "${cf[10]}${cl[1]}              Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${minimoEstructuralMinimoFichero} - ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} - ${minimoEstructuralMaximo} ]"
-    printf "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${direccionMinimaFichero} - ${direccionMaximaFichero} ]" "[ ${direccionMinima} - ${direccionMaxima} ]"
+	datos_comprobar_validez_min_tabla numeroMarcosMinimo 1
+	if [ $? -eq 1 ];then 
+		printf "${cf[10]}${cl[1]}                   Número marcos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroMarcosMinimoFichero} / $numeroMarcosMaximoFichero ]" "[ - / - ]" "--> $numeroMarcos" 
+	else
+		printf "${cf[10]}${cl[1]}                   Número marcos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroMarcosMinimoFichero} / $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} / $numeroMarcosMaximo ]" "--> $numeroMarcos" 
+	fi
+	datos_comprobar_validez_min_tabla tamanoMarcoMinimo 1
+
+	if [ $? -eq 1 ];then 
+    	printf "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tamanoMarcoMinimoFichero} / ${tamanoMarcoMaximoFichero} ]" "[ - / - ]" "--> $tamanoMarco"
+	else
+    	printf "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tamanoMarcoMinimoFichero} / ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} / ${tamanoMarcoMaximo} ]" "--> $tamanoMarco"
+	fi
+    	
+
+	printf "${cf[10]}${cl[1]}                  Tamaño memoria : %-13s %-55s ${rstf}\n" "$tamanoMemoria" 
+
+
+	datos_comprobar_validez_min_tabla numeroProcesosMinimo 1
+	if [ $? -eq 1 ];then 
+    	printf "${cf[10]}${cl[1]}                 Número procesos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroProcesosMinimoFichero} / ${numeroProcesosMaximoFichero} ]"	"[ - / - ]" "--> $numeroProcesos"
+	else
+    	printf "${cf[10]}${cl[1]}                 Número procesos : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${numeroProcesosMinimoFichero} / ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} / ${numeroProcesosMaximo} ]" "--> $numeroProcesos"
+	fi
+
+	datos_comprobar_validez_min_tabla tiempoLlegadaMinimo 0
+	if [ $? -eq 1 ];then 
+    	printf "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoLlegadaMinimoFichero} / ${tiempoLlegadaMaximoFichero} ]" "[ - / - ]"
+	else
+    	printf "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoLlegadaMinimoFichero} / ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} / ${tiempoLlegadaMaximo} ]"
+	fi
+
+	datos_comprobar_validez_min_tabla tiempoEjecucionMinimo 1
+	if [ $? -eq 1 ];then 
+    	printf "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoEjecucionMinimoFichero} / ${tiempoEjecucionMaximoFichero} ]" "[ - / - ]"
+	else
+    	printf "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${tiempoEjecucionMinimoFichero} / ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} / ${tiempoEjecucionMaximo} ]"
+	fi
+
+	datos_comprobar_validez_min_tabla minimoEstructuralMinimo 1
+	if [ $? -eq 1 ];then 
+    	printf "${cf[10]}${cl[1]}              Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${minimoEstructuralMinimoFichero} / ${minimoEstructuralMaximoFichero} ]" "[ - / - ]"
+	else
+    	printf "${cf[10]}${cl[1]}              Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${minimoEstructuralMinimoFichero} / ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} / ${minimoEstructuralMaximo} ]"
+	fi
+
+	datos_comprobar_validez_min_tabla direccionMinima 0
+	if [ $? -eq 1 ];then 
+    	printf "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${direccionMinimaFichero} / ${direccionMaximaFichero} ]" "[ - / - ]"
+	else
+    	printf "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}\n" "[ ${direccionMinimaFichero} / ${direccionMaximaFichero} ]" "[ ${direccionMinima} / ${direccionMaxima} ]"
+	fi
+
     echo -e         "${cf[10]}                                                                                                         ${rstf}"
     echo -e         "${cf[ac]}                                                                                                         ${rstf}"
 	echo
@@ -1700,14 +1752,14 @@ datos_rangosAleatorioTotal_informes() {
     informar_color         "${cf[ac]}                                                                                                         ${rstf}"
     informar_color         "${cf[10]}                                                                                                         ${rstf}"
 	informar_color "${cf[10]}${cl[1]}                             %-13s   %-49s ${rstf}" "Rangos Aleatorios Total" "Rangos calculados"
-	informar_color "${cf[10]}${cl[1]}                   Número marcos : %-13s %-20s %-13s %-20s ${rstf}" "[ ${numeroMarcosMinimoFichero} - $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} - $numeroMarcosMaximo ]" "--> $numeroMarcos" 
-    informar_color "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tamanoMarcoMinimoFichero} - ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} - ${tamanoMarcoMaximo} ]" "--> $tamanoMarco"
+	informar_color "${cf[10]}${cl[1]}                   Número marcos : %-13s %-20s %-13s %-20s ${rstf}" "[ ${numeroMarcosMinimoFichero} / $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} / $numeroMarcosMaximo ]" "--> $numeroMarcos" 
+    informar_color "${cf[10]}${cl[1]}   Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tamanoMarcoMinimoFichero} / ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} / ${tamanoMarcoMaximo} ]" "--> $tamanoMarco"
     informar_color "${cf[10]}${cl[1]}                  Tamaño memoria : %-13s %-55s ${rstf}" "$tamanoMemoria" 
-    informar_color "${cf[10]}${cl[1]}                 Número procesos : %-13s %-20s %-13s %-20s ${rstf}" "[ ${numeroProcesosMinimoFichero} - ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} - ${numeroProcesosMaximo} ]" "--> $numeroProcesos"
-    informar_color "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tiempoLlegadaMinimoFichero} - ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} - ${tiempoLlegadaMaximo} ]"
-    informar_color "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tiempoEjecucionMinimoFichero} - ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} - ${tiempoEjecucionMaximo} ]"
-    informar_color "${cf[10]}${cl[1]}              Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}" "[ ${minimoEstructuralMinimoFichero} - ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} - ${minimoEstructuralMaximo} ]"
-    informar_color "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}" "[ ${direccionMinimaFichero} - ${direccionMaximaFichero} ]" "[ ${direccionMinima} - ${direccionMaxima} ]"
+    informar_color "${cf[10]}${cl[1]}                 Número procesos : %-13s %-20s %-13s %-20s ${rstf}" "[ ${numeroProcesosMinimoFichero} / ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} / ${numeroProcesosMaximo} ]" "--> $numeroProcesos"
+    informar_color "${cf[10]}${cl[1]}                  Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tiempoLlegadaMinimoFichero} / ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} / ${tiempoLlegadaMaximo} ]"
+    informar_color "${cf[10]}${cl[1]}                Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tiempoEjecucionMinimoFichero} / ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} / ${tiempoEjecucionMaximo} ]"
+    informar_color "${cf[10]}${cl[1]}              Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}" "[ ${minimoEstructuralMinimoFichero} / ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} / ${minimoEstructuralMaximo} ]"
+    informar_color "${cf[10]}${cl[1]} Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}" "[ ${direccionMinimaFichero} / ${direccionMaximaFichero} ]" "[ ${direccionMinima} / ${direccionMaxima} ]"
     informar_color         "${cf[10]}                                                                                                         ${rstf}"
     informar_color         "${cf[ac]}                                                                                                         ${rstf}"
     informar_color ""
@@ -1715,14 +1767,14 @@ datos_rangosAleatorioTotal_informes() {
 	informar_plano " █████████████████████████████████████████████████████████████████████████████"
 	informar_plano " █                                                                           █"
 	informar_plano " █                            %-13s   %-54s ${rstf}" "Rangos Aleatorios Total" "Rangos calculados"
-	informar_plano " █                  Número marcos : %-13s %-20s %-13s %-20s ${rstf}" "[ ${numeroMarcosMinimoFichero} - $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} - $numeroMarcosMaximo ]" "--> $numeroMarcos" 
-    informar_plano " █  Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tamanoMarcoMinimoFichero} - ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} - ${tamanoMarcoMaximo} ]" "--> $tamanoMarco"
+	informar_plano " █                  Número marcos : %-13s %-20s %-13s %-20s ${rstf}" "[ ${numeroMarcosMinimoFichero} / $numeroMarcosMaximoFichero ]" "[ ${numeroMarcosMinimo} / $numeroMarcosMaximo ]" "--> $numeroMarcos" 
+    informar_plano " █  Tamaño marco (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tamanoMarcoMinimoFichero} / ${tamanoMarcoMaximoFichero} ]" "[ ${tamanoMarcoMinimo} / ${tamanoMarcoMaximo} ]" "--> $tamanoMarco"
     informar_plano " █                 Tamaño memoria : %-13s %-55s ${rstf}" "$tamanoMemoria" 
-    informar_plano " █                Número procesos : %-13s %-20s %-13s %-20s ${rstf}" "[ ${numeroProcesosMinimoFichero} - ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} - ${numeroProcesosMaximo} ]" "--> $numeroProcesos"
-    informar_plano " █                 Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tiempoLlegadaMinimoFichero} - ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} - ${tiempoLlegadaMaximo} ]"
-    informar_plano " █               Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tiempoEjecucionMinimoFichero} - ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} - ${tiempoEjecucionMaximo} ]"
-    informar_plano " █             Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}" "[ ${minimoEstructuralMinimoFichero} - ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} - ${minimoEstructuralMaximo} ]"
-    informar_plano " █Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}" "[ ${direccionMinimaFichero} - ${direccionMaximaFichero} ]" "[ ${direccionMinima} - ${direccionMaxima} ]"
+    informar_plano " █                Número procesos : %-13s %-20s %-13s %-20s ${rstf}" "[ ${numeroProcesosMinimoFichero} / ${numeroProcesosMaximoFichero} ]"	"[ ${numeroProcesosMinimo} / ${numeroProcesosMaximo} ]" "--> $numeroProcesos"
+    informar_plano " █                 Tiempo llegada : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tiempoLlegadaMinimoFichero} / ${tiempoLlegadaMaximoFichero} ]" "[ ${tiempoLlegadaMinimo} / ${tiempoLlegadaMaximo} ]"
+    informar_plano " █               Tiempo ejecución : %-13s %-20s %-13s %-20s ${rstf}" "[ ${tiempoEjecucionMinimoFichero} / ${tiempoEjecucionMaximoFichero} ]" "[ ${tiempoEjecucionMinimo} / ${tiempoEjecucionMaximo} ]"
+    informar_plano " █             Mínimo estructural : %-13s %-20s %-13s %-20s ${rstf}" "[ ${minimoEstructuralMinimoFichero} / ${minimoEstructuralMaximoFichero} ]" "[ ${minimoEstructuralMinimo} / ${minimoEstructuralMaximo} ]"
+    informar_plano " █Tamaño proceso (en direcciones) : %-13s %-20s %-13s %-20s ${rstf}" "[ ${direccionMinimaFichero} / ${direccionMaximaFichero} ]" "[ ${direccionMinima} / ${direccionMaxima} ]"
 	informar_plano " █                                                                           █"
     informar_plano " █████████████████████████████████████████████████████████████████████████████"
     informar_plano ""
@@ -3192,47 +3244,7 @@ ejecucion_rangos_total() {
 	# Da los valores a las variables(del fichero) correspondientes de los rangos del fichero
 	rangos_archivoRangosAleatorioTotal_leer
 
-	# Asigna aleatoriamente los min y max dentro de los rangos dados para cada variable por rangosAleatoriosTotal.txt
- 	aleatorio_entre numeroMarcosMinimo ${numeroMarcosMinimoFichero} ${numeroMarcosMaximoFichero}
- 	aleatorio_entre numeroMarcosMaximo ${numeroMarcosMinimoFichero} ${numeroMarcosMaximoFichero}
-
- 	aleatorio_entre tamanoMarcoMinimo ${tamanoMarcoMinimoFichero} ${tamanoMarcoMaximoFichero}
- 	aleatorio_entre tamanoMarcoMaximo ${tamanoMarcoMinimoFichero} ${tamanoMarcoMaximoFichero}
-
- 	aleatorio_entre numeroProcesosMinimo ${numeroProcesosMinimoFichero} ${numeroProcesosMaximoFichero}
- 	aleatorio_entre numeroProcesosMaximo ${numeroProcesosMinimoFichero} ${numeroProcesosMaximoFichero}
-
- 	aleatorio_entre tiempoLlegadaMinimo ${tiempoLlegadaMinimoFichero} ${tiempoLlegadaMaximoFichero}
- 	aleatorio_entre tiempoLlegadaMaximo ${tiempoLlegadaMinimoFichero} ${tiempoLlegadaMaximoFichero}
-
- 	aleatorio_entre tiempoEjecucionMinimo ${tiempoEjecucionMinimoFichero} ${tiempoEjecucionMaximoFichero}
-  	aleatorio_entre tiempoEjecucionMaximo ${tiempoEjecucionMinimoFichero} ${tiempoEjecucionMaximoFichero}
-
- 	aleatorio_entre minimoEstructuralMinimo ${minimoEstructuralMinimoFichero} ${minimoEstructuralMaximoFichero}
- 	aleatorio_entre minimoEstructuralMaximo ${minimoEstructuralMinimoFichero} ${minimoEstructuralMaximoFichero}
-
- 	aleatorio_entre direccionMinima ${direccionMinimaFichero} ${direccionMaximaFichero}
- 	aleatorio_entre direccionMaxima ${direccionMinimaFichero} ${direccionMaximaFichero}
-
- 	numeroProcesos=0
-	numeroMarcos=0
-  	tamanoMarco=0
-  	tamanoMemoria=0
-
-
-   	# Mostrar la tabla con los rangos min y max dados por el fichero rangosAleatoriosTotal.txt 
-	#	y los rangos min y max elegidos aleatoriamente a partir de ese fichero 
-   	clear
-	
-   	datos_rangosAleatorioTotal_tabla
-
-	# Incluye la tabla en ambos informes
-   	datos_rangosAleatorioTotal_informes
-
-	mostrar_errores_rangosAleatorioTotal
-	echo -e -n "\n"
-	echo -e -n "\n"
-
+	# Comprueba que los rangos del fichero son validos, es decir, hay al menos un numero positivo en el rango, y el max es mayor que el min 
 	local unRangoPositivo=0
 	local maxMayorqueMin=0
 	validar_rangos_fichero_un_rango_positivo $numeroMarcosMinimoFichero $numeroMarcosMaximoFichero 1
@@ -3260,6 +3272,89 @@ ejecucion_rangos_total() {
 		echo "No se puede continuar con la ejecucion, rangos fichero no son validos, SALIENDO EJECUCION..."
 		exit
 	fi
+
+
+	# Asigna aleatoriamente los min y max dentro de los rangos dados para cada variable por rangosAleatoriosTotal.txt
+	# Si el minimo calculado es valido, calcula el max desde ese min hasta el maximo del fichero 
+	# En caso contrario, calcula un aleatorio para que no me de fallos el programa al dejar la variable vacia
+ 	aleatorio_entre numeroMarcosMinimo ${numeroMarcosMinimoFichero} ${numeroMarcosMaximoFichero}
+	datos_comprobar_validez_min_tabla numeroMarcosMinimo 1
+	if [ $? -ne 1 ];then
+ 		aleatorio_entre numeroMarcosMaximo ${numeroMarcosMinimo} ${numeroMarcosMaximoFichero}
+	else
+ 		aleatorio_entre numeroMarcosMaximo ${numeroMarcosMinimoFichero} ${numeroMarcosMaximoFichero}
+	fi
+
+ 	aleatorio_entre tamanoMarcoMinimo ${tamanoMarcoMinimoFichero} ${tamanoMarcoMaximoFichero}
+	datos_comprobar_validez_min_tabla tamanoMarcoMinimo 1
+	if [ $? -ne 1 ];then
+ 		aleatorio_entre tamanoMarcoMaximo ${tamanoMarcoMinimo} ${tamanoMarcoMaximoFichero}
+	else 
+ 		aleatorio_entre tamanoMarcoMaximo ${tamanoMarcoMinimoFichero} ${tamanoMarcoMaximoFichero}
+	fi
+
+
+ 	aleatorio_entre numeroProcesosMinimo ${numeroProcesosMinimoFichero} ${numeroProcesosMaximoFichero}
+	datos_comprobar_validez_min_tabla numeroProcesosMinimo 1
+	if [ $? -ne 1 ];then
+ 		aleatorio_entre numeroProcesosMaximo ${numeroProcesosMinimo} ${numeroProcesosMaximoFichero}
+	else 
+ 		aleatorio_entre numeroProcesosMaximo ${numeroProcesosMinimoFichero} ${numeroProcesosMaximoFichero}
+	fi
+
+ 	aleatorio_entre tiempoLlegadaMinimo ${tiempoLlegadaMinimoFichero} ${tiempoLlegadaMaximoFichero}
+	datos_comprobar_validez_min_tabla tiempoLlegadaMinimo 0
+	if [ $? -ne 1 ];then
+ 		aleatorio_entre tiempoLlegadaMaximo ${tiempoLlegadaMinimo} ${tiempoLlegadaMaximoFichero}
+	else 
+ 		aleatorio_entre tiempoLlegadaMaximo ${tiempoLlegadaMinimoFichero} ${tiempoLlegadaMaximoFichero}
+	fi
+
+ 	aleatorio_entre tiempoEjecucionMinimo ${tiempoEjecucionMinimoFichero} ${tiempoEjecucionMaximoFichero}
+	datos_comprobar_validez_min_tabla tiempoEjecucionMinimo 1
+	if [ $? -ne 1 ];then
+  		aleatorio_entre tiempoEjecucionMaximo ${tiempoEjecucionMinimo} ${tiempoEjecucionMaximoFichero}
+	else 
+  		aleatorio_entre tiempoEjecucionMaximo ${tiempoEjecucionMinimoFichero} ${tiempoEjecucionMaximoFichero}
+	fi
+
+ 	aleatorio_entre minimoEstructuralMinimo ${minimoEstructuralMinimoFichero} ${minimoEstructuralMaximoFichero}
+	datos_comprobar_validez_min_tabla minimoEstructuralMinimo 1
+	if [ $? -ne 1 ];then
+ 		aleatorio_entre minimoEstructuralMaximo ${minimoEstructuralMinimo} ${minimoEstructuralMaximoFichero}
+	else 
+ 		aleatorio_entre minimoEstructuralMaximo ${minimoEstructuralMinimoFichero} ${minimoEstructuralMaximoFichero}
+	fi
+
+ 	aleatorio_entre direccionMinima ${direccionMinimaFichero} ${direccionMaximaFichero}
+	datos_comprobar_validez_min_tabla direccionMinima 0
+	if [ $? -ne 1 ];then
+ 		aleatorio_entre direccionMaxima ${direccionMinima} ${direccionMaximaFichero}
+	else 
+ 		aleatorio_entre direccionMaxima ${direccionMinimaFichero} ${direccionMaximaFichero}
+	fi
+
+	# Realmente habria que comprobar si los rangos estan correctos para mostrar estos datos o no, pero como estadisticamente
+	# que los rangos esten correctamente en el primer intento es practicamente imposible, ni me molesto en comprobarlo
+ 	numeroProcesos="-"
+	numeroMarcos="-"
+  	tamanoMarco="-"
+  	tamanoMemoria="-"
+
+
+   	# Mostrar la tabla con los rangos min y max dados por el fichero rangosAleatoriosTotal.txt 
+	#	y los rangos min y max elegidos aleatoriamente a partir de ese fichero 
+   	clear
+	
+   	datos_rangosAleatorioTotal_tabla
+
+	# Incluye la tabla en ambos informes
+   	datos_rangosAleatorioTotal_informes
+
+	mostrar_errores_rangosAleatorioTotal
+	echo -e -n "\n"
+	echo -e -n "\n"
+
 
 
     pausa_tecla_corregir
@@ -3738,10 +3833,10 @@ ej_ejecutar_memoria_pagina() {
 		# Aumento de todos los indices de las paginas no referenciadas detro de memoria, para llevar el contador de LRU
     		for indInterior in ${!marcosActuales[*]};do
 		    indiceMarcoActual=${marcosActuales[$indInterior]}
-       	            # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
+       	    # Comprueba que la pagina no es la ultima incluida para no aumentar su indice de antigüedad indebidamente
 	  	    if [ $indiceMarcoActual -ne $mar ] && [[ -n ${memoriaPagina[$indiceMarcoActual]} ]];then
 	      	         ((memoriaLRU[$indiceMarcoActual]++))
-           	    fi
+           	fi
 		done
 
             return 0
@@ -3991,7 +4086,7 @@ ej_pantalla_tabla() {
     # Estado del proceso
     local est
 
-    local ancho=$(( $anchoColRef + $anchoColTll + $anchoColTej + $anchoColNm + $anchoColTEsp + $anchoColTRet + $anchoColTREj + $anchoColNm + $anchoEstados ))
+    local ancho=$(( $anchoColRef + $anchoColTll + $anchoColTej + $anchoColNm + $anchoColTEsp + $anchoColTRet + $anchoColTREj + $anchoEstados ))
     local anchoRestante
     local anchoCadena
     # Mostrar cabecera
@@ -4007,8 +4102,6 @@ ej_pantalla_tabla() {
     printf "%${anchoColTEsp}s" "Tesp"
     printf "%${anchoColTRet}s" "Tret"
     printf "%${anchoColTREj}s" "Trej"
-    printf "%${anchoColNm}s" "Mini"
-    printf "%${anchoColNm}s" "Mfin"
     # Estado
     printf "%-${anchoEstados}s" " Estado"
     # Direcciones
@@ -4042,31 +4135,7 @@ ej_pantalla_tabla() {
             && printf "%${anchoColTREj}s" "${tREj[$proc]} " \
             || printf "%${anchoColTREj}s" "-"
 
-#		local inicioFinMemoriaProceso=()
-#		local flagIni=0
-#		local flagFin=0
-#		local anteriorMarco
-#		for marco in ${!memoriaProceso[*]};do
-#			if [ ${memoriaproceso[$marco]} -eq $proc ] && [ ${memoriaProceso[$marco]} -ne ${memoriaProceso[$(( $marco+1 ))]} ];then
-#				flagFin=1
-#			fi
-				
-#			if [ ${memoriaProceso[$marco]} -eq $proc ] && [ $flagIni -eq 0 ];then 
-#				inicioFinMemoriaProceso+=${memoriaProceso[$marco]}
-#				flagIni=1
-#			elif [ $flagFin -eq 1 ];then
-#				inicioFinMemoriaProceso+=${memoriaProceso[$(( $marco-1 ))]}
-#				flagIni=0
-#				flagFin=0
-#			else
-#				inicioFinMemoriaProceso+="-"
-#				inicioFinMemoriaProceso+="-"
-#			fi
-#		done
-
-        printf "%${anchoColNm}s" "${inicioFinMemoriaProceso[$proc]}"
-		printf "%${anchoColNm}s" "${inicioFinMemoriaProceso[$(( $proc + 1 ))]}"
-
+		
         # Estado
         # Para que puedan haber tildes hay que poner el ancho diferente.
         printf "%-s%*s" " ${est}" $(( ${anchoEstados} - ${#est} - 1)) ""
@@ -4098,6 +4167,7 @@ ej_pantalla_tabla() {
             anchoRestante=$(( $anchoRestante - $anchoCadena ))
 
         done
+
 
         printf "${rstf}\n"
     done
@@ -4139,9 +4209,16 @@ ej_pantalla_media_tiempos() {
 
 }
 
+ej_pantalla_calcular_marco_fallo() {
+	for (( marcoAComparar=0; marcoAComparar<${minimoEstructural[$fin]}; marcoAComparar++ ));do
+		if [[ -n ${resumenLRU[$fin,$mom,$marcoAComparar]} ]] && [ ${resumenLRU[$fin,$mom,$marcoAComparar]} -eq 0 ];then
+			indiceMarcoLRUa0=$marcoAComparar
+		fi
+	done
+}
+
 # DES: Calcula el indice mas alto de LRU para el tiempo actual, devuelve 1 si el marco actual es 
-calcular_LRU_mas_alto() { 
-	
+ej_pantalla_calcular_LRU_mas_alto() { 
 	local LRUMasAlto=-1
 	for (( marcoAComparar=0; marcoAComparar<${minimoEstructural[$fin]}; marcoAComparar++ ));do
 		if [ -z ${resumenLRU[$fin,$mom,$marcoAComparar]} ];then
@@ -4153,7 +4230,6 @@ calcular_LRU_mas_alto() {
 		fi
 	done
 }
-
 
 # DES: Mostrar un resumen con los fallos de página que han habido durante la ejecución
 ej_pantalla_fin_fallos() {
@@ -4218,8 +4294,13 @@ ej_pantalla_fin_fallos() {
             echo -e -n "${rstf}"
             # Imprimir la página de cada momento del marco
             printf "${ft[0]}"
+
+			# Se usa para saber que marco acaba de ser reemplazado(indice LRU a 0) y asi sombrearlo
+			local indiceMarcoLRUa0
             for (( mom=$primerMomento; mom<=$ultimoMomento; mom++ ));do
-                if [ ${marcoFallo[$mom]} -eq $mar ];then
+				ej_pantalla_calcular_marco_fallo
+
+                if [ $indiceMarcoLRUa0 -eq $mar ];then
                     printf "${cf[3]}╔%${anchoMomento}s╗${cf[0]}" "${resumenFallos[$fin,$mom,$mar]}"
                 else
                     printf "┌%${anchoMomento}s┐" "${resumenFallos[$fin,$mom,$mar]}"
@@ -4232,14 +4313,14 @@ ej_pantalla_fin_fallos() {
 			local indiceMarcoLRUMasAlto
 		    # Imprimir el contador de cada momento del marco
             for (( mom=$primerMomento; mom<=$ultimoMomento; mom++ ));do
+				ej_pantalla_calcular_marco_fallo
 				# Subrayado del indice más alto de LRU, 
-				calcular_LRU_mas_alto
-
+				ej_pantalla_calcular_LRU_mas_alto
 				# sombreado del marco que se ha introducido una nueva pagina, o se haya reusado una pagina de dicho marco
-                if [ ${marcoFallo[$mom]} -eq $mar ];then
+                if [ $indiceMarcoLRUa0 -eq $mar ];then
                     printf "${cf[3]}╚%${anchoMomento}s╝${cf[0]}" "${resumenLRU[$fin,$mom,$mar]}"
 				elif [ -z ${resumenLRU[$fin,$mom,$mar]} ];then
-					if [ $indiceMarcoLRUMasAlto -eq $mar ] && [ $mom -ne 0 ];then 
+					if [ $indiceMarcoLRUMasAlto -eq $mar ];then 
 					 	printf "└${ft[0]}${ft[2]}${cl[$re]}%${anchoMomento}s${rstf}┘" "*"
 					else
 						printf "└%${anchoMomento}s┘" ""
@@ -4247,8 +4328,6 @@ ej_pantalla_fin_fallos() {
 				else
 					# Subrayado del indice LRU mas alto 
 					if [ $indiceMarcoLRUMasAlto -eq $mar ];then 
-						# He utilizado el tput como alternativa a las secuencias de escape para subrayar porque no funcionaban
-						#printf "└%${anchoMomento}s┘" "$(tput smul)${resumenLRU[$fin,$mom,$mar]}$(tput sgr0)"
 						printf "└${ft[0]}${ft[2]}${cl[$re]}%${anchoMomento}s${rstf}┘" "${resumenLRU[$fin,$mom,$mar]}"
 					else
                    		printf "└%${anchoMomento}s┘" "${resumenLRU[$fin,$mom,$mar]}"
@@ -4547,7 +4626,7 @@ ej_pantalla_linea_memoria_pequena() {
 	local digitosDireccionMasLarga=3
 	ej_pantalla_calcular_direccion_mas_larga
 	local anchoBloque=$(($digitosDireccionMasLarga + 1))
-    local anchoEtiqueta=5
+    local anchoEtiqueta=4
     local anchoRestante=$(( $anchoTotal - $anchoEtiqueta - 2 ))
     
     local numBloquesPorLinea
@@ -4559,7 +4638,7 @@ ej_pantalla_linea_memoria_pequena() {
     for (( l=0; ; l++ ));do
 
         # Calcular cuantos marcos se van a imprimir en esta linea
-        numBloquesPorLinea=$(( $anchoRestante / $anchoBloque ))
+        numBloquesPorLinea=$(( $anchoRestante / $anchoBloque - 1 ))
         ultimoMarco=$(( $primerMarco + $numBloquesPorLinea - 1 ))
         if [ $ultimoMarco -ge $numeroMarcos ];then
             ultimoMarco=$(( $numeroMarcos - 1 ))
@@ -4568,8 +4647,14 @@ ej_pantalla_linea_memoria_pequena() {
 
         #PROCESOS
         # Imprimir la etiqueta si estamos en la primera linea
-        [ $l -eq 0 ] && printf "%${anchoEtiqueta}s" ""
-        printf "|"
+        if [ $l -eq 0 ];then 	
+			printf "%${anchoEtiqueta}s" ""
+        	printf "|"
+		fi
+
+		if [ $l -gt 0 ];then
+			printf "%$((${anchoEtiqueta} + 1))s" ""
+		fi
         ultimoProceso=-2
         for (( m=$primerMarco; m<=$ultimoMarco; m++ ));do
             # Si el marco está vacío o es el mismo proceso
@@ -4585,12 +4670,23 @@ ej_pantalla_linea_memoria_pequena() {
                 ultimoProceso=${temp}
             fi
         done
-        printf "${rstf}|\n"
+        # Si se ha llegado al último marco
+        if [ $ultimoMarco -eq $(( $numeroMarcos - 1 )) ];then
+        	printf "${rstf}|\n"
+		else
+			printf "${rstf}\n"
+        fi
 
         #PÁGINAS
         # Imprimir la etiqueta si estamos en la primera linea
-        [ $l -eq 0 ] && printf "%${anchoEtiqueta}s" " BM "
-        printf "|"
+        if [ $l -eq 0 ];then 	
+			printf "%${anchoEtiqueta}s" " BM "
+        	printf "|"
+		fi
+
+		if [ $l -gt 0 ];then
+			printf "%$((${anchoEtiqueta} + 1))s" ""
+		fi
         for (( m=$primerMarco; m<=$ultimoMarco; m++ ));do
             # Poner el color
             if [ -n "${memoriaProceso[$m]}" ];then
@@ -4620,12 +4716,23 @@ ej_pantalla_linea_memoria_pequena() {
                 printf "${ft[1]}"
             fi
         done
-        printf "${rstf}| M=$numeroMarcos \n"
+        
+        # Si se ha llegado al último marco
+        if [ $ultimoMarco -eq $(( $numeroMarcos - 1 )) ];then
+        	printf "${rstf}| M=$numeroMarcos \n"
+		else
+			printf "${rstf}\n"
+        fi
 
         #NÚMERO DE MARCO
-        # Imprimir la etiqueta si estamos en la primera linea
-        [ $l -eq 0 ] && printf "%${anchoEtiqueta}s" ""
-        printf "|"
+        if [ $l -eq 0 ];then 	
+			printf "%${anchoEtiqueta}s" ""
+        	printf "|"
+		fi
+
+		if [ $l -gt 0 ];then
+			printf "%$((${anchoEtiqueta} + 1))s" ""
+		fi
         ultimoProceso=-2
         for (( m=$primerMarco; m<=$ultimoMarco; m++ ));do
             if [ -n "${memoriaProceso[$m]}" ];then
@@ -4641,7 +4748,13 @@ ej_pantalla_linea_memoria_pequena() {
             fi
         done
 
-        printf "${rstf}|\n"
+        # Si se ha llegado al último marco
+        if [ $ultimoMarco -eq $(( $numeroMarcos - 1 )) ];then
+        	printf "${rstf}|\n"
+		else
+			printf "${rstf}\n"
+        fi
+
         # Si se ha llegado al último marco
         if [ $ultimoMarco -eq $(( $numeroMarcos - 1 )) ];then
             break;
@@ -4652,11 +4765,11 @@ ej_pantalla_linea_memoria_pequena() {
 
 }
 
-# DES: Calcula el numero de digitos de la direccion mas larga, para calcular el anchoBloque
+# DES: Calcula el numero de digitos de la direccion mas larga que se va a ejecutar en todo el script, para calcular el anchoBloque
 ej_pantalla_calcular_direccion_mas_larga() {
-	for (( m=0; m<=$t; m++ ));do
-		if [ ${#tiempoPagina[$m]} -gt $digitosDireccionMasLarga ];then 
-			digitosDireccionMasLarga=${#tiempoPagina[$m]}
+	for elemento in ${!procesoPagina[@]};do
+		if [ ${#procesoPagina[$elemento]} -gt $digitosDireccionMasLarga ];then 
+			digitosDireccionMasLarga=${#procesoPagina[$elemento]}
 		fi	
 	done
 }
@@ -4671,7 +4784,7 @@ ej_pantalla_linea_tiempo() {
 	local digitosDireccionMasLarga=3
 	ej_pantalla_calcular_direccion_mas_larga
 	local anchoBloque=$(($digitosDireccionMasLarga + 1))
-    local anchoEtiqueta=5
+    local anchoEtiqueta=4
     local anchoRestante=$(( $anchoTotal - $anchoEtiqueta - 2 ))
     
     local primerTiempo=0
@@ -4680,7 +4793,7 @@ ej_pantalla_linea_tiempo() {
     for (( l=0; ; l++ ));do
 
         # Calcular cuntos marcos se van a imprimir en esta linea
-        local numBloquesPorLinea=$(( $anchoRestante / $anchoBloque ))
+        local numBloquesPorLinea=$(( $anchoRestante / $anchoBloque - 1 ))
         ultimoTiempo=$(( $primerTiempo + $numBloquesPorLinea - 1 ))
         if [ $ultimoTiempo -gt $t ];then
             ultimoTiempo=$(( $t ))
@@ -4689,8 +4802,17 @@ ej_pantalla_linea_tiempo() {
 
         #PROCESOS
         # Imprimir la etiqueta si estamos en la primera linea
-		[ $l -eq 0 ] && printf "%${anchoEtiqueta}s" ""
-		printf "|"
+		#[ $l -eq 0 ] && printf "%${anchoEtiqueta}s" ""
+		#printf "|"
+        if [ $l -eq 0 ];then 	
+			printf "%${anchoEtiqueta}s" ""
+        	printf "|"
+		fi
+
+		if [ $l -gt 0 ];then
+			printf "%$((${anchoEtiqueta} + 1))s" ""
+		fi
+
         ultimoProceso=-2
 		for (( m=$primerTiempo; m<=$ultimoTiempo; m++ ));do
             # Si el marco está vacío o es el mismo proceso
@@ -4706,12 +4828,23 @@ ej_pantalla_linea_tiempo() {
                 ultimoProceso=${temp}
             fi
         done
-        printf "${rstf}|\n"
+
+        # Si se ha llegado al último marco
+        if [ $ultimoTiempo -eq $t ];then
+        	printf "${rstf}|\n"
+		else
+			printf "${rstf}\n"
+        fi
 
         #PÁGINAS
-        # Imprimir la etiqueta si estamos en la primera linea
-        [ $l -eq 0 ] && printf "%${anchoEtiqueta}s" " BT "
-        printf "|"
+        if [ $l -eq 0 ];then 	
+			printf "%${anchoEtiqueta}s" " BT "
+        	printf "|"
+		fi
+
+		if [ $l -gt 0 ];then
+			printf "%$((${anchoEtiqueta} + 1))s" ""
+		fi
 		for (( m=$primerTiempo; m<=$ultimoTiempo; m++ ));do
             # Poner el color
             if [ $t -eq 0 ];then
@@ -4730,12 +4863,23 @@ ej_pantalla_linea_tiempo() {
             fi
             printf "%${anchoBloque}s" "${tiempoPagina[$m]}"
         done
-	printf "${rstf}| T=$t\n"
+
+        # Si se ha llegado al último marco
+        if [ $ultimoTiempo -eq $t ];then
+        	printf "${rstf}| T=$t\n"
+		else
+			printf "${rstf}\n"
+        fi
 
         #TIEMPO
-        # Imprimir la etiqueta si estamos en la primera linea
-        [ $l -eq 0 ] && printf "%${anchoEtiqueta}s" ""
-        printf "|"
+        if [ $l -eq 0 ];then 	
+			printf "%${anchoEtiqueta}s" ""
+        	printf "|"
+		fi
+
+		if [ $l -gt 0 ];then
+			printf "%$((${anchoEtiqueta} + 1))s" ""
+		fi
         ultimoProceso=-2
         for (( m=$primerTiempo; m<=$ultimoTiempo; m++ ));do
 
@@ -4749,7 +4893,12 @@ ej_pantalla_linea_tiempo() {
             fi
         done
 
-        printf "${rstf}|\n"
+        # Si se ha llegado al último marco
+        if [ $ultimoTiempo -eq $t ];then
+        	printf "${rstf}|\n"
+		else
+			printf "${rstf}\n"
+        fi
         # Si se ha llegado al último marco
         if [ $ultimoTiempo -eq $t ];then
             break;

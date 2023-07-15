@@ -1,0 +1,49 @@
+ALGORITMO: FCFS/SJF-Pag-Reloj-C-NR
+AUTOR: Castroviejo Ausucua, Rodrigo
+
+AUTORES ANTERIORES:
+FCFS/SJF-Pag-NFU-NC-R: Cacucí Catalín
+RR-Pag-NRU-C-FI: Diego García Muñoz
+PriMayor-SN-NC-R: Iván Cortés
+R-R-Pag-Reloj-C-FI: Ismael Franco Hernando
+
+El código está dividivo en varias areas atendiendo a la
+finalidad se las funciones que se encuentran en ellas.
+
+FUNCIONES GENERALES
+Son funciones independientes al resto del código, cuyo funcionamiento
+está explicado en los comentarios.
+
+INIT
+Son funciones que establecen variables que se van a usar en el resto
+del código. Algunas variables globales se pueden cambiar, como el
+número máximo de procesos o las carpetas en las que se van a almacenar
+informes o procesos.
+"init_colores" establece las variables de color para no tener que usar
+los códigos ansii tal cual. De aqui se puede cambiar el color de acento,
+el de resalto y el de aviso.
+
+INTRO
+Muestra las cabeceras del principio.
+
+OPCIONES
+Permite cambiar los archivos de informe, ver esta ayuda y seleccionar
+el algoritmo a ejecutar.
+
+MEMORIA Y PROCESOS
+Se introducen los procesos por diferentes métodos:
+    Teclado: Va pidiendo los datos de cada proceso y el usuario los introduce.
+    Archivo: Si se a usado el script antes y se han guardado los procesos, se
+        se puden volver a usar. En caso de que en el archivo haya procesos
+        incompatibles con la memoria se avisa al usuario y no se ejecutan esos
+        procesos.
+    Aleatorio: Se pide al usuario los parámetros para generar los procesos.
+        Si se introducen valores muy grandes el programa va a tardar bastante
+        en generar los procesos, por lo que, aunque no va a provocar errores,
+        no es recomendable.
+
+EJECUCIÓN
+Es la parte más compleja. se pide al usuario seleccionar la forma de ejecución.
+En la primera parte de la función se establecen las variables locales que se van a usar.
+En la segunda parte se entra a un bucle que efectua la ejecución hasta que todos
+los procesos hayan finalizado.
